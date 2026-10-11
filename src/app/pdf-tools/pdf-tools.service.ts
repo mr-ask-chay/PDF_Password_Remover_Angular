@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PDFDocument, StandardFonts, degrees, rgb } from 'pdf-lib';
+import { PDFDocument, PDFTextField, StandardFonts, degrees, rgb } from 'pdf-lib';
 
 export const MAX_PDF_BYTES = 20 * 1024 * 1024;
 export const MAX_MERGE_BYTES = 40 * 1024 * 1024;
@@ -12,6 +12,11 @@ export interface PdfMetadata {
   author: string;
   subject: string;
   keywords: string;
+}
+
+export interface PdfTextFormField {
+  name: string;
+  value: string;
 }
 
 export function parsePageSelection(raw: string): number[] {
@@ -190,6 +195,45 @@ export class PdfToolsService {
     return this.toBlob(await pdf.save());
   }
 
+  async addTextOverlay(
+    file: File,
+    pageNumber: number,
+    text: string,
+    x: number,
+    y: number,
+    size: number
+  ): Promise<Blob> {
+    const overlay = text.trim();
+    if (!overlay || overlay.length > 200 || /[\r\n]/.test(overlay)) {
+      throw new Error('Enter one line of overlay text (1 to 200 characters).');
+    }
+    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
+      throw new Error('Choose a valid page number.');
+    }
+    if (![x, y, size].every(Number.isFinite) || x < 0 || y < 0 || size < 6 || size > 72) {
+      throw new Error('Enter valid text coordinates and a font size from 6 to 72 points.');
+    }
+
+    const pdf = await this.loadPdf(file);
+    if (pageNumber > pdf.getPageCount()) {
+      throw new Error(`Page number must be between 1 and ${pdf.getPageCount()}.`);
+    }
+    const page = pdf.getPage(pageNumber - 1);
+    const font = await pdf.embedFont(StandardFonts.Helvetica);
+    let textWidth: number;
+    try {
+      textWidth = font.widthOfTextAtSize(overlay, size);
+    } catch {
+      throw new Error('The overlay contains characters unsupported by the standard PDF font.');
+    }
+    const { width, height } = page.getSize();
+    if (x + textWidth > width || y + size > height) {
+      throw new Error('The text must fit inside the selected page using PDF-point coordinates.');
+    }
+    page.drawText(overlay, { x, y, size, font, color: rgb(0, 0, 0) });
+    return this.toBlob(await pdf.save());
+  }
+
   async editMetadata(file: File, metadata: PdfMetadata): Promise<Blob> {
     const values = [metadata.title, metadata.author, metadata.subject, metadata.keywords];
     if (values.some((value) => value.length > 200)) {
@@ -200,6 +244,35 @@ export class PdfToolsService {
     pdf.setAuthor(metadata.author.trim());
     pdf.setSubject(metadata.subject.trim());
     pdf.setKeywords(metadata.keywords.split(',').map((keyword) => keyword.trim()).filter(Boolean));
+    return this.toBlob(await pdf.save());
+  }
+
+  async getTextFormFields(file: File): Promise<PdfTextFormField[]> {
+    const pdf = await this.loadPdf(file);
+    return pdf.getForm().getFields()
+      .filter((field): field is PDFTextField => field instanceof PDFTextField)
+      .map((field) => ({ name: field.getName(), value: field.getText() ?? '' }));
+  }
+
+  async fillTextFormFields(file: File, values: Record<string, string>): Promise<Blob> {
+    const entries = Object.entries(values);
+    if (entries.length > 200 || entries.some(([, value]) => value.length > 10_000)) {
+      throw new Error('Fill no more than 200 text fields, with at most 10,000 characters per field.');
+    }
+    const pdf = await this.loadPdf(file);
+    const form = pdf.getForm();
+    const textFields = new Set(
+      form.getFields()
+        .filter((field): field is PDFTextField => field instanceof PDFTextField)
+        .map((field) => field.getName())
+    );
+    for (const [name, value] of entries) {
+      if (!textFields.has(name)) {
+        throw new Error(`The PDF does not contain a supported text field named "${name}".`);
+      }
+      form.getTextField(name).setText(value);
+    }
+    form.updateFieldAppearances();
     return this.toBlob(await pdf.save());
   }
 

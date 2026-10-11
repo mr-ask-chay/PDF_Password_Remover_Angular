@@ -3,6 +3,7 @@ import { PDFDocument } from 'pdf-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PdfToolsComponent } from './pdf-tools.component';
 import { parsePageSelection, PdfToolsService } from './pdf-tools.service';
+import { PdfRenderService } from './pdf-render.service';
 
 describe('PdfToolsComponent', () => {
   beforeEach(async () => {
@@ -126,6 +127,22 @@ describe('PdfToolsService', () => {
     await expectAsync(service.addWatermark(file, '')).toBeRejectedWithError(/watermark text/);
   });
 
+  it('should add selectable text at a validated position on the chosen page', async () => {
+    const document = await PDFDocument.create();
+    document.addPage([300, 400]);
+    document.addPage([300, 400]);
+    const file = await asPdfFile(document);
+    const service = new PdfToolsService();
+    const result = await service.addTextOverlay(file, 2, 'Added note', 40, 50, 14);
+    const updatedFile = new File([result], 'overlay.pdf', { type: 'application/pdf' });
+    const extracted = await new PdfRenderService().extractMarkdown(updatedFile);
+    expect(await extracted.text()).toContain('Added note');
+    await expectAsync(service.addTextOverlay(file, 3, 'Too far', 40, 50, 14))
+      .toBeRejectedWithError(/between 1 and 2/);
+    await expectAsync(service.addTextOverlay(file, 1, 'Outside', 290, 390, 14))
+      .toBeRejectedWithError(/fit inside the selected page/);
+  });
+
   it('should update PDF metadata fields', async () => {
     const service = new PdfToolsService();
     const file = await asPdfFile(await createPdf(1));
@@ -140,6 +157,21 @@ describe('PdfToolsService', () => {
     expect(updated.getAuthor()).toBe('Test author');
     expect(updated.getSubject()).toBe('Test subject');
     expect(updated.getKeywords()).toBe('alpha beta');
+  });
+
+  it('should update and preserve PDF text form fields', async () => {
+    const document = await PDFDocument.create();
+    document.addPage([612, 792]);
+    document.getForm().createTextField('customer.name').setText('Before');
+    const file = await asPdfFile(document);
+    const service = new PdfToolsService();
+
+    expect(await service.getTextFormFields(file)).toEqual([
+      { name: 'customer.name', value: 'Before' },
+    ]);
+    const output = await service.fillTextFormFields(file, { 'customer.name': 'After' });
+    const reopened = await PDFDocument.load(await output.arrayBuffer());
+    expect(reopened.getForm().getTextField('customer.name').getText()).toBe('After');
   });
 
   it('should create one PDF page per selected PNG image', async () => {
@@ -176,9 +208,44 @@ describe('PdfToolsService', () => {
   });
 });
 
+describe('PdfRenderService', () => {
+  it('should export selectable text as Markdown and compare text without a server', async () => {
+    const docA = await createPdfWithText('alpha text');
+    const docB = await createPdfWithText('beta text');
+    const fileA = await asPdfFile(docA);
+    const fileB = await asPdfFile(docB);
+    const renderer = new PdfRenderService();
+
+    const markdown = await renderer.extractMarkdown(fileA);
+    expect(markdown.type).toContain('text/markdown');
+    expect(await markdown.text()).toContain('alpha text');
+
+    const comparison = await renderer.compareText(fileA, fileB);
+    const report = await comparison.text();
+    expect(report).toContain('- alpha text');
+    expect(report).toContain('+ beta text');
+  });
+
+  it('should render PDF pages as JPG blobs', async () => {
+    const file = await asPdfFile(await createPdfWithText('render fixture'));
+    const images = await new PdfRenderService().renderJpegPages(file);
+    expect(images.length).toBe(1);
+    expect(images[0].blob.type).toBe('image/jpeg');
+    expect(images[0].blob.size).toBeGreaterThan(0);
+  });
+});
+
 async function createPdf(pageCount: number): Promise<PDFDocument> {
   const document = await PDFDocument.create();
   for (let index = 0; index < pageCount; index += 1) document.addPage([612, 792]);
+  return document;
+}
+
+async function createPdfWithText(text: string): Promise<PDFDocument> {
+  const document = await PDFDocument.create();
+  const page = document.addPage([612, 792]);
+  const font = await document.embedFont('Helvetica');
+  page.drawText(text, { x: 40, y: 700, font });
   return document;
 }
 

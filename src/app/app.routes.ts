@@ -61,7 +61,7 @@ export const routes: Routes = [
     title: 'Free PDF Tools — Merge, Split, Rotate & Edit Pages Locally',
     data: {
       description:
-        'Merge, split, extract, remove and reorder PDF pages; rotate, crop, add page numbers or watermarks, edit metadata, or convert JPG/PNG images to PDF locally.',
+        'Merge and split PDFs, edit pages, convert images, render PDF pages to JPG, extract selectable text to Markdown, and compare PDF text locally in your browser.',
     },
   },
   {
@@ -70,10 +70,10 @@ export const routes: Routes = [
       import('./feature/landing/landing.component').then(
         (m) => m.LandingComponent
       ),
-    title: 'Unclasp — Remove PDF Passwords Free, No Sign-up',
+    title: 'Unclasp — Browser-First PDF Tools and Password Remover',
     data: {
       description:
-        'Unlock a password-protected PDF you have the password for, free and without an account. Plus a PDF unlock API for developers and open-source developer tools.',
+        'Unclasp is a browser-first PDF toolkit for unlocking, editing, and converting supported documents locally. A separate developer API processes PDFs on its server.',
     },
   },
   {

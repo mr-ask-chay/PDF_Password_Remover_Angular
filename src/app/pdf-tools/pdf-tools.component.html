@@ -4,7 +4,7 @@
       <p class="text-uppercase text-secondary small fw-semibold mb-2">Browser-first PDF utilities</p>
       <h1 class="display-6 fw-bold mb-2">Unclasp PDF Tools</h1>
       <p class="text-body-secondary mx-auto mb-0" style="max-width: 720px;">
-        These tools process supported files locally in your browser. Documents are not uploaded.
+        Supported operations run in browser code and have no application upload fallback. Network behavior has not yet been independently verified.
       </p>
     </header>
 
@@ -20,6 +20,24 @@
           {{ merging ? 'Merging…' : 'Merge PDFs' }}
         </button>
         <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="mergeStatus">{{ mergeStatus }}</p>
+      </article>
+    </div>
+
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">Compress PDF</h2>
+        <p class="small text-body-secondary">
+          Applies lossless PDF stream and object compression locally. If the optimized file is not smaller, the original is kept.
+          Encrypted PDFs must first be unlocked.
+        </p>
+        <label for="compress-pdf" class="form-label fw-semibold">Choose a PDF</label>
+        <input id="compress-pdf" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onCompressFileSelected($event)" />
+        <button class="btn btn-dark mt-3" type="button"
+          [disabled]="compressing || !compressFile" (click)="compressPdf()">
+          {{ compressing ? 'Optimizing…' : 'Compress PDF' }}
+        </button>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="compressStatus">{{ compressStatus }}</p>
       </article>
     </div>
 
@@ -59,6 +77,54 @@
       </article>
     </div>
 
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">PDF to JPG</h2>
+        <p class="small text-body-secondary">Renders pages to separate JPGs locally. Limited to 50 pages, 16 megapixels per page, and 25 megapixels total per operation.</p>
+        <button class="btn btn-dark" type="button" [disabled]="processing || !pdfFile" (click)="convertPdfToJpg()">
+          {{ processing ? 'Rendering…' : 'Render pages as JPG' }}
+        </button>
+        <ul class="mt-3 mb-0" *ngIf="renderedDownloads.length">
+          <li *ngFor="let image of renderedDownloads">
+            <a [href]="image.url" [download]="image.name">{{ image.name }}</a>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">PDF to Markdown</h2>
+        <p class="small text-body-secondary">Extracts selectable text page-by-page. This does not OCR scanned pages or preserve complex layout.</p>
+        <button class="btn btn-dark" type="button" [disabled]="processing || !pdfFile" (click)="convertPdfToMarkdown()">
+          {{ processing ? 'Extracting…' : 'Download Markdown text' }}
+        </button>
+      </article>
+    </div>
+
+    <div class="col-12">
+      <article class="tool-card">
+        <h2 class="h4 mb-3">Compare PDF text</h2>
+        <p class="small text-body-secondary">Compares selectable text page-by-page and downloads a text report; this is not a visual comparison.</p>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label for="compare-first" class="form-label fw-semibold">First PDF</label>
+            <input id="compare-first" type="file" class="form-control" accept=".pdf,application/pdf"
+              (change)="onCompareFileSelected($event, false)" />
+          </div>
+          <div class="col-md-5">
+            <label for="compare-second" class="form-label fw-semibold">Second PDF</label>
+            <input id="compare-second" type="file" class="form-control" accept=".pdf,application/pdf"
+              (change)="onCompareFileSelected($event, true)" />
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-dark" type="button" [disabled]="processing || !compareFile || !secondCompareFile"
+              (click)="comparePdfs()">Compare text</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
     <div class="col-12">
       <article class="tool-card">
         <h2 class="h4 mb-3">PDF page tools</h2>
@@ -77,6 +143,7 @@
               <option value="crop">Crop all pages</option>
               <option value="page-numbers">Add page numbers</option>
               <option value="watermark">Add a text watermark</option>
+              <option value="text-overlay">Add text overlay</option>
               <option value="metadata">Edit PDF metadata</option>
             </select>
           </div>
@@ -112,6 +179,32 @@
             <label for="watermark" class="form-label fw-semibold">Watermark text</label>
             <input id="watermark" type="text" maxlength="100" class="form-control" [(ngModel)]="watermark" />
           </div>
+          <ng-container *ngIf="operation === 'text-overlay'">
+            <p class="col-12 small text-body-secondary mb-0">
+              Adds new text over the selected page; it does not edit or remove existing PDF text or objects.
+              Coordinates use PDF points from the page's lower-left corner.
+            </p>
+            <div class="col-md-6">
+              <label for="overlay-text" class="form-label fw-semibold">Text to add</label>
+              <input id="overlay-text" type="text" maxlength="200" class="form-control" [(ngModel)]="overlayText" />
+            </div>
+            <div class="col-md-2">
+              <label for="overlay-page" class="form-label fw-semibold">Page</label>
+              <input id="overlay-page" type="number" min="1" class="form-control" [(ngModel)]="overlayPage" />
+            </div>
+            <div class="col-md-2">
+              <label for="overlay-x" class="form-label fw-semibold">X (points)</label>
+              <input id="overlay-x" type="number" min="0" class="form-control" [(ngModel)]="overlayX" />
+            </div>
+            <div class="col-md-2">
+              <label for="overlay-y" class="form-label fw-semibold">Y (points)</label>
+              <input id="overlay-y" type="number" min="0" class="form-control" [(ngModel)]="overlayY" />
+            </div>
+            <div class="col-md-3">
+              <label for="overlay-size" class="form-label fw-semibold">Font size (6–72 points)</label>
+              <input id="overlay-size" type="number" min="6" max="72" class="form-control" [(ngModel)]="overlaySize" />
+            </div>
+          </ng-container>
           <ng-container *ngIf="operation === 'metadata'">
             <div class="col-md-6">
               <label for="metadata-title" class="form-label fw-semibold">Title</label>
@@ -139,6 +232,55 @@
             <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="status">{{ status }}</p>
           </div>
         </div>
+      </article>
+    </div>
+
+    <div class="col-12">
+      <article class="tool-card">
+        <h2 class="h4 mb-3">PDF Forms — edit text fields</h2>
+        <p class="small text-body-secondary">
+          Reads and updates AcroForm text fields locally. Checkboxes, dropdowns, radio buttons, and XFA forms are not supported.
+        </p>
+        <label for="form-pdf" class="form-label fw-semibold">Choose a fillable PDF</label>
+        <input id="form-pdf" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onFormPdfSelected($event)" />
+        <div class="row g-3 mt-1" *ngIf="formFields.length">
+          <div class="col-md-6" *ngFor="let field of formFields; let index = index">
+            <label [for]="'form-field-' + index" class="form-label">{{ field.name }}</label>
+            <input [id]="'form-field-' + index" type="text" class="form-control"
+              [(ngModel)]="formValues[field.name]" [name]="'form-field-' + index" />
+          </div>
+          <div class="col-12">
+            <button class="btn btn-dark" type="button" [disabled]="processing" (click)="saveFormPdf()">
+              {{ processing ? 'Updating…' : 'Download filled PDF' }}
+            </button>
+          </div>
+        </div>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="formStatus">{{ formStatus }}</p>
+      </article>
+    </div>
+
+    <div class="col-md-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">Protect PDF</h2>
+        <p class="small text-body-secondary">
+          Adds AES-256 open-password encryption locally. Use distinct passwords and keep the owner password safe.
+        </p>
+        <label for="protect-pdf" class="form-label fw-semibold">Choose an unencrypted PDF</label>
+        <input id="protect-pdf" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onProtectFileSelected($event)" />
+        <label for="protect-user-password" class="form-label fw-semibold mt-3">Password required to open</label>
+        <input id="protect-user-password" type="password" class="form-control" maxlength="127"
+          autocomplete="new-password" [(ngModel)]="protectUserPassword" />
+        <label for="protect-owner-password" class="form-label fw-semibold mt-3">Owner password (different from open password)</label>
+        <input id="protect-owner-password" type="password" class="form-control" maxlength="127"
+          autocomplete="new-password" [(ngModel)]="protectOwnerPassword" />
+        <button class="btn btn-dark mt-3" type="button"
+          [disabled]="protecting || !protectFile || !protectUserPassword || !protectOwnerPassword"
+          (click)="protectPdf()">
+          {{ protecting ? 'Protecting…' : 'Protect and download PDF' }}
+        </button>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="protectStatus">{{ protectStatus }}</p>
       </article>
     </div>
 

@@ -22,8 +22,10 @@
 Unclasp is a free, browser-first PDF utility. Unlock a password-protected PDF
 when you know its password, or use PDF Tools Studio to merge PDFs, extract or
 remove pages, reorder and rotate pages, crop pages, add page numbers or a text
-watermark, edit basic metadata, and convert JPG/PNG images to PDF. These public
-tools process files locally and do not upload them.
+watermark, edit basic metadata, update AcroForm text fields, and convert
+JPG/PNG images to PDF. These public tools run locally in browser code and have
+no application upload fallback in the inspected source. Automated browser
+network interception has not independently verified that behavior.
 
 👉 **Try it: [pdf-fe-kappa.vercel.app/pdf-password-remover](https://pdf-fe-kappa.vercel.app/pdf-password-remover)**
 
@@ -34,14 +36,19 @@ tools process files locally and do not upload them.
 - **Remove a PDF open password** when you know the current password.
 - **PDF Tools Studio** — merge, split/extract, remove and reorder pages, rotate,
   crop, add page numbers or text watermarks, edit standard metadata fields, and
-  convert JPG/PNG images to PDF.
-  Supported page edits are processed locally with [pdf-lib](https://github.com/Hopding/pdf-lib)
-  (MIT). Limits are 20 MB and 500 pages per PDF, 20 files per merge, and 40 MB
-  combined. Encrypted PDFs must first be unlocked with the local qpdf tool.
+  convert JPG/PNG images to PDF, render PDF pages to JPG, extract selectable
+  text to Markdown, and compare selectable text between PDFs. PDF edits use
+  [pdf-lib](https://github.com/Hopding/pdf-lib) (MIT); rendering/text extraction
+  use [PDF.js](https://github.com/mozilla/pdf.js) (Apache-2.0), loaded only on
+  the tool route. Limits are 20 MB and 500 pages per PDF; rendering is limited
+  to 50 pages, 16 megapixels per page, and 25 megapixels total. Encrypted PDFs must first be unlocked
+  with the local qpdf tool. Markdown/text compare cannot OCR scanned pages or
+  preserve visual layout.
 - **No account or imposed watermark** — free to use. You may optionally add
   your own text watermark with the watermark tool.
 - **Unlocked in your browser** — the website tool runs [qpdf](https://github.com/qpdf/qpdf)
-  (WebAssembly) in a Web Worker; the PDF and password are not uploaded. See the
+  (WebAssembly) in a Web Worker; there is no upload fallback in the inspected
+  source. Browser network behavior has not yet been verified. See the
   [privacy policy](https://pdf-fe-kappa.vercel.app/privacy).
 - **Developer API** — a separate, backend-dependent HMAC-SHA256 service with
   Python, Node.js and Go examples. Its PDF requests are uploaded to the API

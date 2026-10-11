@@ -28,16 +28,17 @@
             <strong>in your browser</strong>, on your device.
           </li>
           <li class="mb-2">
-            • Our application does not send your PDF, its filename or its
-            password to our servers or to anyone else.
+            • The public tool code has no PDF-upload fallback. Browser network
+            behavior has not yet been independently verified by interception tests.
           </li>
           <li class="mb-2">
             • The separate developer API (see the API docs) does process PDFs
             on our server — described below.
           </li>
           <li class="mb-0">
-            • The site uses Google AdSense and Google Fonts, which have their
-            own privacy practices.
+            • Google Fonts are loaded externally. AdSense is disabled in the
+            checked-in environment configuration; the deployed configuration
+            has not been checked.
           </li>
         </ul>
       </div>
@@ -64,9 +65,12 @@
           </li>
           <li class="mb-2">
             The unlock engine runs in a background worker. PDF Tools Studio
-            currently uses pdf-lib in the browser for page and image operations.
-            These public tools do not send your PDF, its filename or password
-            to a processing server.
+            uses pdf-lib for PDF edits and PDF.js (WebAssembly-enabled browser
+            worker) for JPG rendering and selectable-text extraction. The
+            PDF.js worker is served as a static asset by this website.
+            The inspected public-tool code has no explicit document-upload
+            request or server-processing fallback. Automated browser network
+            interception has not yet verified this behavior.
           </li>
           <li class="mb-0">
             Generated files are offered as browser downloads. Temporary download
@@ -82,15 +86,16 @@
       <div class="p-4 border policy-card fade-in h-100">
         <h2 class="h4 fw-semibold mb-2">What our website tool does not do</h2>
         <ul class="small text-body-secondary mb-3">
-          <li class="mb-1">The public browser tools do not upload your PDF or the unlocked copy.</li>
-          <li class="mb-1">It does not send or store your password.</li>
-          <li class="mb-1">It does not send your PDF’s filename or contents anywhere.</li>
+          <li class="mb-1">The inspected public-tool code contains no explicit upload of the PDF or unlocked copy.</li>
+          <li class="mb-1">The unlock flow passes the password to a same-tab worker; automated network interception has not been run.</li>
+          <li class="mb-1">No document upload fallback is present in the inspected public-tool code.</li>
           <li class="mb-1">It does not require an account.</li>
           <li class="mb-0">It does not use analytics tools.</li>
         </ul>
         <p class="small text-body-secondary mb-0">
-          If the engine can’t unlock a file, you see an error message; the file
-          is never sent to a server as a fallback.
+          If the engine can’t unlock a file, the UI reports an error; there is no
+          upload fallback in the inspected source. This claim still needs an
+          automated browser request-interception test.
         </p>
       </div>
     </div>
@@ -180,9 +185,10 @@
     <h2 class="h4 fw-semibold mb-2">Third-party services</h2>
     <p class="small text-body-secondary">
       These services receive technical information (such as your IP address and
-      browser details) when your browser loads them. Our application does not send them your PDF, its filename or
-      your password. Their code runs on the page under their own privacy
-      practices.
+      browser details) when your browser loads them. The inspected application
+      source does not attach PDF contents, names, or passwords to these
+      requests; network interception has not independently verified this.
+      Their code runs on the page under their own privacy practices.
     </p>
     <ul class="small text-body-secondary mb-0">
       <li class="mb-2">
@@ -191,8 +197,12 @@
         <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google Privacy Policy</a>.
       </li>
       <li class="mb-0" id="advertising">
-        <strong>Google AdSense</strong> — this site shows ads to keep the tools
-        free.
+        <strong>Google AdSense</strong> — an existing publisher configuration
+        can load the advertising script when enabled. The checked-in
+        environment flags currently disable it; the live deployment setting
+        has not been verified. If enabled, Google may receive standard network,
+        browser, and advertising data, but document contents, names, passwords,
+        and extracted text must not be sent.
         <ul class="mt-1">
           <li class="mb-1">
             Third-party vendors, including Google, use cookies to serve ads based
@@ -228,10 +238,10 @@
         <details>
           <summary class="fw-semibold">Is my PDF processed in my browser?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            Yes. The website unlocker and the PDF Tools Studio process files
-            in your browser on your device; those tools do not upload the
-            document or password. (The separate developer API processes PDFs
-            on its server.)
+            The website unlocker and PDF Tools Studio processing code run in
+            your browser. Source inspection found no document-upload fallback,
+            but browser network interception has not been run. The separate
+            developer API processes PDFs on its server.
           </p>
         </details>
       </div>
@@ -241,10 +251,10 @@
         <details>
           <summary class="fw-semibold">Do you keep a copy of my PDF?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            No. With the website tool your PDF never leaves your browser. The
-            unlocked copy exists only in your browser’s memory until you start
-            another unlock or leave the page (and in the file you choose to
-            save).
+            The public tool code does not deliberately persist a selected
+            document to application storage. Browser-level network behavior
+            has not been independently verified; your browser or operating
+            system may retain downloads, cache, or crash artifacts.
           </p>
         </details>
       </div>
@@ -254,9 +264,10 @@
         <details>
           <summary class="fw-semibold">Do you store my password?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            No. The website tool uses the password only inside your browser to
-            open the PDF, does not send it anywhere and clears the password
-            field after a successful unlock.
+            The unlock code passes the password to a worker in the same tab
+            and clears the input after successful processing. No upload
+            fallback is present in the inspected code; network interception
+            has not independently verified requests.
           </p>
         </details>
       </div>

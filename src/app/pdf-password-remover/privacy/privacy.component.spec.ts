@@ -30,9 +30,10 @@ describe('PrivacyComponent', () => {
 
     it('states that the website tool works in the browser and the API on the server', () => {
       expect(text).toContain('unlocks PDFs in your browser');
-      expect(text).toContain('does not send your PDF, its filename or its password to our servers');
+      expect(text).toContain('The public tool code has no PDF-upload fallback');
+      expect(text).toContain('Browser network behavior has not yet been independently verified');
       expect(text).toContain('Developer API (server-side processing)');
-      expect(text).toContain('never sent to a server as a fallback');
+      expect(text).toContain('no upload fallback in the inspected source');
     });
 
     it('discloses browser storage and third-party services', () => {
