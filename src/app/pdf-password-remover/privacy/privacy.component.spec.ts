@@ -41,6 +41,17 @@ describe('PrivacyComponent', () => {
       expect(text).toContain('IP address');
     });
 
+    it('describes the download link lifecycle accurately', () => {
+      expect(text).toContain('Downloading it does not remove it');
+      expect(text).not.toContain('until you download it');
+    });
+
+    it('discloses API-key management records', () => {
+      expect(text).toContain('SHA-256 hash of the secret');
+      expect(text).toContain('first four characters of the key');
+      expect(text).toContain('inactive key record is kept');
+    });
+
     it('does not make unsupported claims', () => {
       for (const phrase of [
         'client-side',
