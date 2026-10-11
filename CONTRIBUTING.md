@@ -13,7 +13,7 @@ Fork the repository by clicking the "Fork" button at the top right corner of the
 Clone your forked repository to your local machine using the following command:
 
 ```bash
-https://github.com/otaku0304/PDF_Password_Remover_Angular.git
+git clone https://github.com/<your-username>/PDF_Password_Remover_Angular.git
 ```
 ### 3. Create a Branch
 

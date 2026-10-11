@@ -2,10 +2,25 @@
    Global theme & typography
    ========================= */
 :root {
-  --brand-500: #6366f1;
-  --brand-600: #4f46e5;
-  --brand-700: #4338ca;
-  --ring-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.35);
+  /* PDFHaven teal (matches the logo) */
+  --brand-500: #14b8a6;
+  --brand-600: #0d9488;
+  --brand-700: #0f766e;
+  --brand-mint: #5eead4;
+  --ring-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.35);
+
+  /* Bootstrap links follow the brand */
+  --bs-link-color: #0f766e;
+  --bs-link-color-rgb: 15, 118, 110;
+  --bs-link-hover-color: #134e4a;
+  --bs-link-hover-color-rgb: 19, 78, 74;
+}
+
+[data-bs-theme="dark"] {
+  --bs-link-color: #5eead4;
+  --bs-link-color-rgb: 94, 234, 212;
+  --bs-link-hover-color: #99f6e4;
+  --bs-link-hover-color-rgb: 153, 246, 228;
 }
 
 body {
@@ -30,7 +45,7 @@ h3,
   z-index: -2;
   pointer-events: none;
   background: radial-gradient(700px 350px at 15% 0%,
-      rgba(99, 102, 241, 0.22),
+      rgba(20, 184, 166, 0.2),
       transparent 60%),
     radial-gradient(600px 300px at 85% 0%,
       rgba(56, 189, 248, 0.18),
@@ -44,7 +59,7 @@ h3,
   height: 420px;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(90deg, var(--brand-500), #22d3ee, #d946ef);
+  background: linear-gradient(90deg, var(--brand-500), #22d3ee, #34d399);
   background-size: 200% 200%;
   filter: blur(50px);
   opacity: 0.1;
@@ -86,7 +101,7 @@ h3,
 }
 
 .shadow-glow {
-  box-shadow: 0 18px 60px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 18px 60px rgba(15, 118, 110, 0.25);
 }
 
 /* PDFHaven logo: swap artwork with the Bootstrap theme */
@@ -136,7 +151,7 @@ a.btn:focus-visible {
   --bs-btn-hover-border-color: var(--brand-700);
   --bs-btn-active-bg: var(--brand-700);
   --bs-btn-active-border-color: var(--brand-700);
-  --bs-btn-focus-shadow-rgb: 99, 102, 241;
+  --bs-btn-focus-shadow-rgb: 20, 184, 166;
   /* brand-500 */
 }
 
@@ -158,16 +173,24 @@ a.btn:focus-visible {
   --bs-btn-focus-shadow-rgb: 148, 163, 184;
 }
 
-/* Primary (e.g., StartMyDev): bright brand with strong contrast */
-[data-bs-theme="dark"] .btn-primary {
+/* Primary (e.g., StartMyDev): brand teal in both themes */
+.btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: var(--brand-500);
-  --bs-btn-border-color: var(--brand-500);
-  --bs-btn-hover-bg: var(--brand-600);
-  --bs-btn-hover-border-color: var(--brand-600);
-  --bs-btn-active-bg: var(--brand-700);
-  --bs-btn-active-border-color: var(--brand-700);
-  --bs-btn-focus-shadow-rgb: 99, 102, 241;
+  --bs-btn-bg: var(--brand-700);
+  --bs-btn-border-color: var(--brand-700);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #115e59;
+  --bs-btn-hover-border-color: #115e59;
+  --bs-btn-active-bg: #134e4a;
+  --bs-btn-active-border-color: #134e4a;
+  --bs-btn-focus-shadow-rgb: 20, 184, 166;
+}
+
+[data-bs-theme="dark"] .btn-primary {
+  --bs-btn-bg: var(--brand-600);
+  --bs-btn-border-color: var(--brand-600);
+  --bs-btn-hover-bg: var(--brand-700);
+  --bs-btn-hover-border-color: var(--brand-700);
 }
 
 /* Disabled secondary (your “Open Tool” placeholder) */
@@ -189,12 +212,11 @@ a.btn:focus-visible {
    ========================= */
 [data-bs-theme="dark"] a.link-secondary,
 [data-bs-theme="dark"] .text-body-secondary a {
-  color: #a5b4fc;
-  /* soft indigo */
+  color: var(--brand-mint);
 }
 
 [data-bs-theme="dark"] a.link-secondary:hover {
-  color: #c7d2fe;
+  color: #99f6e4;
 }
 
 :host {
@@ -221,50 +243,16 @@ a.btn:focus-visible {
 
 /* Animated gradient headline */
 .gradient-text {
-  background: linear-gradient(90deg, var(--brand-500), #22d3ee, #d946ef);
+  background: linear-gradient(90deg, var(--brand-700), var(--brand-500), #22d3ee);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  animation: hue 8s linear infinite;
 }
 
-@keyframes hue {
-  to {
-    filter: hue-rotate(360deg);
-  }
-}
-
-/* example-figure base styles you already have */
-.example-figure {
-  border: 1px solid rgba(100, 116, 139, 0.35);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  margin: 0;
-}
-
-.figure-media {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  overflow: hidden;
-}
-
-.figure-media picture,
-.figure-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.figure-media img {
-  object-fit: cover;
-}
-
-.example-caption {
-  margin: 0;
-  padding: 0.75rem 1rem;
-  background: rgba(148, 163, 184, 0.12);
-  font-size: 0.875rem;
+/* Bootstrap "primary" badges use the brand colour */
+.text-bg-primary {
+  color: #fff !important;
+  background-color: var(--brand-700) !important;
 }
 
 /* Better focus visibility on buttons (optional) */

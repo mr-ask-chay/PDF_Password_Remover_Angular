@@ -14,6 +14,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
     <meta name="theme-color" content="#0F766E" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
     <!-- Social -->
     <meta
@@ -37,13 +38,6 @@
     <!-- Preconnect for fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Preload font styles -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@700;900&display=swap"
-    />
 
     <!-- Load fonts non-blocking -->
     <link
@@ -72,6 +66,57 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7945845389175063"
       crossorigin="anonymous"
     ></script>
+    <!-- Structured data: site name, logo and the PDF tool -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://pdf-fe-kappa.vercel.app/#organization",
+          "name": "PDFHaven",
+          "url": "https://pdf-fe-kappa.vercel.app/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://pdf-fe-kappa.vercel.app/assets/brand/icon-512.png",
+            "width": 512,
+            "height": 512
+          },
+          "sameAs": [
+            "https://github.com/mr-ask-chay/PDF_Password_Remover_Angular"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://pdf-fe-kappa.vercel.app/#website",
+          "name": "PDFHaven",
+          "url": "https://pdf-fe-kappa.vercel.app/",
+          "publisher": {
+            "@id": "https://pdf-fe-kappa.vercel.app/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://pdf-fe-kappa.vercel.app/pdf-password-remover#app",
+          "name": "PDFHaven PDF Password Remover",
+          "url": "https://pdf-fe-kappa.vercel.app/pdf-password-remover",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript and a modern web browser.",
+          "description": "Remove the open password from a PDF when you know the password. Free, no account needed.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "publisher": {
+            "@id": "https://pdf-fe-kappa.vercel.app/#organization"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="hero-bg">
     <app-root></app-root>

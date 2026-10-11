@@ -22,7 +22,7 @@ describe('PrivacyComponent', () => {
 
   it('should initialize year and lastUpdated', () => {
     expect(component.year).toBe(new Date().getFullYear());
-    expect(component.lastUpdated).toBe(new Date().toISOString().slice(0, 10));
+    expect(component.lastUpdated).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
   it('should set up IntersectionObserver if available', () => {

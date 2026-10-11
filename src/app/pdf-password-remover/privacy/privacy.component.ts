@@ -16,7 +16,8 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 })
 export class PrivacyComponent implements AfterViewInit, OnDestroy {
   readonly year = new Date().getFullYear();
-  readonly lastUpdated = new Date().toISOString().slice(0, 10);
+  /** Update when the policy text changes (not on every build). */
+  readonly lastUpdated = '2026-10-11';
 
   private io?: IntersectionObserver;
   private scrollRevealBound?: () => void;
