@@ -12,10 +12,10 @@ export const routes: Routes = [
       import('./pdf-password-remover/api-docs/api-docs.component').then(
         (m) => m.ApiDocsComponent
       ),
-    title: 'PDF Password Removal API — Developer Docs',
+    title: 'PDF Password API Docs — HMAC Examples | Unclasp',
     data: {
       description:
-        'Developer reference for the PDF password removal API: HMAC-SHA256 request signing, rate limits, error responses, and ready-to-run Python, Node.js and Go examples.',
+        'HMAC-SHA256 PDF password API documentation with rate limits, errors, and Python, Node.js, and Go examples. API files are processed on the server.',
     },
   },
   {
@@ -24,10 +24,10 @@ export const routes: Routes = [
       import('./pdf-password-remover/privacy/privacy.component').then(
         (m) => m.PrivacyComponent
       ),
-    title: 'Privacy Policy — PDF Password Remover',
+    title: 'Privacy Policy | Unclasp PDF Tools',
     data: {
       description:
-        'How the PDF Password Remover handles your files and passwords: the website tool works in your browser, the developer API on our server, plus browser storage, Google Fonts and AdSense.',
+        'Privacy details for Unclasp: browser-side PDF tools, server-processed API uploads, local storage, Google Fonts, and AdSense.',
     },
   },
   {
@@ -36,10 +36,10 @@ export const routes: Routes = [
       import('./pdf-password-remover/terms/terms.component').then(
         (m) => m.TermsComponent
       ),
-    title: 'Terms of Use — PDF Password Remover',
+    title: 'Terms of Use | Unclasp PDF Tools',
     data: {
       description:
-        'Terms for using the free PDF Password Remover and its developer API: permitted use, processing limits, availability and liability.',
+        'Read the terms for Unclasp PDF tools and the developer API, including permitted use, file limits, availability, and liability.',
     },
   },
   {
@@ -48,20 +48,20 @@ export const routes: Routes = [
       import('./pdf-password-remover/remover-page/remover-page.component').then(
         (m) => m.RemoverPageComponent
       ),
-    title: 'Remove Password from PDF — Free Online PDF Unlocker',
+    title: 'Remove PDF Password — Free Browser Tool | Unclasp',
     data: {
       description:
-        'Remove the open password from a PDF when you know the password — in your browser, without uploading the file. Free, no account needed.',
+        'Unlock a PDF when you know its current password. Processing runs in your browser; no password recovery or account is required.',
     },
   },
   {
     path: 'pdf-tools',
     loadComponent: () =>
       import('./pdf-tools/pdf-tools.component').then((m) => m.PdfToolsComponent),
-    title: 'Free PDF Tools — Merge, Split, Rotate & Edit Pages Locally',
+    title: 'Free PDF Tools: Merge, Split & Edit | Unclasp',
     data: {
       description:
-        'Merge and split PDFs, edit pages, convert images, render PDF pages to JPG, extract selectable text to Markdown, and compare PDF text locally in your browser.',
+        'Merge, split, rotate, crop, protect, compress, and convert supported PDFs in your browser. Free local PDF tools from Unclasp.',
     },
   },
   {
@@ -70,10 +70,26 @@ export const routes: Routes = [
       import('./feature/landing/landing.component').then(
         (m) => m.LandingComponent
       ),
-    title: 'Unclasp — Browser-First PDF Tools and Password Remover',
+    title: 'Unclasp: Free PDF Tools & Password Remover',
     data: {
       description:
-        'Unclasp is a browser-first PDF toolkit for unlocking, editing, and converting supported documents locally. A separate developer API processes PDFs on its server.',
+        'Unlock PDFs with a password and use supported PDF tools in your browser. Free, no account required, and local processing.',
+      faq: [
+        {
+          question: 'Do you upload my files?',
+          answer:
+            'The website’s supported PDF tools process files in your browser and have no application upload fallback. The separate developer API does upload PDF files for server processing. Read the privacy policy for details.',
+        },
+        {
+          question: 'Is it free?',
+          answer: 'Yes. The website tools are free and do not require an account.',
+        },
+        {
+          question: 'Can I unlock a PDF without its password?',
+          answer:
+            'No. The PDF Password Remover requires the current password and does not crack or recover passwords.',
+        },
+      ],
     },
   },
   {

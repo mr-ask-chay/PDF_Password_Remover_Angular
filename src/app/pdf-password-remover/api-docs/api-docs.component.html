@@ -8,7 +8,7 @@
     </div>
 
     <div class="row g-4 justify-content-center">
-      <main class="col-12 col-lg-10 mx-auto">
+      <div class="col-12 col-lg-10 mx-auto">
         <!-- Overview -->
         <article id="api-overview" class="panel card shadow-sm mb-4" tabindex="-1" aria-labelledby="apiOverviewTitle">
           <div class="card-body">
@@ -222,7 +222,7 @@
             </div>
 
             <!-- Tabs -->
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs" aria-label="Request examples">
               <li class="nav-item">
                 <button class="nav-link" [class.active]="isActive(ep.id, 'req')" (click)="setTab(ep.id, 'req')">
                   Request
@@ -372,7 +372,7 @@
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   </div>
 </section>

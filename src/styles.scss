@@ -134,11 +134,31 @@ h3,
 /* =========================
    Buttons: accessible dark theme
    ========================= */
-/* Better focus visibility everywhere */
-.btn:focus-visible,
-a.btn:focus-visible {
+/* Keep keyboard focus visible on every interactive control. */
+:focus-visible {
   box-shadow: var(--ring-shadow);
-  outline: 0;
+  outline: 3px solid var(--brand-700);
+  outline-offset: 2px;
+}
+
+[data-bs-theme="dark"] :focus-visible {
+  outline-color: var(--brand-mint);
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  background: var(--brand-700);
+  border-radius: 0.5rem;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* Your main CTAs used .btn-dark → make them brand in dark mode */
@@ -253,12 +273,6 @@ a.btn:focus-visible {
 .text-bg-primary {
   color: #fff !important;
   background-color: var(--brand-700) !important;
-}
-
-/* Better focus visibility on buttons (optional) */
-.btn:focus-visible {
-  box-shadow: var(--ring-shadow);
-  outline: 0;
 }
 
 .fade-in {
