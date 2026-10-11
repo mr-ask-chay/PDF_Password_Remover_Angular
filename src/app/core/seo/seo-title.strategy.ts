@@ -12,6 +12,11 @@ export const DEFAULT_TITLE = 'Unclasp — PDF Password Remover';
 export const DEFAULT_DESCRIPTION =
   'Remove the password from a PDF you have the password for — free, no account needed.';
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 /**
  * Sets per-route SEO metadata on every navigation (server prerender and browser):
  * title, description, robots, canonical link and Open Graph / Twitter tags.
@@ -48,9 +53,11 @@ export class SeoTitleStrategy extends TitleStrategy {
     });
     this.meta.updateTag({ property: 'og:title', content: title });
     this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ name: 'twitter:title', content: title });
     this.meta.updateTag({ name: 'twitter:description', content: description });
+    this.updateFaqSchema(route.data['faq']);
     this.setCanonical(indexable ? url : null);
   }
 
@@ -78,5 +85,35 @@ export class SeoTitleStrategy extends TitleStrategy {
       head.appendChild(link);
     }
     link.setAttribute('href', href);
+  }
+
+  private updateFaqSchema(value: unknown): void {
+    const scriptId = 'route-faq-schema';
+    const existing = this.document.getElementById(scriptId);
+    if (!Array.isArray(value) || value.length === 0) {
+      existing?.remove();
+      return;
+    }
+
+    const faqs = value as FaqItem[];
+    let script = existing as HTMLScriptElement | null;
+    if (!script) {
+      script = this.document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      this.document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map(({ question, answer }) => ({
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: answer,
+        },
+      })),
+    });
   }
 }

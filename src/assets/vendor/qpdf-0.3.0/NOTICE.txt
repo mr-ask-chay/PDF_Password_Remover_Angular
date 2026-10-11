@@ -1,0 +1,18 @@
+Third-party software notice — PDF unlocking engine
+==================================================
+
+The file qpdf.wasm in this folder is distributed unmodified from the npm package
+@neslinesli93/qpdf-wasm@0.3.0 (https://github.com/neslinesli93/qpdf-wasm), which is
+a WebAssembly build of qpdf.
+
+qpdf version 12.2.0
+Copyright (c) 2005-2021 Jay Berkenbilt
+Copyright (c) 2022-2025 Jay Berkenbilt and Manfred Holger
+https://github.com/qpdf/qpdf
+
+qpdf is licensed under the Apache License, Version 2.0. A copy of the license is
+included in this folder as LICENSE-qpdf-Apache-2.0.txt.
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied.

@@ -27,13 +27,18 @@ export type Endpoint = {
   sampleLangs: string[]; // NEW: order of tabs
 };
 
-/** Stored in localStorage */
+/**
+ * Stored in localStorage. Deliberately excludes the API secret: secrets are
+ * shown once after creation, kept only in memory and never persisted.
+ */
 export type StoredKey = {
   api_key: string;
-  api_secret: string;
   created_at: string;
   name: string;
 };
+
+/** Newly created key, held in memory only until both values are copied. */
+export type CreatedKeyView = StoredKey & { api_secret: string };
 
 @Component({
   selector: 'app-api',
@@ -53,7 +58,7 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
   toastVisible = false;
 
   /** Copy section state */
-  lastCreatedCopySection?: StoredKey;
+  lastCreatedCopySection?: CreatedKeyView;
   copied = { api_key: false, api_secret: false };
 
   /** Persisted keys */
@@ -86,7 +91,10 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
     this.loadStored();
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    // Drop the in-memory secret when leaving the page.
+    this.lastCreatedCopySection = undefined;
+  }
 
   /** Validation */
   get partnerLabelError(): string {
@@ -391,14 +399,13 @@ X-RateLimit-Reset: <epoch>
       const data = await firstValueFrom(this.svc.createKey(name));
       const newItem: StoredKey = {
         api_key: data.api_key,
-        api_secret: data.api_secret,
         created_at: data.created_at,
         name: data.name,
       };
       this.storedKeys.unshift(newItem);
-      this.saveStored();
+      this.saveStored(); // the secret is never persisted
 
-      this.lastCreatedCopySection = newItem;
+      this.lastCreatedCopySection = { ...newItem, api_secret: data.api_secret };
       this.copied = { api_key: false, api_secret: false };
 
       this.partnerLabel = '';
@@ -422,17 +429,24 @@ X-RateLimit-Reset: <epoch>
     }
   }
 
-  /** Delete flow */
+  /**
+   * Delete flow. Deleting requires proof of the key's secret: the browser signs
+   * the request (HMAC-SHA256 via Web Crypto). The secret is used only for this
+   * signature and is not stored or sent.
+   */
   async confirmDelete(item: StoredKey): Promise<void> {
     if (!item?.api_key) return;
-    const ok = window.confirm(
-      'Are you sure you want to delete this API key? This action cannot be undone.'
-    );
-    if (!ok) return;
+    const secret = (window.prompt(
+      'To delete this API key, paste its API secret. It is only used to sign the delete request in your browser and is not stored or sent.'
+    ) || '').trim();
+    if (!secret) return;
 
     this.busy = true;
     try {
-      await firstValueFrom(this.svc.deleteKey(item.api_key));
+      const path = `/api/keys/${encodeURIComponent(item.api_key)}`;
+      const ts = Math.floor(Date.now() / 1000).toString();
+      const signature = await signHmacRequest('DELETE', path, ts, secret);
+      await firstValueFrom(this.svc.deleteKey(item.api_key, ts, signature));
       this.storedKeys = this.storedKeys.filter(
         (k) => k.api_key !== item.api_key
       );
@@ -505,12 +519,22 @@ X-RateLimit-Reset: <epoch>
     setTimeout(() => (this.toastVisible = false), 1400);
   }
 
+  /** Shows only the backend's user-facing message; never raw URLs or internals. */
   private readHttpError(e: any, fallback: string): string {
-    try {
-      if (e?.error?.error) return String(e.error.error);
-      if (e?.error && typeof e.error === 'string') return e.error;
-      if (e?.message) return String(e.message);
-    } catch { }
+    const body = e?.error;
+    if (body && typeof body.message === 'string' && body.message.length < 200) return body.message;
+    const known: Record<string, string> = {
+      name_required: 'Please enter a label.',
+      name_invalid: 'Use 1-16 lowercase letters, digits or hyphens.',
+      name_taken: 'This label is already in use. Choose a different one.',
+      bad_signature: 'That secret does not match this key.',
+      bad_api_key: 'This key does not exist or is already deleted.',
+      not_found: 'This key does not exist or is already deleted.',
+    };
+    const code = typeof body?.error === 'string' ? body.error.split(':')[0] : '';
+    if (known[code]) return known[code];
+    if (e?.status === 429) return 'Too many requests. Please wait a minute and try again.';
+    if (e?.status === 0) return 'Could not reach the API server. Please try again.';
     return fallback;
   }
 
@@ -519,9 +543,19 @@ X-RateLimit-Reset: <epoch>
     if (!isPlatformBrowser(this.platformId)) return;
     try {
       const raw = localStorage.getItem(this.STORAGE_LIST_KEY);
-      this.storedKeys = raw ? (JSON.parse(raw) as StoredKey[]) : [];
+      const parsed: unknown = raw ? JSON.parse(raw) : [];
+      // Keep only the safe fields; this also purges secrets saved by older versions.
+      this.storedKeys = (Array.isArray(parsed) ? parsed : [])
+        .filter((k): k is Record<string, unknown> => !!k && typeof k === 'object' && typeof (k as any).api_key === 'string')
+        .map((k) => ({
+          api_key: String(k['api_key']).slice(0, 64),
+          name: typeof k['name'] === 'string' ? k['name'].slice(0, 32) : '',
+          created_at: typeof k['created_at'] === 'string' ? k['created_at'].slice(0, 40) : '',
+        }));
+      if (raw && raw.includes('api_secret')) this.saveStored();
     } catch {
       this.storedKeys = [];
+      try { localStorage.removeItem(this.STORAGE_LIST_KEY); } catch { }
     }
   }
   private saveStored(): void {
@@ -542,4 +576,14 @@ X-RateLimit-Reset: <epoch>
     const end = v.slice(-keepEnd);
     return `${start}••••••••${end}`;
   }
+}
+
+/** HMAC-SHA256 over UPPER(method), path, timestamp and sha256_hex(empty body), joined by newlines; hex-encoded. */
+export async function signHmacRequest(method: string, path: string, ts: string, secret: string): Promise<string> {
+  const enc = new TextEncoder();
+  const hex = (b: ArrayBuffer) => Array.from(new Uint8Array(b), (x) => x.toString(16).padStart(2, '0')).join('');
+  const bodyHash = hex(await crypto.subtle.digest('SHA-256', new Uint8Array()));
+  const key = await crypto.subtle.importKey('raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const msg = [method.toUpperCase(), path, ts, bodyHash].join('\n');
+  return hex(await crypto.subtle.sign('HMAC', key, enc.encode(msg)));
 }

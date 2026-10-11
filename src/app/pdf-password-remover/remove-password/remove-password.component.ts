@@ -6,15 +6,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TokenService } from '../../core/token.service';
-import { PdfBackendService } from 'src/app/core/service/pdf_backend_service/pdfBackend.service';
-import {
-  classifyRemoveError,
-  readErrorCode,
-  removeErrorMessage,
-  RETRYABLE_TOKEN_CODES,
-} from './remove-password-errors';
+import { PdfUnlockService } from '../engine/pdf-unlock.service';
+import { removeErrorMessage } from './remove-password-errors';
 
+export const STATUS_DONE = 'Done! Click to download.';
+
+/**
+ * Removes a PDF password locally: the file and password are handed to a Web
+ * Worker in this tab (qpdf WebAssembly). Nothing is uploaded, and there is no
+ * server fallback if local processing fails.
+ */
 @Component({
   selector: 'app-remove-password',
   standalone: true,
@@ -31,6 +32,7 @@ import {
   styleUrls: ['./remove-password.component.scss'],
 })
 export class RemovePasswordComponent implements OnDestroy {
+  readonly doneMessage = STATUS_DONE;
   loading = false;
   status = '';
   password = '';
@@ -38,17 +40,19 @@ export class RemovePasswordComponent implements OnDestroy {
   downloadHref: string | null = null;
 
   private readonly isBrowser: boolean;
+  private abort?: AbortController;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private readonly tokenService: TokenService,
-    private readonly pdfApi: PdfBackendService
+    private readonly unlocker: PdfUnlockService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnDestroy(): void {
+    this.abort?.abort(); // stops and terminates any running worker
     this.setDownloadHref(null);
+    this.password = '';
   }
 
   /**
@@ -67,8 +71,12 @@ export class RemovePasswordComponent implements OnDestroy {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit(fileInput: HTMLInputElement) {
-    if (!this.isBrowser) return;
+  cancel(): void {
+    this.abort?.abort();
+  }
+
+  async onSubmit(fileInput: HTMLInputElement): Promise<void> {
+    if (!this.isBrowser || this.loading) return;
 
     const file = fileInput.files?.[0] || null;
     const pwd = (this.password || '').trim();
@@ -88,49 +96,32 @@ export class RemovePasswordComponent implements OnDestroy {
     }
 
     this.loading = true;
-    this.status = 'Processing…';
-    this.attempt(file, pwd, false);
-  }
-
-  private attempt(file: File, pwd: string, isRetry: boolean) {
-    this.tokenService.getReqToken().subscribe({
-      next: ({ req_token }) => {
-        const fd = new FormData();
-        fd.append('file', file);
-        fd.append('password', pwd);
-
-        this.pdfApi.removePassword(fd, req_token).subscribe({
-          next: (blob: Blob) => {
-            this.loading = false;
-            if (!(blob instanceof Blob)) {
-              this.status = 'Unexpected response.';
-              return;
-            }
-            this.setDownloadHref(URL.createObjectURL(blob));
-            this.status = 'Done! Click to download.';
-          },
-          error: (err) => {
-            readErrorCode(err).then((code) => {
-              if (!isRetry && code && RETRYABLE_TOKEN_CODES.includes(code)) {
-                this.attempt(file, pwd, true);
-                return;
-              }
-              this.fail(err, code);
-            });
-          },
-        });
-      },
-      error: (err) => {
-        readErrorCode(err).then((code) => this.fail(err, code));
-      },
-    });
-  }
-
-
-  /** Shows a safe, user-facing message; never raw server text. */
-  private fail(err: any, code: string | null): void {
-    this.loading = false;
-    const status = typeof err?.status === 'number' ? err.status : undefined;
-    this.status = removeErrorMessage(classifyRemoveError(status, code));
+    this.status = 'Preparing…';
+    const abort = (this.abort = new AbortController());
+    try {
+      const result = await this.unlocker.unlock(file, pwd, {
+        signal: abort.signal,
+        onProgress: (stage) => {
+          this.status = stage === 'loading-engine'
+            ? 'Loading the PDF engine…'
+            : 'Unlocking in your browser…';
+        },
+      });
+      if (abort.signal.aborted && !result.ok && result.code !== 'cancelled') return;
+      if (result.ok) {
+        const blob = new Blob([result.bytes as BlobPart], { type: 'application/pdf' });
+        result.bytes.fill(0); // the Blob holds its own copy; wipe ours
+        this.setDownloadHref(URL.createObjectURL(blob));
+        this.status = result.repaired
+          ? `${STATUS_DONE} (Some damaged parts of the file were repaired — please check it.)`
+          : STATUS_DONE;
+        this.password = ''; // don't keep the password around after success
+      } else {
+        this.status = removeErrorMessage(result.code);
+      }
+    } finally {
+      this.loading = false;
+      if (this.abort === abort) this.abort = undefined;
+    }
   }
 }

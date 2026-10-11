@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ApiDocsComponent } from './api-docs.component';
+import { ApiDocsComponent, signHmacRequest } from './api-docs.component';
 import { ApiDocsService } from 'src/app/core/service/pdf-api-docs/api-docs.service';
 import { PLATFORM_ID } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -108,8 +108,32 @@ describe('ApiDocsComponent', () => {
     await component.create();
 
     expect(component.storedKeys.length).toBeGreaterThan(0);
-    expect(component.lastCreatedCopySection).toBeTruthy();
+    expect(component.lastCreatedCopySection?.api_secret).toBe('test-secret-456'); // in memory, shown once
     expect(component.partnerLabel).toBe('');
+    // The secret must never be persisted.
+    expect(Object.keys(component.storedKeys[0])).not.toContain('api_secret');
+    expect(localStorage.getItem('pdftools:keys') || '').not.toContain('test-secret-456');
+  });
+
+  it('purges API secrets saved by older versions from localStorage', () => {
+    localStorage.setItem('pdftools:keys', JSON.stringify([
+      { api_key: 'old-key', api_secret: 'old-secret', created_at: '2025-01-01', name: 'legacy' },
+    ]));
+    component.ngOnInit();
+    expect(component.storedKeys).toEqual([{ api_key: 'old-key', name: 'legacy', created_at: '2025-01-01' }]);
+    expect(localStorage.getItem('pdftools:keys')).not.toContain('old-secret');
+  });
+
+  it('drops malformed localStorage content safely', () => {
+    localStorage.setItem('pdftools:keys', '{not json');
+    component.ngOnInit();
+    expect(component.storedKeys).toEqual([]);
+  });
+
+  it('forgets the in-memory secret when the page is left', () => {
+    component.lastCreatedCopySection = { api_key: 'k', api_secret: 's', created_at: '', name: '' };
+    component.ngOnDestroy();
+    expect(component.lastCreatedCopySection).toBeUndefined();
   });
 
   it('should handle create key error', async () => {
@@ -143,38 +167,48 @@ describe('ApiDocsComponent', () => {
     expect(component.lastCreatedCopySection).toBeUndefined();
   });
 
-  it('should handle delete key confirmation and success', async () => {
+  it('signs the delete request with the pasted secret and removes the key', async () => {
     const apiDocsService = TestBed.inject(ApiDocsService);
-    spyOn(apiDocsService, 'deleteKey').and.returnValue(of({ ok: true }));
-    spyOn(globalThis as any, 'confirm').and.returnValue(true);
+    const del = spyOn(apiDocsService, 'deleteKey').and.returnValue(of({ ok: true }));
+    spyOn(globalThis as any, 'prompt').and.returnValue('test-secret');
 
-    const testKey = {
-      api_key: 'test-key',
-      api_secret: 'test-secret',
-      created_at: '2025-01-01',
-      name: 'test'
-    };
+    const testKey = { api_key: 'test-key', created_at: '2025-01-01', name: 'test' };
     component.storedKeys = [testKey];
 
     await component.confirmDelete(testKey);
 
+    expect(del).toHaveBeenCalledOnceWith('test-key', jasmine.stringMatching(/^\d+$/), jasmine.stringMatching(/^[0-9a-f]{64}$/));
     expect(component.storedKeys.length).toBe(0);
   });
 
-  it('should handle delete key cancellation', async () => {
-    spyOn(globalThis as any, 'confirm').and.returnValue(false);
+  it('does not delete when no secret is provided', async () => {
+    const apiDocsService = TestBed.inject(ApiDocsService);
+    const del = spyOn(apiDocsService, 'deleteKey');
+    spyOn(globalThis as any, 'prompt').and.returnValue(null);
 
-    const testKey = {
-      api_key: 'test-key',
-      api_secret: 'test-secret',
-      created_at: '2025-01-01',
-      name: 'test'
-    };
+    const testKey = { api_key: 'test-key', created_at: '2025-01-01', name: 'test' };
     component.storedKeys = [testKey];
 
     await component.confirmDelete(testKey);
 
+    expect(del).not.toHaveBeenCalled();
     expect(component.storedKeys.length).toBe(1);
+  });
+
+  it('signHmacRequest matches the backend HMAC scheme (known-answer vector)', async () => {
+    // Computed independently with Node crypto and Python hmac (same scheme as app.sign_hmac).
+    expect(await signHmacRequest('DELETE', '/api/keys/abc123', '1700000000', 'test-secret'))
+      .toBe('620692431278df63c19003dd5de708fec0700c08170feefafc5b3d5934409daa');
+  });
+
+  it('never shows raw request URLs or exception text', async () => {
+    const apiDocsService = TestBed.inject(ApiDocsService);
+    spyOn(apiDocsService, 'createKey').and.returnValue(
+      throwError(() => ({ status: 500, message: 'Http failure response for https://internal.example/api/key/generate: 500', error: { error: 'processing_error' } }))
+    );
+    component.partnerLabel = 'test-label';
+    await component.create();
+    expect(component.error).toBe('Create failed');
   });
 
   it('should handle delete key error', async () => {
@@ -182,14 +216,9 @@ describe('ApiDocsComponent', () => {
     spyOn(apiDocsService, 'deleteKey').and.returnValue(
       throwError(() => ({ error: 'Delete failed' }))
     );
-    spyOn(globalThis as any, 'confirm').and.returnValue(true);
+    spyOn(globalThis as any, 'prompt').and.returnValue('test-secret');
 
-    const testKey = {
-      api_key: 'test-key',
-      api_secret: 'test-secret',
-      created_at: '2025-01-01',
-      name: 'test'
-    };
+    const testKey = { api_key: 'test-key', created_at: '2025-01-01', name: 'test' };
     component.storedKeys = [testKey];
 
     await component.confirmDelete(testKey);

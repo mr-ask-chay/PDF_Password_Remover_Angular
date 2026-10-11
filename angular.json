@@ -25,15 +25,29 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "webWorkerTsConfig": "tsconfig.worker.json",
+            "allowedCommonJsDependencies": ["@neslinesli93/qpdf-wasm"],
+            "externalDependencies": ["fs", "path", "crypto"],
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
               "src/googlef71993b736a91d1d.html",
               "src/robots.txt",
+              "src/llms.txt",
               "src/ads.txt",
               "src/sitemap.xml",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "qpdf.wasm",
+                "input": "node_modules/@neslinesli93/qpdf-wasm/dist",
+                "output": "assets/vendor/qpdf-0.3.0"
+              },
+              {
+                "glob": "pdf.worker.min.mjs",
+                "input": "node_modules/pdfjs-dist/build",
+                "output": "assets/vendor/pdfjs-4.10.38"
+              }
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
@@ -138,7 +152,17 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "qpdf.wasm",
+                "input": "node_modules/@neslinesli93/qpdf-wasm/dist",
+                "output": "assets/vendor/qpdf-0.3.0"
+              },
+              {
+                "glob": "pdf.worker.min.mjs",
+                "input": "node_modules/pdfjs-dist/build",
+                "output": "assets/vendor/pdfjs-4.10.38"
+              }
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",

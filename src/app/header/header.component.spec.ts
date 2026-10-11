@@ -7,6 +7,15 @@ import { ActivatedRoute } from '@angular/router';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  const originalLocalStorage = globalThis.localStorage;
+
+  afterEach(() => {
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: originalLocalStorage,
+      writable: true,
+      configurable: true
+    });
+  });
 
   beforeEach(async () => {
     const mockLocalStorage = {

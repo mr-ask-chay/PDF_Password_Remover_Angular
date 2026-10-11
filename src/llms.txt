@@ -1,0 +1,31 @@
+# Unclasp
+
+> Browser-based PDF tools and a separate developer API for PDF password removal.
+
+Unclasp provides a website PDF password remover that requires the current PDF
+password, plus supported PDF page, image, metadata, and text utilities. Website
+tools are processed locally in the browser and do not have an application
+upload fallback. The developer API is a separate service: it receives PDF
+uploads and processes them on its server.
+
+## Main pages
+
+- [Home](https://pdf-fe-kappa.vercel.app/): Product overview, author information, and FAQs.
+- [Remove a PDF password](https://pdf-fe-kappa.vercel.app/pdf-password-remover): Unlock a PDF when you know its current password. This is not password recovery.
+- [PDF tools](https://pdf-fe-kappa.vercel.app/pdf-tools): Available page, image, metadata, and selectable-text operations with their limitations.
+- [Developer API documentation](https://pdf-fe-kappa.vercel.app/docs): HMAC-authenticated API reference and examples. API requests upload PDFs for server-side processing.
+- [Privacy policy](https://pdf-fe-kappa.vercel.app/privacy): File processing and privacy details.
+- [Terms of use](https://pdf-fe-kappa.vercel.app/terms): Terms and processing limits.
+
+## Important limitations
+
+- PDF-to-Markdown and PDF comparison operate on selectable text; they do not OCR scanned pages or compare visual layout.
+- Edit PDF currently supports adding a text overlay; it does not edit or remove existing page content.
+- Password removal requires the existing password.
+- The website tools are not substitutes for cryptographic signatures or secure redaction.
+
+## Discovery
+
+- [Sitemap](https://pdf-fe-kappa.vercel.app/sitemap.xml)
+- [Privacy](https://pdf-fe-kappa.vercel.app/privacy)
+- [Terms](https://pdf-fe-kappa.vercel.app/terms)

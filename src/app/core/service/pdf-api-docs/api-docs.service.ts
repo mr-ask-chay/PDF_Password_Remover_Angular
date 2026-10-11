@@ -28,9 +28,11 @@ export class ApiDocsService {
     return this.http.post<CreatedKey>(`${this.api}/api/key/generate`, { name });
   }
 
-  deleteKey(keyId: string) {
+  /** Deletion must be signed with the key's secret (see signHmacRequest). */
+  deleteKey(keyId: string, timestamp: string, signature: string) {
     return this.http.delete<{ ok: boolean }>(
-      `${this.api}/api/keys/${encodeURIComponent(keyId)}`
+      `${this.api}/api/keys/${encodeURIComponent(keyId)}`,
+      { headers: { 'X-API-KEY': keyId, 'X-API-TIMESTAMP': timestamp, 'X-API-SIGNATURE': signature } }
     );
   }
 }

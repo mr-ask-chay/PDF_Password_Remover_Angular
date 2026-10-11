@@ -3,8 +3,7 @@ import { provideRouter } from '@angular/router';
 import { PLATFORM_ID } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RemoverPageComponent } from './remover-page.component';
-import { TokenService } from '../../core/token.service';
-import { PdfBackendService } from 'src/app/core/service/pdf_backend_service/pdfBackend.service';
+import { PdfUnlockService } from '../engine/pdf-unlock.service';
 
 describe('RemoverPageComponent', () => {
   let fixture: ComponentFixture<RemoverPageComponent>;
@@ -15,8 +14,7 @@ describe('RemoverPageComponent', () => {
       imports: [RemoverPageComponent, NoopAnimationsModule],
       providers: [
         provideRouter([]),
-        { provide: TokenService, useValue: jasmine.createSpyObj('TokenService', ['getReqToken']) },
-        { provide: PdfBackendService, useValue: jasmine.createSpyObj('PdfBackendService', ['removePassword']) },
+        { provide: PdfUnlockService, useValue: jasmine.createSpyObj('PdfUnlockService', ['unlock']) },
         { provide: PLATFORM_ID, useValue: 'browser' },
       ],
     }).compileComponents();

@@ -23,19 +23,19 @@
         color: #fff;
 
         &[data-method='GET'] {
-            background: #0ea5e9;
+            background: #0369a1;
         }
 
         &[data-method='POST'] {
-            background: #10b981;
+            background: #047857;
         }
 
         &[data-method='PUT'] {
-            background: #f59e0b;
+            background: #b45309;
         }
 
         &[data-method='DELETE'] {
-            background: #ef4444;
+            background: #b91c1c;
         }
     }
 
