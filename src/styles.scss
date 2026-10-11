@@ -89,15 +89,18 @@ h3,
   box-shadow: 0 18px 60px rgba(79, 70, 229, 0.25);
 }
 
-.brand-pill {
-  display: inline-grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--brand-700), #a21caf);
-  color: #fff;
-  font-weight: 700;
+/* PDFHaven logo: swap artwork with the Bootstrap theme */
+.brand-logo {
+  display: block;
+  height: 32px;
+  width: auto;
+}
+.brand-logo-dark,
+[data-bs-theme="dark"] .brand-logo-light {
+  display: none;
+}
+[data-bs-theme="dark"] .brand-logo-dark {
+  display: block;
 }
 
 .backdrop-blur {
