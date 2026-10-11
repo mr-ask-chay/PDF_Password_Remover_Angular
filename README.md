@@ -1,64 +1,92 @@
-# PDF Password Remover
+<p align="center">
+  <a href="https://pdf-fe-kappa.vercel.app/">
+    <img src="src/assets/brand/pdfhaven-logo.svg" alt="PDFHaven" height="64" />
+  </a>
+</p>
 
-This is a web-based tool for removing passwords from encrypted PDF files. It consists of two components: a frontend built with Angular and a backend built with Flask.
+<p align="center">
+  <strong>Remove the password from a PDF you have the password for — free, no sign-up.</strong>
+</p>
 
-## Live Application
-https://pdf-fe-kappa.vercel.app/ you can test the application by visiting to this link.  
+<p align="center">
+  <a href="https://pdf-fe-kappa.vercel.app/"><strong>Live site</strong></a> ·
+  <a href="https://pdf-fe-kappa.vercel.app/pdf-password-remover">PDF Password Remover</a> ·
+  <a href="https://pdf-fe-kappa.vercel.app/docs">API Docs</a> ·
+  <a href="https://pdf-fe-kappa.vercel.app/privacy">Privacy</a>
+</p>
+
+---
+
+# PDFHaven — PDF Password Remover
+
+PDFHaven is a free web tool for unlocking password-protected PDFs such as bank
+statements, payslips and invoices. Upload the PDF, enter the password you
+already know, and download a copy that opens without it.
+
+👉 **Try it: [pdf-fe-kappa.vercel.app/pdf-password-remover](https://pdf-fe-kappa.vercel.app/pdf-password-remover)**
+
+![PDFHaven preview](src/assets/brand/og-image.png)
 
 ## Features
 
-- Remove passwords from encrypted PDF files.
-- User-friendly web interface.
-- Secure and efficient PDF password removal.
+- **Remove a PDF open password** when you know the current password.
+- **No account, no watermark** — free to use.
+- **Files deleted after processing** — the temporary server copy is removed
+  right after the unlock step, and passwords are never stored.
+- **Developer API** — HMAC-SHA256 authenticated endpoint with Python, Node.js
+  and Go examples. See the [API docs](https://pdf-fe-kappa.vercel.app/docs).
+- **Responsive** with light and dark themes.
 
-## Frontend (password-remover-for-pdf)
+> PDFHaven does **not** crack or recover forgotten passwords. Use it only on
+> documents you own or are authorised to modify.
 
-The frontend is built using Angular.
+## Tech stack
 
-### Installation
+| Part | Stack | Repository |
+| --- | --- | --- |
+| Frontend (this repo) | Angular 19, SSR prerendering, Bootstrap, Angular Material | [PDF_Password_Remover_Angular](https://github.com/mr-ask-chay/PDF_Password_Remover_Angular) |
+| Backend | Flask (Python) | [PDF_Password_Remover_Flask](https://github.com/mr-ask-chay/PDF_Password_Remover_Flask) |
+| Hosting | Vercel (frontend), Render (backend) | — |
 
-1. Clone the repository:
-2. Install dependencies:
-3. Start the development server:
-4. Access the application at `http://localhost:4200` in your web browser.
+## Run locally
 
-### Usage
-1. Visit the application in your web browser.
-2. Upload an encrypted PDF file.
-3. Click the "Remove Password" button.
-4. Enter the password of the pdf.
-5. Download the PDF file without the password.
+Requires Node.js 20+.
 
-## Backend (pdf-password_remover_backend)
+```bash
+git clone https://github.com/mr-ask-chay/PDF_Password_Remover_Angular.git
+cd PDF_Password_Remover_Angular
+npm install
+npm start            # http://localhost:4200 (uses a local backend at http://localhost:5000)
+```
 
-The backend is built using Flask.  https://github.com/otaku0304/PDF_Password_Remover_Flask
+Run the [Flask backend](https://github.com/mr-ask-chay/PDF_Password_Remover_Flask)
+locally on port 5000 to process files.
 
-### Installation
+```bash
+npm test                                   # unit tests (Karma + Jasmine)
+npx ng build --configuration production    # production build + prerendered pages
+```
 
-1. Clone the repository:
-2. Install dependencies:
-3. Start the Flask server:
-4. Access the flask application at http://127.0.0.1:5000 in your web browser.
-   
-### API Endpoints
+## How it works
 
-#### `/remove_password` - POST request to remove the password from a PDF file.
+1. Choose a password-protected PDF.
+2. Enter its current password.
+3. Select **Remove Password** — the file is sent over HTTPS to the backend,
+   which opens it with your password and returns an unprotected copy.
+4. Download the unlocked PDF.
 
-This endpoint allows you to remove the password from an encrypted PDF file. To use this endpoint, follow these steps:
+## Contributing
 
-- **HTTP Method:** POST
-
-- **Request Headers:** None required.
-
-- **Request Body:** The request body should be of type `multipart/form-data` and should include the following fields:
-
-  - `password` (string): The password required to decrypt the PDF file.
-  - `pdfFile` (file): The encrypted PDF file you want to remove the password from.
-
-  To send the request using tools like `curl` or Postman, ensure that you select the `multipart/form-data` option and include the `password` and `pdffile` keys accordingly.
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Code of Conduct](CODE_OF_CONDUCT.md). Report security issues as described in
+[SECURITY.md](SECURITY.md).
 
 ## Contact
 
-If you have any questions or suggestions, please feel free to [contact me](https://linktr.ee/MR_ASK_Chay).
+Built by **Sai Krishna Chaitanya** —
+[GitHub](https://github.com/mr-ask-chay) ·
+[Linktree](https://linktr.ee/mr_ask_chay)
 
+## License
 
+[MIT](LICENSE)

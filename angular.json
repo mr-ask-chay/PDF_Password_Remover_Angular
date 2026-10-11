@@ -32,7 +32,8 @@
               "src/googlef71993b736a91d1d.html",
               "src/robots.txt",
               "src/ads.txt",
-              "src/sitemap.xml"
+              "src/sitemap.xml",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
