@@ -3,13 +3,13 @@
   <div class="row align-items-center g-4 g-lg-5">
     <div class="col-md-6" revealOnScroll>
       <p class="text-uppercase text-secondary small fw-semibold">
-        Free • No sign-up • Passwords not stored
+        Free • No sign-up • Unlocked in your browser
       </p>
       <h1 class="display-5 fw-bold lh-tight">
         Remove a PDF password in seconds.
       </h1>
       <p class="mt-3 fs-5 text-body-secondary">
-        Upload a protected PDF, enter the password you already have, and
+        Choose a protected PDF, enter the password you already have, and
         download a copy that opens without it. Also here: a PDF unlock API for
         developers and a few open-source developer tools.
       </p>
@@ -24,7 +24,7 @@
       <div class="position-relative z-1 rounded-4 border glass p-4">
         <ul class="list-unstyled small mb-0 text-body-secondary">
           <li>✔ No login required</li>
-          <li>✔ Passwords are not stored</li>
+          <li>✔ Unlocked in your browser — your file isn’t uploaded</li>
           <li>✔ Mobile-friendly, keyboard accessible</li>
           <li>✔ Developer API with HMAC authentication</li>
         </ul>
@@ -52,6 +52,25 @@
           <a routerLink="/pdf-password-remover" class="btn btn-dark btn-sm">Open tool</a>
           <a href="#demo-remover" class="btn btn-outline-secondary btn-sm">Try it here</a>
           <a routerLink="/docs" class="btn btn-outline-secondary btn-sm">API</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- PDF Tools Studio (new) -->
+    <div class="col-sm-6 col-lg-3">
+      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
+        <div class="rounded-3 bg-dark-subtle p-3 mb-3 text-center">
+          <i class="bi bi-files-alt fs-1 text-primary"></i>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <h3 class="h5 fw-semibold mb-0">PDF Tools Studio</h3>
+          <span class="badge text-bg-success">Browser</span>
+        </div>
+        <p class="small text-body-secondary mt-2 mb-3">
+          Merge, split, organize, rotate, crop and mark PDFs, update metadata, or create PDFs from images locally in your browser.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mt-auto">
+          <a routerLink="/pdf-tools" class="btn btn-dark btn-sm">Open tool</a>
         </div>
       </article>
     </div>
@@ -153,9 +172,9 @@
         <details>
           <summary class="fw-semibold">Do you upload my files?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            Yes — PDFs are unlocked on our server, not in your browser. Your
-            PDF, its filename and password are sent over HTTPS, and our
-            application does not save them or write them to its logs. See the
+            No. The PDF Password Remover unlocks your PDF in your browser, on
+            your device — the file and its password aren’t sent to our servers.
+            See the
             <a routerLink="/privacy">privacy policy</a>.
           </p>
         </details>

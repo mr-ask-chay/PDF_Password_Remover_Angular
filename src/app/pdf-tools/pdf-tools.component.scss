@@ -1,0 +1,23 @@
+.tool-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 1.5rem;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+:host-context(body.dark) .tool-card,
+:host-context(.dark) .tool-card {
+  background: rgba(17, 24, 39, 0.55);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.22);
+}
+
+input[type='file'] {
+  padding: 0.7rem 0.8rem;
+}
+
+button {
+  min-width: 180px;
+}

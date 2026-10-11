@@ -169,7 +169,7 @@
                     <td class="text-body-secondary small">{{ k.created_at || '-' }}</td>
                     <td>{{ k.name || '-' }}</td>
                     <td class="text-monospace"><span class="masked blurred">{{ mask(k.api_key) }}</span></td>
-                    <td class="text-monospace"><span class="masked blurred">{{ mask(k.api_secret) }}</span></td>
+                    <td class="small text-body-secondary">Shown once &middot; not stored</td>
                     <td class="text-end">
                       <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(k)" [disabled]="busy">
                         <i class="bi bi-trash"></i> Delete

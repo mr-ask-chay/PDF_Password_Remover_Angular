@@ -15,7 +15,7 @@
         <h2 class="h5 fw-semibold">1. Your responsibility for your files</h2>
         <ul class="small text-body-secondary mb-0 ps-3">
           <li class="mb-1">
-            Only upload PDFs that you own or are authorised to modify, and only
+            Only process PDFs that you own or are authorised to modify, and only
             use passwords you are entitled to use.
           </li>
           <li class="mb-1">
@@ -51,13 +51,14 @@
         <h2 class="h5 fw-semibold">3. How processing works and its limits</h2>
         <ul class="small text-body-secondary mb-0 ps-3">
           <li class="mb-1">
-            PDFs are processed on our server, as described in the
+            The website tool processes PDFs in your browser, on your device; the
+            developer API processes PDFs on our server. See the
             <a routerLink="/privacy">Privacy Policy</a>.
           </li>
           <li class="mb-1">
             Some files cannot be processed — for example damaged PDFs,
-            unsupported encryption types, very large files or files with too
-            many pages.
+            unsupported encryption types (such as certificate-based security),
+            files over 100 MB, or files too large for your device’s memory.
           </li>
           <li class="mb-1">
             The unlocked copy contains the document’s pages. Some
@@ -78,9 +79,9 @@
         <ul class="small text-body-secondary mb-0 ps-3">
           <li class="mb-1">The service is free and provided on a best-effort basis.</li>
           <li class="mb-1">
-            It may be slow, unavailable or interrupted — for example, the
-            processing server can take a few seconds to start after a quiet
-            period.
+            It may be slow, unavailable or interrupted — for example, the PDF
+            engine must download before the first unlock, and the developer
+            API server can take a few seconds to start after a quiet period.
           </li>
           <li class="mb-0">
             We may change, limit or discontinue any part of the service at any
@@ -106,7 +107,7 @@
       <div class="p-4 border policy-card h-100">
         <h2 class="h5 fw-semibold">6. Your content and advertising</h2>
         <p class="small text-body-secondary mb-0">
-          You keep all rights to the files you upload; we claim no ownership of
+          You keep all rights to the files you process; we claim no ownership of
           them. The site shows ads served by Google AdSense, as described in the
           <a routerLink="/privacy" fragment="advertising">Privacy Policy</a>.
         </p>

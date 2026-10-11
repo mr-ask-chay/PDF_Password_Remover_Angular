@@ -27,7 +27,7 @@ export const routes: Routes = [
     title: 'Privacy Policy — PDF Password Remover',
     data: {
       description:
-        'How the PDF Password Remover handles your files and passwords, what is sent to the server, what is stored in your browser, and how Google Fonts and AdSense are used.',
+        'How the PDF Password Remover handles your files and passwords: the website tool works in your browser, the developer API on our server, plus browser storage, Google Fonts and AdSense.',
     },
   },
   {
@@ -51,7 +51,17 @@ export const routes: Routes = [
     title: 'Remove Password from PDF — Free Online PDF Unlocker',
     data: {
       description:
-        'Remove the open password from a PDF when you know the password. Upload the file, enter its password and download an unlocked copy. Free, no account needed.',
+        'Remove the open password from a PDF when you know the password — in your browser, without uploading the file. Free, no account needed.',
+    },
+  },
+  {
+    path: 'pdf-tools',
+    loadComponent: () =>
+      import('./pdf-tools/pdf-tools.component').then((m) => m.PdfToolsComponent),
+    title: 'Free PDF Tools — Merge, Split, Rotate & Edit Pages Locally',
+    data: {
+      description:
+        'Merge, split, extract, remove and reorder PDF pages; rotate, crop, add page numbers or watermarks, edit metadata, or convert JPG/PNG images to PDF locally.',
     },
   },
   {

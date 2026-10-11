@@ -19,9 +19,11 @@
 
 # Unclasp — PDF Password Remover
 
-Unclasp is a free web tool for unlocking password-protected PDFs such as bank
-statements, payslips and invoices. Upload the PDF, enter the password you
-already know, and download a copy that opens without it.
+Unclasp is a free, browser-first PDF utility. Unlock a password-protected PDF
+when you know its password, or use PDF Tools Studio to merge PDFs, extract or
+remove pages, reorder and rotate pages, crop pages, add page numbers or a text
+watermark, edit basic metadata, and convert JPG/PNG images to PDF. These public
+tools process files locally and do not upload them.
 
 👉 **Try it: [pdf-fe-kappa.vercel.app/pdf-password-remover](https://pdf-fe-kappa.vercel.app/pdf-password-remover)**
 
@@ -30,12 +32,20 @@ already know, and download a copy that opens without it.
 ## Features
 
 - **Remove a PDF open password** when you know the current password.
-- **No account, no watermark** — free to use.
-- **Passwords not stored** — PDFs are unlocked on the server in memory; the
-  application does not save your PDF, its filename or password, or write them
-  to its logs. See the [privacy policy](https://pdf-fe-kappa.vercel.app/privacy).
-- **Developer API** — HMAC-SHA256 authenticated endpoint with Python, Node.js
-  and Go examples. See the [API docs](https://pdf-fe-kappa.vercel.app/docs).
+- **PDF Tools Studio** — merge, split/extract, remove and reorder pages, rotate,
+  crop, add page numbers or text watermarks, edit standard metadata fields, and
+  convert JPG/PNG images to PDF.
+  Supported page edits are processed locally with [pdf-lib](https://github.com/Hopding/pdf-lib)
+  (MIT). Limits are 20 MB and 500 pages per PDF, 20 files per merge, and 40 MB
+  combined. Encrypted PDFs must first be unlocked with the local qpdf tool.
+- **No account or imposed watermark** — free to use. You may optionally add
+  your own text watermark with the watermark tool.
+- **Unlocked in your browser** — the website tool runs [qpdf](https://github.com/qpdf/qpdf)
+  (WebAssembly) in a Web Worker; the PDF and password are not uploaded. See the
+  [privacy policy](https://pdf-fe-kappa.vercel.app/privacy).
+- **Developer API** — a separate, backend-dependent HMAC-SHA256 service with
+  Python, Node.js and Go examples. Its PDF requests are uploaded to the API
+  server. See the [API docs](https://pdf-fe-kappa.vercel.app/docs).
 - **Responsive** with light and dark themes.
 
 > Unclasp does **not** crack or recover forgotten passwords. Use it only on
@@ -57,11 +67,12 @@ Requires Node.js 20+.
 git clone https://github.com/mr-ask-chay/PDF_Password_Remover_Angular.git
 cd PDF_Password_Remover_Angular
 npm install
-npm start            # http://localhost:4200 (uses a local backend at http://localhost:5000)
+npm start            # http://localhost:4200 (browser-based PDF tools need no backend)
 ```
 
-Run the [Flask backend](https://github.com/mr-ask-chay/PDF_Password_Remover_Flask)
-locally on port 5000 to process files.
+The public website PDF tools work without the Flask backend. The separately
+documented developer API and API-key management still require the existing
+[Flask backend](https://github.com/mr-ask-chay/PDF_Password_Remover_Flask).
 
 ```bash
 npm test                                   # unit tests (Karma + Jasmine)
@@ -70,11 +81,18 @@ npx ng build --configuration production    # production build + prerendered page
 
 ## How it works
 
-1. Choose a password-protected PDF.
-2. Enter its current password.
-3. Select **Remove Password** — the file is sent over HTTPS to the backend,
-   which opens it with your password and returns an unprotected copy.
-4. Download the unlocked PDF.
+1. Choose a PDF or supported JPG/PNG images.
+2. Select an operation and its options (for page tools, page numbers are
+   one-based and ranges use forms such as `1-3,5`).
+3. Processing takes place in your browser. The PDF Tools Studio currently
+   accepts unencrypted PDFs up to 20 MB and 500 pages; merge accepts up to 20
+   files and 40 MB total. Metadata editing changes title, author, subject, and
+   keywords only.
+4. Download the generated file. The separate API is not used as a fallback.
+
+The API docs remain a distinct server-side product; its files are uploaded to
+the Flask API service. Do not enter sensitive documents into the API unless
+you accept its server-side processing and retention policies.
 
 ## Legal
 

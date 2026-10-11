@@ -1,0 +1,151 @@
+<section class="container-xxl py-5">
+  <div class="row g-4">
+    <header class="col-12 text-center mb-2">
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">Browser-first PDF utilities</p>
+      <h1 class="display-6 fw-bold mb-2">Unclasp PDF Tools</h1>
+      <p class="text-body-secondary mx-auto mb-0" style="max-width: 720px;">
+        These tools process supported files locally in your browser. Documents are not uploaded.
+      </p>
+    </header>
+
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">Merge PDF</h2>
+        <label for="merge-files" class="form-label fw-semibold">Choose PDFs</label>
+        <input id="merge-files" type="file" class="form-control" accept=".pdf,application/pdf" multiple
+          (change)="onMergeFilesSelected($event)" />
+        <p class="small text-body-secondary mt-3">Files are joined in the order selected. Up to 20 PDFs and 40 MB total.</p>
+        <button class="btn btn-dark" type="button" [disabled]="merging || !mergeFiles.length" (click)="mergePdfs()">
+          <span *ngIf="merging" class="me-2 spinner-border spinner-border-sm" aria-hidden="true"></span>
+          {{ merging ? 'Merging…' : 'Merge PDFs' }}
+        </button>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="mergeStatus">{{ mergeStatus }}</p>
+      </article>
+    </div>
+
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">Split PDF</h2>
+        <label for="split-file" class="form-label fw-semibold">Choose a PDF</label>
+        <input id="split-file" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onSplitPdfSelected($event)" />
+        <label for="split-ranges" class="form-label fw-semibold mt-3">Page ranges for each output</label>
+        <input id="split-ranges" type="text" class="form-control" [(ngModel)]="splitSelection"
+          placeholder="Example: 1-3;4-6;7-9" />
+        <div class="form-text">Separate parts with semicolons; every page must appear exactly once.</div>
+        <button class="btn btn-dark mt-3" type="button" [disabled]="processing || !splitFile" (click)="splitPdf()">
+          {{ processing && splitFile ? 'Splitting…' : 'Split PDF into parts' }}
+        </button>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="splitStatus">{{ splitStatus }}</p>
+        <ul class="mt-2 mb-0" *ngIf="splitDownloads.length">
+          <li *ngFor="let part of splitDownloads">
+            <a [href]="part.url" [download]="part.name">{{ part.name }}</a>
+          </li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="col-lg-6">
+      <article class="tool-card h-100">
+        <h2 class="h4 mb-3">JPG / PNG to PDF</h2>
+        <label for="image-files" class="form-label fw-semibold">Choose images</label>
+        <input id="image-files" type="file" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png" multiple
+          (change)="onImagesSelected($event)" />
+        <p class="small text-body-secondary mt-3">Each image becomes one page, in the selected order. Up to 20 images and 40 MB total.</p>
+        <button class="btn btn-dark" type="button" [disabled]="processing || !imageFiles.length" (click)="convertImages()">
+          {{ processing && imageFiles.length ? 'Creating…' : 'Convert images to PDF' }}
+        </button>
+        <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="imageFiles.length && status">{{ status }}</p>
+      </article>
+    </div>
+
+    <div class="col-12">
+      <article class="tool-card">
+        <h2 class="h4 mb-3">PDF page tools</h2>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-6">
+            <label for="edit-pdf" class="form-label fw-semibold">Choose a PDF</label>
+            <input id="edit-pdf" type="file" class="form-control" accept=".pdf,application/pdf" (change)="onPdfSelected($event)" />
+          </div>
+          <div class="col-md-6">
+            <label for="pdf-operation" class="form-label fw-semibold">Choose an operation</label>
+            <select id="pdf-operation" class="form-select" [(ngModel)]="operation">
+              <option value="extract">Extract selected pages into one PDF</option>
+              <option value="remove">Remove selected pages</option>
+              <option value="reorder">Reorder pages</option>
+              <option value="rotate">Rotate all pages</option>
+              <option value="crop">Crop all pages</option>
+              <option value="page-numbers">Add page numbers</option>
+              <option value="watermark">Add a text watermark</option>
+              <option value="metadata">Edit PDF metadata</option>
+            </select>
+          </div>
+          <div class="col-md-6" *ngIf="operation === 'extract' || operation === 'remove' || operation === 'reorder'">
+            <label for="page-selection" class="form-label fw-semibold">
+              {{ operation === 'reorder' ? 'New page order' : 'Page numbers' }}
+            </label>
+            <input id="page-selection" type="text" class="form-control" [(ngModel)]="pageSelection"
+              placeholder="Example: 1-3,5,8" />
+            <div class="form-text">
+              {{ operation === 'reorder' ? 'List every page exactly once in the desired order.' : 'Use comma-separated page numbers and ascending ranges.' }}
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="operation === 'rotate'">
+            <label for="rotation" class="form-label fw-semibold">Rotation</label>
+            <select id="rotation" class="form-select" [(ngModel)]="rotation">
+              <option [ngValue]="90">90 degrees clockwise</option>
+              <option [ngValue]="180">180 degrees</option>
+              <option [ngValue]="270">270 degrees clockwise</option>
+            </select>
+          </div>
+          <ng-container *ngIf="operation === 'crop'">
+            <div class="col-md-3">
+              <label for="crop-width" class="form-label fw-semibold">Crop width (PDF points)</label>
+              <input id="crop-width" type="number" min="1" class="form-control" [(ngModel)]="cropWidth" />
+            </div>
+            <div class="col-md-3">
+              <label for="crop-height" class="form-label fw-semibold">Crop height (PDF points)</label>
+              <input id="crop-height" type="number" min="1" class="form-control" [(ngModel)]="cropHeight" />
+            </div>
+          </ng-container>
+          <div class="col-md-6" *ngIf="operation === 'watermark'">
+            <label for="watermark" class="form-label fw-semibold">Watermark text</label>
+            <input id="watermark" type="text" maxlength="100" class="form-control" [(ngModel)]="watermark" />
+          </div>
+          <ng-container *ngIf="operation === 'metadata'">
+            <div class="col-md-6">
+              <label for="metadata-title" class="form-label fw-semibold">Title</label>
+              <input id="metadata-title" type="text" maxlength="200" class="form-control" [(ngModel)]="metadataTitle" />
+            </div>
+            <div class="col-md-6">
+              <label for="metadata-author" class="form-label fw-semibold">Author</label>
+              <input id="metadata-author" type="text" maxlength="200" class="form-control" [(ngModel)]="metadataAuthor" />
+            </div>
+            <div class="col-md-6">
+              <label for="metadata-subject" class="form-label fw-semibold">Subject</label>
+              <input id="metadata-subject" type="text" maxlength="200" class="form-control" [(ngModel)]="metadataSubject" />
+            </div>
+            <div class="col-md-6">
+              <label for="metadata-keywords" class="form-label fw-semibold">Keywords</label>
+              <input id="metadata-keywords" type="text" maxlength="200" class="form-control" [(ngModel)]="metadataKeywords"
+                placeholder="Comma-separated keywords" />
+            </div>
+          </ng-container>
+          <div class="col-12">
+            <button class="btn btn-outline-dark" type="button" [disabled]="processing || !pdfFile" (click)="processPdf()">
+              <span *ngIf="processing && pdfFile" class="me-2 spinner-border spinner-border-sm" aria-hidden="true"></span>
+              {{ processing && pdfFile ? 'Processing…' : 'Process PDF' }}
+            </button>
+            <p class="mt-3 mb-0 small" role="status" aria-live="polite" *ngIf="status">{{ status }}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <p class="col-12 small text-body-secondary mb-0">
+      Current limits: 20 MB per PDF, 500 pages per document, and 40 MB total when combining files.
+      Encrypted PDFs that need a password must first be unlocked with the
+      <a routerLink="/pdf-password-remover">local PDF unlocker</a>.
+    </p>
+  </div>
+</section>

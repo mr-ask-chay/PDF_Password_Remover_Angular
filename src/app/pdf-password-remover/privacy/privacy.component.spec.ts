@@ -28,9 +28,11 @@ describe('PrivacyComponent', () => {
       text = (fixture.nativeElement as HTMLElement).textContent!.replace(/\s+/g, ' ');
     });
 
-    it('states that processing happens on the server', () => {
-      expect(text).toContain('unlocked on our server, not in your browser');
-      expect(text).toContain('its filename and its password are sent to the server');
+    it('states that the website tool works in the browser and the API on the server', () => {
+      expect(text).toContain('unlocks PDFs in your browser');
+      expect(text).toContain('does not send your PDF, its filename or its password to our servers');
+      expect(text).toContain('Developer API (server-side processing)');
+      expect(text).toContain('never sent to a server as a fallback');
     });
 
     it('discloses browser storage and third-party services', () => {
@@ -41,8 +43,8 @@ describe('PrivacyComponent', () => {
       expect(text).toContain('IP address');
     });
 
-    it('describes the download link lifecycle accurately', () => {
-      expect(text).toContain('Downloading it does not remove it');
+    it('describes temporary download URL cleanup accurately', () => {
+      expect(text).toContain('Temporary download object URLs are revoked');
       expect(text).not.toContain('until you download it');
     });
 
@@ -61,6 +63,8 @@ describe('PrivacyComponent', () => {
         'never written to disk',
         'No tracking',
         'within a business day',
+        'They never receive',
+        'held in server memory',
       ]) {
         expect(text).withContext(phrase).not.toContain(phrase);
       }

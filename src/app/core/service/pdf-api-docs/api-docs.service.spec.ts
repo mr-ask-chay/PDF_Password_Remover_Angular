@@ -48,12 +48,16 @@ describe('ApiDocsService', () => {
         const apiUri = AppConfig.getAPIURI();
         const keyId = 'key123';
 
-        service.deleteKey(keyId).subscribe(response => {
+        service.deleteKey(keyId, '1700000000', 'ab'.repeat(32)).subscribe(response => {
             expect(response.ok).toBeTrue();
         });
 
         const req = httpMock.expectOne(`${apiUri}/api/keys/${keyId}`);
         expect(req.request.method).toBe('DELETE');
+        // Deletion is authenticated with the key's HMAC signature.
+        expect(req.request.headers.get('X-API-KEY')).toBe(keyId);
+        expect(req.request.headers.get('X-API-TIMESTAMP')).toBe('1700000000');
+        expect(req.request.headers.get('X-API-SIGNATURE')).toBe('ab'.repeat(32));
         req.flush({ ok: true });
     });
 });

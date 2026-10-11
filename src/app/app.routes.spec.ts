@@ -9,7 +9,7 @@ describe('App Routes', () => {
     });
 
     it('should give every indexable route a title and description', () => {
-        for (const path of ['', 'pdf-password-remover', 'docs', 'privacy', 'terms']) {
+        for (const path of ['', 'pdf-password-remover', 'pdf-tools', 'docs', 'privacy', 'terms']) {
             const route = find(path);
             expect(route).withContext(path).toBeDefined();
             expect(route?.title).withContext(path).toBeTruthy();
@@ -22,6 +22,12 @@ describe('App Routes', () => {
         const route = find('pdf-password-remover');
         expect(route?.loadComponent).toBeDefined();
         expect(route?.title).toContain('Remove Password from PDF');
+    });
+
+    it('should have a browser-first PDF tools route', () => {
+        const route = find('pdf-tools');
+        expect(route?.loadComponent).toBeDefined();
+        expect(route?.title).toContain('PDF Tools');
     });
 
     it('should have privacy route with title and data', () => {
