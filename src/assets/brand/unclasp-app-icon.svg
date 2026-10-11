@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Unclasp">
+<rect width="64" height="64" rx="14" fill="#0F766E"/>
+<g transform="translate(8 6) scale(0.75)"><path d="M22 30 V19 a10.5 10.5 0 0 1 21 0 V22" fill="none" stroke="#5EEAD4" stroke-width="6.5" stroke-linecap="round" transform="rotate(-16 22 30)"/>
+<path d="M11 34 a6 6 0 0 1 6 -6 H47 a6 6 0 0 1 6 6 V48 L45 57 H17 a6 6 0 0 1 -6 -6 Z" fill="#FFFFFF"/>
+<path d="M53 48 H48 a3 3 0 0 0 -3 3 V57 Z" fill="#5EEAD4"/>
+<rect x="18.5" y="36.5" width="21" height="5" rx="2.5" fill="#0F766E"/>
+<rect x="18.5" y="45" width="13" height="5" rx="2.5" fill="#0F766E"/></g>
+</svg>

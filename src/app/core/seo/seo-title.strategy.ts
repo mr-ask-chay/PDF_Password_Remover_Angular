@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { AppConfig } from '../config/app.config';
 
-export const DEFAULT_TITLE = 'PDFHaven — PDF Password Remover';
+export const DEFAULT_TITLE = 'Unclasp — PDF Password Remover';
 export const DEFAULT_DESCRIPTION =
   'Remove the password from a PDF you have the password for — free, no account needed.';
 

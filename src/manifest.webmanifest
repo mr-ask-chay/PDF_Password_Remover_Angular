@@ -1,6 +1,6 @@
 {
-  "name": "PDFHaven — PDF Password Remover",
-  "short_name": "PDFHaven",
+  "name": "Unclasp — PDF Password Remover",
+  "short_name": "Unclasp",
   "description": "Remove the password from a PDF you have the password for — free, no sign-up.",
   "start_url": "/",
   "scope": "/",

@@ -32,7 +32,7 @@ describe('App Routes', () => {
 
     it('should have home route', () => {
         const homeRoute = find('');
-        expect(homeRoute?.title).toContain('PDFHaven');
+        expect(homeRoute?.title).toContain('Unclasp');
         expect(homeRoute?.loadComponent).toBeDefined();
     });
 
