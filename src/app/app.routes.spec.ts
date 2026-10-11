@@ -9,7 +9,7 @@ describe('App Routes', () => {
     });
 
     it('should give every indexable route a title and description', () => {
-        for (const path of ['', 'pdf-password-remover', 'pdf-tools', 'docs', 'privacy', 'terms']) {
+        for (const path of ['', 'about', 'contact', 'pdf-password-remover', 'pdf-tools', 'docs', 'privacy', 'terms']) {
             const route = find(path);
             expect(route).withContext(path).toBeDefined();
             expect(route?.title).withContext(path).toBeTruthy();
@@ -40,6 +40,13 @@ describe('App Routes', () => {
         const homeRoute = find('');
         expect(homeRoute?.title).toContain('Unclasp');
         expect(homeRoute?.loadComponent).toBeDefined();
+    });
+
+    it('should expose author and contact pages with focused metadata', () => {
+        expect(find('about')?.title).toContain('Sai Krishna Chaitanya');
+        expect(find('about')?.data?.['description']).toContain('tested');
+        expect(find('contact')?.title).toContain('Contact Unclasp');
+        expect(find('contact')?.data?.['description']).toContain('privacy');
     });
 
     it('should mark the placeholder image page as noindex', () => {

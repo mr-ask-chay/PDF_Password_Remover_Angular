@@ -43,8 +43,9 @@
     <!-- PDF Password Remover (integrated, ready to test) -->
     <div class="col-sm-6 col-lg-3">
       <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/pdf_icon.webp" alt="PDF document icon" width="64" height="64"
-          loading="lazy" decoding="async" class="rounded-3 mb-3 tool-icon" />
+        <img src="/assets/images/pdf_icon-128.webp" srcset="/assets/images/pdf_icon-64.webp 64w, /assets/images/pdf_icon-128.webp 128w"
+          sizes="64px" alt="PDF document icon" width="64" height="64" fetchpriority="low"
+          decoding="async" class="rounded-3 mb-3 tool-icon" />
         <h3 class="h5 fw-semibold mb-1">PDF Password Remover</h3>
         <p class="small text-body-secondary mb-3">
           Remove the open password from a PDF you own or are allowed to edit.
@@ -53,7 +54,7 @@
         <div class="d-flex flex-wrap gap-2 mt-auto">
           <a routerLink="/pdf-password-remover" class="btn btn-dark btn-sm">Open tool</a>
           <a href="#demo-remover" class="btn btn-outline-secondary btn-sm">Try it here</a>
-          <a routerLink="/docs" class="btn btn-outline-secondary btn-sm">API</a>
+          <a routerLink="/docs" class="btn btn-outline-secondary btn-sm">Developer API docs</a>
         </div>
       </article>
     </div>
@@ -80,7 +81,8 @@
     <!-- Git Commit Summary (New) -->
     <div class="col-sm-6 col-lg-3">
       <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/git_summary.png" alt="Git Commit Summary icon" width="64" height="64"
+        <img src="/assets/images/git_summary-128.webp" srcset="/assets/images/git_summary-64.webp 64w, /assets/images/git_summary-128.webp 128w"
+          sizes="64px" alt="Git Commit Summary icon" width="64" height="64"
           loading="lazy" decoding="async" class="rounded-3 mb-3 tool-icon" />
         <div class="d-flex align-items-center justify-content-between">
           <h3 class="h5 fw-semibold mb-0">Git Commit Summary</h3>
@@ -99,7 +101,9 @@
     <!-- Angular i18n Helper (Production demo) -->
     <div class="col-sm-6 col-lg-3">
       <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/internationalization.webp" alt="Internationalization icon" width="64" height="64"
+        <img src="/assets/images/internationalization-64.webp"
+          srcset="/assets/images/internationalization-64.webp 64w, /assets/images/internationalization.webp 100w"
+          sizes="64px" alt="Internationalization icon" width="64" height="64"
           loading="lazy" decoding="async"
           class="rounded-3 mb-3 tool-icon" />
         <div class="d-flex align-items-center justify-content-between">
@@ -120,7 +124,9 @@
     <!-- StartMyDev (Integrated) -->
     <div class="col-sm-6 col-lg-3">
       <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/start_my_dev_logo.webp" alt="StartMyDev icon" width="64" height="64"
+        <img src="/assets/images/start_my_dev_logo-128.webp"
+          srcset="/assets/images/start_my_dev_logo-64.webp 64w, /assets/images/start_my_dev_logo-128.webp 128w"
+          sizes="64px" alt="StartMyDev icon" width="64" height="64"
           loading="lazy" decoding="async" class="rounded-3 mb-3 tool-icon" />
         <div class="d-flex align-items-center justify-content-between">
           <h3 class="h5 fw-semibold mb-0">StartMyDev</h3>
@@ -147,7 +153,10 @@
 <section id="about" class="container-lg py-4 py-md-5">
   <div class="row g-4 align-items-center">
     <div class="col-md-4" revealOnScroll>
-      <img src="/assets/images/me.webp" alt="Portrait of Sai Krishna Chaitanya" width="801" height="1092"
+      <img src="/assets/images/me-400.webp"
+        srcset="/assets/images/me-400.webp 400w, /assets/images/me.webp 801w"
+        sizes="(max-width: 767px) 100vw, 33vw"
+        alt="Portrait of Sai Krishna Chaitanya" width="801" height="1092"
         loading="lazy" decoding="async" class="img-fluid rounded-4 border portrait-img" />
     </div>
     <div class="col-md-8" revealOnScroll>
@@ -160,9 +169,20 @@
         configurator), and <em>Git Commit Summary</em>, a high-performance CLI
         tool for analyzing repository history.
       </p>
+      <p class="small text-body-secondary">
+        <a routerLink="/about">About the author and product notes</a>
+        <span aria-hidden="true"> · </span>
+        <a routerLink="/contact">Contact the developer</a>
+        <span aria-hidden="true"> · </span>
+        <a routerLink="/about" fragment="editorial-method">Editorial and testing approach</a>
+      </p>
       <p class="text-body-secondary mb-0">
         This site showcases tools I’ve built. Where possible, the tools run
         entirely on your device.
+      </p>
+      <p class="small text-body-secondary mt-3 mb-0">
+        Product information last reviewed
+        <time datetime="2026-10-12">October 12, 2026</time>.
       </p>
     </div>
   </div>
@@ -180,7 +200,9 @@
             The website’s supported PDF tools process files in your browser and
             have no application upload fallback. The separate developer API
             does upload PDF files for server processing.
-            <a routerLink="/privacy">Read the privacy policy for details.</a>
+            <a routerLink="/privacy" aria-label="Read the privacy policy for details">
+              Read the privacy policy for details.
+            </a>
           </p>
         </details>
       </div>

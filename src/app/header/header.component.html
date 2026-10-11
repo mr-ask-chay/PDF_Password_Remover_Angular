@@ -1,9 +1,9 @@
 <header class="sticky-top border-bottom border-opacity-25">
   <nav class="navbar navbar-expand-md bg-body bg-opacity-75 backdrop-blur">
     <div class="container-lg py-2">
-      <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
-        <img class="brand-logo brand-logo-light" src="/assets/brand/unclasp-logo.svg" alt="Unclasp" width="120" height="32" />
-        <img class="brand-logo brand-logo-dark" src="/assets/brand/unclasp-logo-dark.svg" alt="Unclasp" width="120" height="32" />
+      <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/" aria-label="Unclasp home">
+        <img class="brand-logo brand-logo-light" src="/assets/brand/unclasp-logo.svg" alt="" width="120" height="32" />
+        <img class="brand-logo brand-logo-dark" src="/assets/brand/unclasp-logo-dark.svg" alt="" width="120" height="32" />
       </a>
 
       <button
@@ -29,7 +29,10 @@
           <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="tools">Tools</a></li>
           <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="faq">FAQ</a></li>
           <li class="nav-item">
-            <a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="contact">Contact</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="closeMenu()" routerLink="/contact">Contact</a>
           </li>
         </ul>
 
