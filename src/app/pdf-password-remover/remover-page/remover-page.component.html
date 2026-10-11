@@ -75,9 +75,10 @@
     <div class="col-md-6">
       <h2 class="h5 fw-semibold">What happens to your file</h2>
       <p class="small text-body-secondary mb-2">
-        Your PDF and password are used only to produce the unlocked copy. The
-        temporary server copy is deleted right after processing, whether it
-        succeeds or fails, and the password is never stored.
+        Your PDF, its filename and password are sent over HTTPS to our
+        server and used only to produce the unlocked copy. Our application
+        processes the file in memory and does not save the file or password,
+        or write them to its logs.
       </p>
       <a routerLink="/privacy" class="small">Read the privacy policy</a>
     </div>

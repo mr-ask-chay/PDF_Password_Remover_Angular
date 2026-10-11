@@ -1,4 +1,11 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -17,6 +24,10 @@ export class HeaderComponent {
   currentPref: ThemePref = 'system';
   label = 'System';
 
+  /** Mobile menu state (Angular-controlled; Bootstrap's collapse JS is not loaded). */
+  menuOpen = false;
+  @ViewChild('menuToggle') private readonly menuToggle?: ElementRef<HTMLButtonElement>;
+
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
 
@@ -32,6 +43,22 @@ export class HeaderComponent {
           if (this.currentPref === 'system') this.applyTheme();
         });
     }
+  }
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
+
+  /** Escape closes the open menu and returns focus to the toggle button. */
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (!this.menuOpen) return;
+    this.menuOpen = false;
+    this.menuToggle?.nativeElement.focus();
   }
 
   /** Cycle System → Dark → Light */

@@ -33,6 +33,7 @@ describe('FooterComponent', () => {
     expect(hrefs).toContain('/pdf-password-remover');
     expect(hrefs).toContain('/docs');
     expect(hrefs).toContain('/privacy');
+    expect(hrefs).toContain('/terms');
     expect(hrefs).toContain('/sitemap.xml');
   });
 });
