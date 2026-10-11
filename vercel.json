@@ -1,6 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/assets/sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

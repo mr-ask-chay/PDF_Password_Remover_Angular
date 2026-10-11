@@ -1,7 +1,7 @@
 <header class="sticky-top border-bottom border-opacity-25">
   <nav class="navbar navbar-expand-md bg-body bg-opacity-75 backdrop-blur">
     <div class="container-lg py-2">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
         <span class="brand-pill shadow-glow">P</span>
         <span class="fw-semibold">PDF & Image Tools</span>
       </a>
@@ -21,12 +21,15 @@
       <div class="collapse navbar-collapse" id="navMain">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0 me-md-3 small">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/docs">Docs</a>
+            <a class="nav-link" routerLink="/pdf-password-remover">PDF Password Remover</a>
           </li>
-          <li class="nav-item"><a class="nav-link" href="#tools">Tools</a></li>
-          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
           <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
+            <a class="nav-link" routerLink="/docs">API Docs</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" routerLink="/" fragment="tools">Tools</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/" fragment="faq">FAQ</a></li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" fragment="contact">Contact</a>
           </li>
         </ul>
 

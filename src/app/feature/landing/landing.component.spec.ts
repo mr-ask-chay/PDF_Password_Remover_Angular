@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LandingComponent } from './landing.component';
 import { AppConfig } from '../../core/config/app.config';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LandingComponent', () => {
@@ -24,7 +24,10 @@ describe('LandingComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [LandingComponent, HttpClientTestingModule],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LandingComponent);

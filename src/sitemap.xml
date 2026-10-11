@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Only canonical, indexable routes. Keep in sync with src/app/app.routes.ts. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://pdf-fe-kappa.vercel.app/</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://pdf-fe-kappa.vercel.app/pdf-password-remover</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://pdf-fe-kappa.vercel.app/docs</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+  <url>
+    <loc>https://pdf-fe-kappa.vercel.app/privacy</loc>
+    <lastmod>2026-10-11</lastmod>
+  </url>
+</urlset>

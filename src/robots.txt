@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://angular-pdf-pr-master.onrender.com/assets/sitemap.xml
+
+Sitemap: https://pdf-fe-kappa.vercel.app/sitemap.xml
