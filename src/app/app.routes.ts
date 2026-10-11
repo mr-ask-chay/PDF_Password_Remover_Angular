@@ -48,7 +48,7 @@ export const routes: Routes = [
       import('./feature/landing/landing.component').then(
         (m) => m.LandingComponent
       ),
-    title: 'PDFHaven — Remove PDF Passwords Free, No Sign-up',
+    title: 'Unclasp — Remove PDF Passwords Free, No Sign-up',
     data: {
       description:
         'Unlock a password-protected PDF you have the password for, free and without an account. Plus a PDF unlock API for developers and open-source developer tools.',

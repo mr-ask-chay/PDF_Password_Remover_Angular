@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://pdf-fe-kappa.vercel.app/">
-    <img src="src/assets/brand/pdfhaven-logo.svg" alt="PDFHaven" height="64" />
+    <img src="src/assets/brand/unclasp-logo.svg" alt="Unclasp" height="64" />
   </a>
 </p>
 
@@ -17,15 +17,15 @@
 
 ---
 
-# PDFHaven — PDF Password Remover
+# Unclasp — PDF Password Remover
 
-PDFHaven is a free web tool for unlocking password-protected PDFs such as bank
+Unclasp is a free web tool for unlocking password-protected PDFs such as bank
 statements, payslips and invoices. Upload the PDF, enter the password you
 already know, and download a copy that opens without it.
 
 👉 **Try it: [pdf-fe-kappa.vercel.app/pdf-password-remover](https://pdf-fe-kappa.vercel.app/pdf-password-remover)**
 
-![PDFHaven preview](src/assets/brand/og-image.png)
+![Unclasp preview](src/assets/brand/og-image.png)
 
 ## Features
 
@@ -37,7 +37,7 @@ already know, and download a copy that opens without it.
   and Go examples. See the [API docs](https://pdf-fe-kappa.vercel.app/docs).
 - **Responsive** with light and dark themes.
 
-> PDFHaven does **not** crack or recover forgotten passwords. Use it only on
+> Unclasp does **not** crack or recover forgotten passwords. Use it only on
 > documents you own or are authorised to modify.
 
 ## Tech stack
