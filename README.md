@@ -31,8 +31,9 @@ already know, and download a copy that opens without it.
 
 - **Remove a PDF open password** when you know the current password.
 - **No account, no watermark** — free to use.
-- **Files deleted after processing** — the temporary server copy is removed
-  right after the unlock step, and passwords are never stored.
+- **Passwords not stored** — PDFs are unlocked on the server in memory; the
+  application does not save your PDF, its filename or password, or write them
+  to its logs. See the [privacy policy](https://pdf-fe-kappa.vercel.app/privacy).
 - **Developer API** — HMAC-SHA256 authenticated endpoint with Python, Node.js
   and Go examples. See the [API docs](https://pdf-fe-kappa.vercel.app/docs).
 - **Responsive** with light and dark themes.
@@ -74,6 +75,11 @@ npx ng build --configuration production    # production build + prerendered page
 3. Select **Remove Password** — the file is sent over HTTPS to the backend,
    which opens it with your password and returns an unprotected copy.
 4. Download the unlocked PDF.
+
+## Legal
+
+[Privacy Policy](https://pdf-fe-kappa.vercel.app/privacy) ·
+[Terms of Use](https://pdf-fe-kappa.vercel.app/terms)
 
 ## Contributing
 

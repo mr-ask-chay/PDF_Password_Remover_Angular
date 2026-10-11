@@ -3,33 +3,41 @@
   <div class="row align-items-center g-4">
     <div class="col-lg-7">
       <p class="text-uppercase text-secondary small fw-semibold">
-        Privacy First
+        Privacy
       </p>
       <h1 class="display-5 fw-bold gradient-text">
         Privacy Policy — PDF Password Remover
       </h1>
       <p class="mt-2 fs-5 text-body-secondary">
-        Your PDFs are <strong>yours</strong>. We process only what’s required to
-        remove protection—nothing more.
+        This page explains what happens to your PDF, its password and other
+        information when you use this site. It describes how the site works
+        today.
       </p>
       <div class="mt-3 d-flex flex-wrap gap-2">
-        <span class="badge text-bg-success">No file tracking</span>
-        <span class="badge text-bg-primary">No content collection</span>
-        <span class="badge text-bg-secondary">Short-lived processing</span>
+        <span class="badge text-bg-primary">No account needed</span>
+        <span class="badge text-bg-success">Passwords not stored</span>
+        <span class="badge text-bg-secondary">HTTPS only</span>
       </div>
     </div>
     <div class="col-lg-5">
       <div class="glass shadow-glow p-4 policy-card">
+        <h2 class="h6 fw-semibold mb-2">In short</h2>
         <ul class="list-unstyled mb-0 small text-body-secondary">
           <li class="mb-2">
-            ✔ Files aren’t used for analytics or advertising.
+            • PDFs are unlocked <strong>on our server</strong>, not in your
+            browser.
           </li>
-          <li class="mb-2">✔ No persistent storage of your PDF contents.</li>
           <li class="mb-2">
-            ✔ Transport is HTTPS-only between browser and server.
+            • Your PDF, its filename and its password are sent to the server
+            over HTTPS to do this.
+          </li>
+          <li class="mb-2">
+            • Our application does not save your PDF, filename or password, and
+            does not write them to its logs.
           </li>
           <li class="mb-0">
-            ✔ Files are deleted after processing completes or on failure.
+            • The site uses Google AdSense and Google Fonts, which have their
+            own privacy practices.
           </li>
         </ul>
       </div>
@@ -37,112 +45,145 @@
   </div>
 </section>
 
-<!-- What we do / don’t do -->
+<!-- Processing -->
 <section class="container-lg pb-4 pb-md-5">
   <div class="row g-4">
     <div class="col-md-6">
-      <div class="p-4 border policy-card fade-in">
-        <h2 class="h4 fw-semibold mb-2">What happens to your file</h2>
+      <div class="p-4 border policy-card fade-in h-100">
+        <h2 class="h4 fw-semibold mb-2">How a PDF is unlocked</h2>
         <ol class="small text-body-secondary mb-0 ps-3">
           <li class="mb-2">
-            <strong>Request</strong>: You select a PDF and provide its password.
+            You choose a PDF and enter its password. Nothing is sent until you
+            select <strong>Remove Password</strong>.
           </li>
           <li class="mb-2">
-            <strong>Processing</strong>: We attempt to remove the protection. If
-            the operation can run client-side, it stays in your browser. If a
-            server call is required, the file is streamed to an isolated worker
-            only for the unlock step.
+            Your browser requests a short-lived request token from our
+            processing server, then uploads the PDF (including its filename)
+            and the password over HTTPS.
           </li>
           <li class="mb-2">
-            <strong>Delivery</strong>: A processed PDF is streamed back for
-            download.
+            The server opens the PDF with your password in memory, in a
+            separate worker process, and creates an unprotected copy. Our code
+            does not save the PDF to disk. Like most web servers, the web
+            framework may temporarily buffer a large upload in a temporary file
+            while the request is being handled.
           </li>
           <li class="mb-0">
-            <strong>Deletion</strong>: Any temporary server copy is deleted
-            immediately after processing (success or error).
+            The unlocked PDF is sent back to your browser, which keeps it in
+            memory until you download it, unlock another file or leave the page.
           </li>
         </ol>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="p-4 border policy-card fade-in">
-        <h2 class="h4 fw-semibold mb-2">What we <em>don’t</em> collect</h2>
-        <ul class="small text-body-secondary mb-0">
-          <li class="mb-1">No PDF contents, text, or images for analytics.</li>
-          <li class="mb-1">No passwords stored at rest.</li>
-          <li class="mb-1">No user accounts required.</li>
-          <li class="mb-1">No tracking of what is inside your files.</li>
+      <div class="p-4 border policy-card fade-in h-100">
+        <h2 class="h4 fw-semibold mb-2">What our application does not do</h2>
+        <ul class="small text-body-secondary mb-3">
+          <li class="mb-1">It does not save your PDF or the unlocked copy.</li>
+          <li class="mb-1">It does not store your password or write it to its logs.</li>
+          <li class="mb-1">It does not log your PDF’s filename or contents.</li>
+          <li class="mb-1">It does not require an account.</li>
+          <li class="mb-0">It does not use analytics tools.</li>
         </ul>
+        <p class="small text-body-secondary mb-0">
+          If an unexpected error occurs, the server records a technical error
+          message to help us fix the problem. This message does not include your
+          password or filename.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Security & retention -->
+<!-- Logs, hosting, browser storage -->
 <section class="container-lg pb-4 pb-md-5">
   <div class="row g-4">
     <div class="col-lg-4">
-      <div class="p-4 border policy-card fade-in">
-        <h3 class="h5 fw-semibold">Security</h3>
+      <div class="p-4 border policy-card fade-in h-100">
+        <h2 class="h5 fw-semibold">Server and hosting logs</h2>
         <p class="small text-body-secondary mb-0">
-          All communication uses HTTPS. Temporary files (when server processing
-          is required) are stored in isolated, private paths with random names
-          and are programmatically removed right after processing. We log only
-          minimal operational metadata (timestamp, status code, file size
-          bucket)—never file contents.
+          This website is hosted by
+          <a href="https://vercel.com/legal/privacy-policy" rel="noopener" target="_blank">Vercel</a>
+          and the processing server by
+          <a href="https://render.com/privacy" rel="noopener" target="_blank">Render</a>.
+          Like most web services, their request logs can record technical
+          information such as your IP address, browser type, the address
+          requested and the time. Those logs are kept under each provider’s own
+          retention policies.
         </p>
       </div>
     </div>
     <div class="col-lg-4">
-      <div class="p-4 border policy-card fade-in">
-        <h3 class="h5 fw-semibold">Data Retention</h3>
-        <p class="small text-body-secondary mb-0">
-          No long-term retention of files or passwords. Temporary artifacts
-          created during processing are automatically deleted upon completion
-          (success or failure).
-        </p>
+      <div class="p-4 border policy-card fade-in h-100">
+        <h2 class="h5 fw-semibold">Stored in your browser</h2>
+        <ul class="small text-body-secondary mb-0 ps-3">
+          <li class="mb-1">
+            Your light/dark theme choice (<code>localStorage</code>).
+          </li>
+          <li class="mb-0">
+            On the <a routerLink="/docs">API docs</a> page, API keys you
+            create — including the API secret — are saved in your browser’s
+            <code>localStorage</code> so you can see them later. They stay
+            there until you delete them or clear your browser data. Avoid
+            creating keys on shared computers.
+          </li>
+        </ul>
       </div>
     </div>
     <div class="col-lg-4">
-      <div class="p-4 border policy-card fade-in">
-        <h3 class="h5 fw-semibold">Your Rights</h3>
+      <div class="p-4 border policy-card fade-in h-100">
+        <h2 class="h5 fw-semibold">Developer API keys</h2>
         <p class="small text-body-secondary mb-0">
-          Because we don’t persist your file contents, there’s typically nothing
-          to access or delete. For any questions, contact us and we’ll help
-          promptly.
+          When you create an API key, our server stores the key, an encrypted
+          copy of its secret, the label you chose, when it was created and a
+          daily count of API calls (used for the daily limit). Deleting a key
+          on the API docs page deactivates it. PDFs sent through the API are
+          processed the same way as on the website.
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Advertising & cookies -->
-<section id="advertising" class="container-lg pb-4 pb-md-5">
+<!-- Third parties -->
+<section id="third-parties" class="container-lg pb-4 pb-md-5">
   <div class="p-4 border policy-card fade-in">
-    <h2 class="h4 fw-semibold mb-2">Advertising &amp; cookies</h2>
+    <h2 class="h4 fw-semibold mb-2">Third-party services</h2>
     <p class="small text-body-secondary">
-      This site shows ads served by Google AdSense to keep the tools free. Ads
-      never have access to your PDFs or passwords.
+      These services receive technical information (such as your IP address and
+      browser details) when your browser loads them. They never receive your
+      PDFs or passwords, and each has its own privacy practices.
     </p>
     <ul class="small text-body-secondary mb-0">
-      <li class="mb-1">
-        Third-party vendors, including Google, use cookies to serve ads based
-        on your prior visits to this website or other websites.
+      <li class="mb-2">
+        <strong>Google Fonts</strong> — fonts and icons are loaded from Google’s
+        servers. See the
+        <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google Privacy Policy</a>.
       </li>
-      <li class="mb-1">
-        Google’s use of advertising cookies enables it and its partners to
-        serve ads to you based on your visits to this site and/or other sites
-        on the Internet.
-      </li>
-      <li class="mb-1">
-        You can opt out of personalised advertising in
-        <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a>,
-        or opt out of some third-party vendors’ cookies at
-        <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info</a>.
-      </li>
-      <li class="mb-0">
-        Learn more in
-        <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses information from sites that use its services</a>.
+      <li class="mb-0" id="advertising">
+        <strong>Google AdSense</strong> — this site shows ads to keep the tools
+        free.
+        <ul class="mt-1">
+          <li class="mb-1">
+            Third-party vendors, including Google, use cookies to serve ads based
+            on your prior visits to this website or other websites.
+          </li>
+          <li class="mb-1">
+            Google’s use of advertising cookies enables it and its partners to
+            serve ads to you based on your visits to this site and/or other sites
+            on the Internet.
+          </li>
+          <li class="mb-1">
+            You can opt out of personalised advertising in
+            <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a>,
+            or opt out of some third-party vendors’ cookies at
+            <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info</a>.
+          </li>
+          <li class="mb-0">
+            Learn more about
+            <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses information from sites that use its services</a>.
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -155,10 +196,21 @@
     <div class="col-md-6">
       <div class="p-3 border policy-card">
         <details>
+          <summary class="fw-semibold">Is my PDF processed in my browser?</summary>
+          <p class="small text-body-secondary mt-2 mb-0">
+            Not currently. The PDF is uploaded to our processing server over
+            HTTPS, unlocked there and sent back to you.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-3 border policy-card">
+        <details>
           <summary class="fw-semibold">Do you keep a copy of my PDF?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            No. If server processing is required, your file exists only briefly
-            during the unlock step and is deleted programmatically right after.
+            Our application does not save your PDF or the unlocked copy. It is
+            held in server memory only while your request is processed.
           </p>
         </details>
       </div>
@@ -168,20 +220,8 @@
         <details>
           <summary class="fw-semibold">Do you store my password?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            No. The password exists in memory only while processing your request
-            and is never written to disk or logs.
-          </p>
-        </details>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="p-3 border policy-card">
-        <details>
-          <summary class="fw-semibold">What analytics do you run?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            We avoid per-file analytics entirely. At most, we use anonymized,
-            aggregate operational metrics (e.g., success/error counts) to
-            maintain reliability.
+            No. Our application uses it only to open your PDF during the request
+            and does not save it or write it to its logs.
           </p>
         </details>
       </div>
@@ -191,13 +231,18 @@
         <details>
           <summary class="fw-semibold">How can I contact you?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            Email us at
-            <a href="mailto:saikrishnachaitanya61&#64;gmail.com">saikrishnachaitanya61&#64;gmail.com</a>. We usually
-            respond within a business day.
+            Email
+            <a href="mailto:saikrishnachaitanya61&#64;gmail.com">saikrishnachaitanya61&#64;gmail.com</a>
+            with any privacy question or request.
           </p>
         </details>
       </div>
     </div>
   </div>
-  <p class="small text-body-secondary mt-3">Last updated: {{ lastUpdated }}</p>
+  <p class="small text-body-secondary mt-3">
+    See also our <a routerLink="/terms">Terms of Use</a>.
+    This policy may change as the site changes; the date below shows the latest
+    update.
+  </p>
+  <p class="small text-body-secondary mt-1">Last updated: {{ lastUpdated }}</p>
 </section>

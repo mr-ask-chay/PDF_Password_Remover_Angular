@@ -7,29 +7,29 @@
       </a>
 
       <button
+        #menuToggle
         class="navbar-toggler"
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navMain"
         aria-controls="navMain"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        [attr.aria-expanded]="menuOpen"
+        [attr.aria-label]="menuOpen ? 'Close navigation' : 'Open navigation'"
+        (click)="toggleMenu()"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navMain">
+      <div class="collapse navbar-collapse" id="navMain" [class.show]="menuOpen">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0 me-md-3 small">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/pdf-password-remover">PDF Password Remover</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/pdf-password-remover">PDF Password Remover</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/docs">API Docs</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/docs">API Docs</a>
           </li>
-          <li class="nav-item"><a class="nav-link" routerLink="/" fragment="tools">Tools</a></li>
-          <li class="nav-item"><a class="nav-link" routerLink="/" fragment="faq">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="tools">Tools</a></li>
+          <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="faq">FAQ</a></li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/" fragment="contact">Contact</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="contact">Contact</a>
           </li>
         </ul>
 

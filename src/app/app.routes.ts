@@ -27,7 +27,19 @@ export const routes: Routes = [
     title: 'Privacy Policy — PDF Password Remover',
     data: {
       description:
-        'How the PDF Password Remover handles your files and passwords, what is deleted after processing, and how advertising cookies are used on this site.',
+        'How the PDF Password Remover handles your files and passwords, what is sent to the server, what is stored in your browser, and how Google Fonts and AdSense are used.',
+    },
+  },
+  {
+    path: 'terms',
+    loadComponent: () =>
+      import('./pdf-password-remover/terms/terms.component').then(
+        (m) => m.TermsComponent
+      ),
+    title: 'Terms of Use — PDF Password Remover',
+    data: {
+      description:
+        'Terms for using the free PDF Password Remover and its developer API: permitted use, processing limits, availability and liability.',
     },
   },
   {

@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TokenService } from '../../core/token.service';
 import { PdfBackendService } from 'src/app/core/service/pdf_backend_service/pdfBackend.service';
+import {
+  classifyRemoveError,
+  readErrorCode,
+  removeErrorMessage,
+  RETRYABLE_TOKEN_CODES,
+} from './remove-password-errors';
 
 @Component({
   selector: 'app-remove-password',
@@ -24,7 +30,7 @@ import { PdfBackendService } from 'src/app/core/service/pdf_backend_service/pdfB
   templateUrl: './remove-password.component.html',
   styleUrls: ['./remove-password.component.scss'],
 })
-export class RemovePasswordComponent {
+export class RemovePasswordComponent implements OnDestroy {
   loading = false;
   status = '';
   password = '';
@@ -41,6 +47,22 @@ export class RemovePasswordComponent {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
+  ngOnDestroy(): void {
+    this.setDownloadHref(null);
+  }
+
+  /**
+   * Replaces the download link, revoking the previous object URL. The current
+   * URL stays valid until the next submission or until the component is
+   * destroyed, so the user can download (or re-download) the result.
+   */
+  private setDownloadHref(url: string | null): void {
+    if (this.downloadHref && this.downloadHref !== url) {
+      URL.revokeObjectURL(this.downloadHref);
+    }
+    this.downloadHref = url;
+  }
+
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
@@ -50,7 +72,7 @@ export class RemovePasswordComponent {
 
     const file = fileInput.files?.[0] || null;
     const pwd = (this.password || '').trim();
-    this.downloadHref = null;
+    this.setDownloadHref(null);
     this.status = '';
 
     if (!file || !pwd) {
@@ -84,66 +106,31 @@ export class RemovePasswordComponent {
               this.status = 'Unexpected response.';
               return;
             }
-            this.downloadHref = URL.createObjectURL(blob);
+            this.setDownloadHref(URL.createObjectURL(blob));
             this.status = 'Done! Click to download.';
           },
           error: (err) => {
-            this.handleError(err).then((reason) => {
-              if (
-                !isRetry &&
-                ['bad_token', 'expired', 'replayed', 'ip_mismatch'].includes(
-                  reason
-                )
-              ) {
+            readErrorCode(err).then((code) => {
+              if (!isRetry && code && RETRYABLE_TOKEN_CODES.includes(code)) {
                 this.attempt(file, pwd, true);
                 return;
               }
-              this.loading = false;
-              this.status = reason || 'Server error. Please try again.';
+              this.fail(err, code);
             });
           },
         });
       },
-      error: () => {
-        this.loading = false;
-        this.status = 'Could not prepare request.';
+      error: (err) => {
+        readErrorCode(err).then((code) => this.fail(err, code));
       },
     });
   }
 
 
-  private async handleError(err: any): Promise<string> {
-    try {
-      const hdr = err?.headers?.get?.('X-Error-Reason');
-      if (hdr) return hdr;
-
-      const payload = err?.error;
-      if (payload instanceof Blob) {
-        const ct = payload.type || '';
-        if (ct.includes('application/json')) {
-          const obj = await new Response(payload)
-            .json()
-            .catch(() => ({} as any));
-          return obj && typeof obj.error === 'string'
-            ? obj.error
-            : 'Unexpected error';
-        }
-        const text = await new Response(payload).text().catch(() => '');
-        if (text) return text.slice(0, 200);
-        return 'Unexpected error';
-      }
-
-      if (
-        payload &&
-        typeof payload === 'object' &&
-        typeof payload.error === 'string'
-      ) {
-        return payload.error;
-      }
-
-      return (err?.message || '').slice(0, 200) || 'Network error';
-    } catch {
-      return 'Unexpected error';
-    }
+  /** Shows a safe, user-facing message; never raw server text. */
+  private fail(err: any, code: string | null): void {
+    this.loading = false;
+    const status = typeof err?.status === 'number' ? err.status : undefined;
+    this.status = removeErrorMessage(classifyRemoveError(status, code));
   }
 }

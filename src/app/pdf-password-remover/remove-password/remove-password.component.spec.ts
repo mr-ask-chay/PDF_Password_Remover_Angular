@@ -5,6 +5,7 @@ import { PdfBackendService } from 'src/app/core/service/pdf_backend_service/pdfB
 import { throwError, of } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { REMOVE_ERROR_MESSAGES } from './remove-password-errors';
 
 describe('RemovePasswordComponent', () => {
   const TEST_PASSWORD_FIXTURE = 'test-fixture-pwd-123';
@@ -96,13 +97,15 @@ describe('RemovePasswordComponent', () => {
 
     component.password = TEST_PASSWORD_FIXTURE;
 
-    tokenService.getReqToken.and.returnValue(throwError(() => new Error('Token error')));
+    tokenService.getReqToken.and.returnValue(
+      throwError(() => ({ status: 0, error: new ProgressEvent('error') }))
+    );
 
     component.onSubmit(mockInput);
 
     setTimeout(() => {
       expect(component.loading).toBeFalse();
-      expect(component.status).toBe('Could not prepare request.');
+      expect(component.status).toBe(REMOVE_ERROR_MESSAGES.network);
       done();
     }, 100);
   });
@@ -188,15 +191,104 @@ describe('RemovePasswordComponent', () => {
     const errorBlob = new Blob([JSON.stringify({ error: 'Test error' })], { type: 'application/json' });
     tokenService.getReqToken.and.returnValue(of({ req_token: 'test-token' }));
     pdfBackendService.removePassword.and.returnValue(
-      throwError(() => ({ error: errorBlob }))
+      throwError(() => ({ status: 400, error: errorBlob }))
     );
 
     component.onSubmit(mockInput);
 
     setTimeout(() => {
       expect(component.loading).toBeFalse();
-      expect(component.status).toContain('error');
+      // Unknown backend codes get the generic message, never the raw text.
+      expect(component.status).toBe(REMOVE_ERROR_MESSAGES.unknown);
+      expect(component.status).not.toContain('Test error');
       done();
     }, 200);
+  });
+
+  describe('safe error messages', () => {
+    const pdfInput = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      const dt = new DataTransfer();
+      dt.items.add(new File(['%PDF-1.4'], 'test.pdf', { type: 'application/pdf' }));
+      input.files = dt.files;
+      return input;
+    };
+    const failWith = (status: number, body: object) => {
+      tokenService.getReqToken.and.returnValue(of({ req_token: 'test-token' }));
+      pdfBackendService.removePassword.and.returnValue(
+        throwError(() => ({
+          status,
+          error: new Blob([JSON.stringify(body)], { type: 'application/json' }),
+        }))
+      );
+    };
+
+    it('maps "Incorrect password" to a friendly message', (done) => {
+      failWith(400, { error: 'Incorrect password' });
+      component.password = TEST_PASSWORD_FIXTURE;
+      component.onSubmit(pdfInput());
+      setTimeout(() => {
+        expect(component.status).toBe(REMOVE_ERROR_MESSAGES.incorrect_password);
+        done();
+      }, 100);
+    });
+
+    it('never shows raw exception text from a 500 response', (done) => {
+      failWith(500, { error: 'processing_error', message: 'EOF marker not found' });
+      component.password = TEST_PASSWORD_FIXTURE;
+      component.onSubmit(pdfInput());
+      setTimeout(() => {
+        expect(component.status).toBe(REMOVE_ERROR_MESSAGES.processing_failed);
+        expect(component.status).not.toContain('EOF');
+        done();
+      }, 100);
+    });
+  });
+
+  describe('object URL cleanup', () => {
+    let createSpy: jasmine.Spy;
+    let revokeSpy: jasmine.Spy;
+
+    beforeEach(() => {
+      let n = 0;
+      createSpy = spyOn(URL, 'createObjectURL').and.callFake(() => `blob:test-${++n}`);
+      revokeSpy = spyOn(URL, 'revokeObjectURL');
+      tokenService.getReqToken.and.returnValue(of({ req_token: 'test-token' }));
+      pdfBackendService.removePassword.and.returnValue(of(new Blob(['%PDF'], { type: 'application/pdf' })));
+      component.password = TEST_PASSWORD_FIXTURE;
+    });
+
+    const submit = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      const dt = new DataTransfer();
+      dt.items.add(new File(['%PDF-1.4'], 'test.pdf', { type: 'application/pdf' }));
+      input.files = dt.files;
+      component.onSubmit(input);
+    };
+
+    it('keeps the current URL valid until the next submission', () => {
+      submit();
+      expect(component.downloadHref).toBe('blob:test-1');
+      expect(revokeSpy).not.toHaveBeenCalled();
+
+      submit();
+      expect(revokeSpy).toHaveBeenCalledOnceWith('blob:test-1');
+      expect(component.downloadHref).toBe('blob:test-2');
+      expect(createSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('revokes the remaining URL when the component is destroyed', () => {
+      submit();
+      fixture.destroy();
+      expect(revokeSpy).toHaveBeenCalledOnceWith('blob:test-1');
+    });
+  });
+
+  it('announces status changes through a polite live region', () => {
+    const region: HTMLElement = fixture.nativeElement.querySelector('[role="status"]');
+    expect(region).toBeTruthy();
+    expect(region.getAttribute('aria-live')).toBe('polite');
   });
 });

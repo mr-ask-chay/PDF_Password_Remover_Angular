@@ -9,7 +9,7 @@ describe('App Routes', () => {
     });
 
     it('should give every indexable route a title and description', () => {
-        for (const path of ['', 'pdf-password-remover', 'docs', 'privacy']) {
+        for (const path of ['', 'pdf-password-remover', 'docs', 'privacy', 'terms']) {
             const route = find(path);
             expect(route).withContext(path).toBeDefined();
             expect(route?.title).withContext(path).toBeTruthy();
@@ -27,7 +27,7 @@ describe('App Routes', () => {
     it('should have privacy route with title and data', () => {
         const privacyRoute = find('privacy');
         expect(privacyRoute?.title).toBe('Privacy Policy — PDF Password Remover');
-        expect(privacyRoute?.data?.['description']).toContain('advertising cookies');
+        expect(privacyRoute?.data?.['description']).toContain('AdSense');
     });
 
     it('should have home route', () => {
