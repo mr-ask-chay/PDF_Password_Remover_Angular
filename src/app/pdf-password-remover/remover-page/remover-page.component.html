@@ -1,0 +1,145 @@
+<!-- Intro -->
+<section class="container-lg pt-4 pt-md-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb small mb-3">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">PDF Password Remover</li>
+    </ol>
+  </nav>
+  <h1 class="display-5 fw-bold">Remove a password from a PDF</h1>
+  <p class="mt-3 fs-5 text-body-secondary col-lg-9">
+    Have a PDF that asks for a password every time you open it — a bank
+    statement, payslip, invoice or e-ticket? If you know the password, upload
+    the file here, enter the password once, and download a copy that opens
+    without it. Free, with no account or sign-up.
+  </p>
+</section>
+
+<!-- Tool (shared component, also embedded on the home page) -->
+<app-remove-password />
+
+<!-- How to -->
+<section id="how-it-works" class="container-lg py-4 py-md-5">
+  <h2 class="h3 fw-bold">How to unlock a PDF</h2>
+  <ol class="text-body-secondary mt-3">
+    <li class="mb-2">
+      <strong>Choose the PDF</strong> that is password-protected.
+    </li>
+    <li class="mb-2">
+      <strong>Enter its current password</strong> — the one you normally type
+      to open the file.
+    </li>
+    <li class="mb-2">
+      <strong>Select “Remove Password”.</strong> The file is sent over HTTPS to
+      our processing server, which opens it with your password and saves an
+      unprotected copy.
+    </li>
+    <li class="mb-0">
+      <strong>Download the unlocked PDF.</strong> It opens in any PDF reader
+      without asking for a password.
+    </li>
+  </ol>
+</section>
+
+<!-- Can / can't -->
+<section class="container-lg pb-4 pb-md-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="h-100 rounded-4 border p-4">
+        <h2 class="h5 fw-semibold">What this tool does</h2>
+        <ul class="small text-body-secondary mb-0">
+          <li class="mb-1">Removes the open (user) password from a PDF when you supply the correct password.</li>
+          <li class="mb-1">Returns a normal PDF you can open, share or archive without retyping the password.</li>
+          <li class="mb-0">Works in any modern browser, on desktop and mobile.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="h-100 rounded-4 border p-4">
+        <h2 class="h5 fw-semibold">What it does not do</h2>
+        <ul class="small text-body-secondary mb-0">
+          <li class="mb-1">It does not guess, crack or recover forgotten passwords — you must know the password.</li>
+          <li class="mb-1">It only accepts PDF files, one file per request.</li>
+          <li class="mb-0">
+            Use it only on documents you own or are authorised to modify.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy + API -->
+<section class="container-lg pb-4 pb-md-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <h2 class="h5 fw-semibold">What happens to your file</h2>
+      <p class="small text-body-secondary mb-2">
+        Your PDF and password are used only to produce the unlocked copy. The
+        temporary server copy is deleted right after processing, whether it
+        succeeds or fails, and the password is never stored.
+      </p>
+      <a routerLink="/privacy" class="small">Read the privacy policy</a>
+    </div>
+    <div class="col-md-6">
+      <h2 class="h5 fw-semibold">Need to unlock PDFs from your own app?</h2>
+      <p class="small text-body-secondary mb-2">
+        The same unlock step is available as an HMAC-authenticated API with
+        Python, Node.js and Go examples.
+      </p>
+      <a routerLink="/docs" class="small">View the API documentation</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="container-lg pb-5">
+  <h2 class="h3 fw-bold">Frequently asked questions</h2>
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <div class="rounded-4 border p-3">
+        <details>
+          <summary class="fw-semibold">I forgot the password. Can this remove it?</summary>
+          <p class="small text-body-secondary mt-2 mb-0">
+            No. The tool needs the correct current password to open the file.
+            Contact whoever sent you the document to get the password.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="rounded-4 border p-3">
+        <details>
+          <summary class="fw-semibold">It says “Incorrect password”.</summary>
+          <p class="small text-body-secondary mt-2 mb-0">
+            Passwords are case-sensitive. Many banks and employers use a
+            pattern such as part of your name plus your date of birth — check
+            the email or letter that came with the file.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="rounded-4 border p-3">
+        <details>
+          <summary class="fw-semibold">Why does the first request take a while?</summary>
+          <p class="small text-body-secondary mt-2 mb-0">
+            The processing server sleeps when idle. The first request after a
+            quiet period can take a few extra seconds while it wakes up.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="rounded-4 border p-3">
+        <details>
+          <summary class="fw-semibold">Is it free?</summary>
+          <p class="small text-body-secondary mt-2 mb-0">
+            Yes. There is no account, no sign-up and no watermark on the
+            unlocked file.
+          </p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>

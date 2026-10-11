@@ -20,7 +20,7 @@ describe('Environment Prod', () => {
 
     it('should have siteUrl defined', () => {
         expect(environment.siteUrl).toBeDefined();
-        expect(environment.siteUrl).toContain('angular-pdf-pr-master');
+        expect(environment.siteUrl).toBe('https://pdf-fe-kappa.vercel.app');
     });
 
     it('should have navigateToi18n defined', () => {

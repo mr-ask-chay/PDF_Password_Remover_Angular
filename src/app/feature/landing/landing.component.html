@@ -3,18 +3,19 @@
   <div class="row align-items-center g-4 g-lg-5">
     <div class="col-md-6" revealOnScroll>
       <p class="text-uppercase text-secondary small fw-semibold">
-        Fast • Private • Free
+        Free • No sign-up • Files deleted after processing
       </p>
       <h1 class="display-5 fw-bold lh-tight">
-        Handy tools I built for everyday files.
+        Remove a PDF password in seconds.
       </h1>
       <p class="mt-3 fs-5 text-body-secondary">
-        Remove PDF passwords, compress images without losing quality, and speed
-        up Angular localization — all right in your browser.
+        Upload a protected PDF, enter the password you already have, and
+        download a copy that opens without it. Also here: a PDF unlock API for
+        developers and a few open-source developer tools.
       </p>
       <div class="mt-4 d-flex flex-wrap gap-2">
-        <a href="#tools" class="btn btn-dark shadow-glow">Explore My Tools</a>
-        <a href="https://github.com/otaku0304" class="btn btn-outline-secondary">GitHub</a>
+        <a routerLink="/pdf-password-remover" class="btn btn-dark shadow-glow">Unlock a PDF</a>
+        <a href="#tools" class="btn btn-outline-secondary">See all tools</a>
       </div>
     </div>
 
@@ -23,36 +24,11 @@
       <div class="position-relative z-1 rounded-4 border glass p-4">
         <ul class="list-unstyled small mb-0 text-body-secondary">
           <li>✔ No login required</li>
-          <li>✔ Runs in your browser (privacy-first)</li>
+          <li>✔ Temporary files deleted right after processing</li>
           <li>✔ Mobile-friendly, keyboard accessible</li>
-          <li>✔ Dark & light mode (system default)</li>
+          <li>✔ Developer API with HMAC authentication</li>
         </ul>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- About Me (placed under hero for context) -->
-<section id="about" class="container-lg py-4 py-md-5">
-  <div class="row g-4 align-items-center">
-    <div class="col-md-4" revealOnScroll>
-      <img src="../../../assets/images/me.webp" alt="Portrait of Sai Krishna Chaitanya"
-        class="img-fluid rounded-4 border portrait-img" />
-    </div>
-    <div class="col-md-8" revealOnScroll>
-      <h2 class="display-6 fw-bold">About Me</h2>
-      <p class="text-body-secondary mt-2">
-        Hi, I’m <strong>Sai Krishna Chaitanya</strong> — a developer who enjoys
-        building privacy‑first, browser‑based utilities and workflow tools. I
-        made the <em>PDF Password Remover</em>, a production
-        <em>Angular i18n Helper</em> demo, <em>StartMyDev</em> (a scripts
-        configurator), and <em>Git Commit Summary</em>, a high-performance CLI
-        tool for analyzing repository history.
-      </p>
-      <p class="text-body-secondary mb-0">
-        This site showcases tools I’ve built. Where possible, the tools run
-        entirely on your device.
-      </p>
     </div>
   </div>
 </section>
@@ -69,13 +45,13 @@
         <img src="/assets/images/pdf_icon.webp" alt="PDF icon" class="rounded-3 mb-3 tool-icon" />
         <h3 class="h5 fw-semibold mb-1">PDF Password Remover</h3>
         <p class="small text-body-secondary mb-3">
-          Remove passwords from PDFs you own or have the right to edit. This
-          tool is integrated on this page — processing happens locally when
-          possible.
+          Remove the open password from a PDF you own or are allowed to edit.
+          You need the current password — the tool does not crack passwords.
         </p>
         <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a href="#demo-remover" class="btn btn-dark btn-sm">Test it</a>
-          <a href="/privacy" class="btn btn-outline-secondary btn-sm">Privacy</a>
+          <a routerLink="/pdf-password-remover" class="btn btn-dark btn-sm">Open tool</a>
+          <a href="#demo-remover" class="btn btn-outline-secondary btn-sm">Try it here</a>
+          <a routerLink="/docs" class="btn btn-outline-secondary btn-sm">API</a>
         </div>
       </article>
     </div>
@@ -92,8 +68,8 @@
           A powerful CLI tool to summarize git commits with rich visual feedback. Tracks files, lines, and detects new functions added.
         </p>
         <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a href="https://github.com/otaku0304/git-commit-summary" class="btn btn-dark btn-sm">View on GitHub</a>
-          <a href="https://github.com/otaku0304/git-commit-summary#usage" class="btn btn-outline-secondary btn-sm">Usage</a>
+          <a href="https://github.com/mr-ask-chay/git-commit-summary" class="btn btn-dark btn-sm">View on GitHub</a>
+          <a href="https://github.com/mr-ask-chay/git-commit-summary#usage" class="btn btn-outline-secondary btn-sm">Usage</a>
         </div>
       </article>
     </div>
@@ -143,6 +119,31 @@
 <!-- Inline Demo: PDF Password Remover -->
 <app-remove-password />
 
+<!-- About Me -->
+<section id="about" class="container-lg py-4 py-md-5">
+  <div class="row g-4 align-items-center">
+    <div class="col-md-4" revealOnScroll>
+      <img src="../../../assets/images/me.webp" alt="Portrait of Sai Krishna Chaitanya"
+        class="img-fluid rounded-4 border portrait-img" />
+    </div>
+    <div class="col-md-8" revealOnScroll>
+      <h2 class="display-6 fw-bold">About Me</h2>
+      <p class="text-body-secondary mt-2">
+        Hi, I’m <strong>Sai Krishna Chaitanya</strong> — a developer who enjoys
+        building privacy‑first, browser‑based utilities and workflow tools. I
+        made the <em>PDF Password Remover</em>, a production
+        <em>Angular i18n Helper</em> demo, <em>StartMyDev</em> (a scripts
+        configurator), and <em>Git Commit Summary</em>, a high-performance CLI
+        tool for analyzing repository history.
+      </p>
+      <p class="text-body-secondary mb-0">
+        This site showcases tools I’ve built. Where possible, the tools run
+        entirely on your device.
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq" class="container-lg py-4 py-md-5">
   <h2 class="display-6 fw-bold">FAQ</h2>
@@ -152,8 +153,10 @@
         <details>
           <summary class="fw-semibold">Do you upload my files?</summary>
           <p class="small text-body-secondary mt-2 mb-0">
-            Most processing happens in your browser. If a server is required,
-            files are deleted after processing.
+            Your PDF and password are sent over HTTPS to our processing server
+            to create the unlocked copy. The temporary copy is deleted right
+            after processing and the password is never stored. See the
+            <a routerLink="/privacy">privacy policy</a>.
           </p>
         </details>
       </div>
@@ -205,7 +208,7 @@
       <div class="d-flex flex-wrap gap-2">
         <a href="mailto:saikrishnachaitanya61&#64;gmail.com"
           class="btn btn-outline-secondary">saikrishnachaitanya61&#64;gmail.com</a>
-        <a href="https://github.com/otaku0304" class="btn btn-dark">GitHub</a>
+        <a href="https://github.com/mr-ask-chay" class="btn btn-dark">GitHub</a>
       </div>
     </div>
   </div>

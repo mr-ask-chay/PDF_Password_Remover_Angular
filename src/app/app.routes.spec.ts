@@ -1,49 +1,58 @@
 import { routes } from './app.routes';
 
 describe('App Routes', () => {
+    const find = (path: string) => routes.find(r => r.path === path);
+
     it('should have routes defined', () => {
         expect(routes).toBeDefined();
         expect(routes.length).toBeGreaterThan(0);
     });
 
-    it('should have docs route', () => {
-        const docsRoute = routes.find(r => r.path === 'docs');
-        expect(docsRoute).toBeDefined();
-        expect(docsRoute?.loadComponent).toBeDefined();
+    it('should give every indexable route a title and description', () => {
+        for (const path of ['', 'pdf-password-remover', 'docs', 'privacy']) {
+            const route = find(path);
+            expect(route).withContext(path).toBeDefined();
+            expect(route?.title).withContext(path).toBeTruthy();
+            expect(route?.data?.['description']).withContext(path).toBeTruthy();
+            expect(route?.data?.['index']).withContext(path).not.toBe(false);
+        }
+    });
+
+    it('should have a dedicated PDF password remover route', () => {
+        const route = find('pdf-password-remover');
+        expect(route?.loadComponent).toBeDefined();
+        expect(route?.title).toContain('Remove Password from PDF');
     });
 
     it('should have privacy route with title and data', () => {
-        const privacyRoute = routes.find(r => r.path === 'privacy');
-        expect(privacyRoute).toBeDefined();
-        expect(privacyRoute?.title).toBe('Privacy Policy - PDF Tools');
-        expect(privacyRoute?.data).toBeDefined();
-        expect(privacyRoute?.data?.['description']).toContain('privacy policy');
+        const privacyRoute = find('privacy');
+        expect(privacyRoute?.title).toBe('Privacy Policy — PDF Password Remover');
+        expect(privacyRoute?.data?.['description']).toContain('advertising cookies');
     });
 
     it('should have home route', () => {
-        const homeRoute = routes.find(r => r.path === '');
-        expect(homeRoute).toBeDefined();
-        expect(homeRoute?.title).toBe('Home - PDF & Image Tools');
+        const homeRoute = find('');
+        expect(homeRoute?.title).toContain('PDF Password Remover');
         expect(homeRoute?.loadComponent).toBeDefined();
     });
 
-    it('should have image/select-image route', () => {
-        const imageRoute = routes.find(r => r.path === 'image/select-image');
+    it('should mark the placeholder image page as noindex', () => {
+        const imageRoute = find('image/select-image');
         expect(imageRoute).toBeDefined();
-        expect(imageRoute?.title).toBe('Select Image - Image Compressor');
+        expect(imageRoute?.data?.['index']).toBeFalse();
     });
 
-    it('should have wildcard route for 404', () => {
-        const notFoundRoute = routes.find(r => r.path === '**');
-        expect(notFoundRoute).toBeDefined();
+    it('should have a noindex wildcard route for 404', () => {
+        const notFoundRoute = find('**');
         expect(notFoundRoute?.title).toBe('Page Not Found');
+        expect(notFoundRoute?.data?.['index']).toBeFalse();
     });
 
     it('should load components lazily', async () => {
-        const docsRoute = routes.find(r => r.path === 'docs');
-        if (docsRoute?.loadComponent) {
-            const component = await docsRoute.loadComponent();
-            expect(component).toBeDefined();
+        for (const path of ['docs', 'pdf-password-remover']) {
+            const route = find(path);
+            const component = await route!.loadComponent!();
+            expect(component).withContext(path).toBeDefined();
         }
     });
 });
