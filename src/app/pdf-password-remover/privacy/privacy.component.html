@@ -69,8 +69,11 @@
             while the request is being handled.
           </li>
           <li class="mb-0">
-            The unlocked PDF is sent back to your browser, which keeps it in
-            memory until you download it, unlock another file or leave the page.
+            The unlocked PDF is sent back to your browser and stays available
+            through the page’s download link. Downloading it does not remove
+            it: the page releases it when you start another unlock or leave the
+            page, after which your browser frees that memory as it normally
+            does.
           </li>
         </ol>
       </div>
@@ -135,10 +138,15 @@
         <h2 class="h5 fw-semibold">Developer API keys</h2>
         <p class="small text-body-secondary mb-0">
           When you create an API key, our server stores the key, an encrypted
-          copy of its secret, the label you chose, when it was created and a
-          daily count of API calls (used for the daily limit). Deleting a key
-          on the API docs page deactivates it. PDFs sent through the API are
-          processed the same way as on the website.
+          copy of its secret, a SHA-256 hash of the secret, the label you
+          chose, when it was created, whether it is active and a daily count
+          of API calls (used for the daily limit). The server log records the
+          label and the first four characters of the key when a key is
+          created, and the first four characters of the key when it is
+          deleted. These are key-management records only — they never contain
+          PDFs, filenames or passwords. Deleting a key on the API docs page
+          deactivates it; the inactive key record is kept. PDFs sent through
+          the API are processed the same way as on the website.
         </p>
       </div>
     </div>
