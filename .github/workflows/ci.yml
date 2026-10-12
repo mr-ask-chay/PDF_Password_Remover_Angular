@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -36,10 +34,3 @@ jobs:
 
       - name: Run Tests with Coverage
         run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
-        # Added --code-coverage to ensure SonarCloud gets the data
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v3.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
