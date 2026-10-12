@@ -7,6 +7,28 @@ import { Routes } from '@angular/router';
  */
 export const routes: Routes = [
   {
+    path: 'about',
+    loadComponent: () =>
+      import('./feature/about/about.component').then((m) => m.AboutComponent),
+    title: 'About Sai Krishna Chaitanya | Unclasp',
+    data: {
+      description:
+        'Meet Sai Krishna Chaitanya, the developer behind Unclasp PDF tools and independent workflow utilities. Read how features are described and tested.',
+    },
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./feature/contact/contact.component').then(
+        (m) => m.ContactComponent
+      ),
+    title: 'Contact Unclasp | PDF Tools Support',
+    data: {
+      description:
+        'Contact Sai Krishna Chaitanya about Unclasp PDF tools, accessibility, privacy, or a problem with a supported feature.',
+    },
+  },
+  {
     path: 'docs',
     loadComponent: () =>
       import('./pdf-password-remover/api-docs/api-docs.component').then(
@@ -57,7 +79,9 @@ export const routes: Routes = [
   {
     path: 'pdf-tools',
     loadComponent: () =>
-      import('./pdf-tools/pdf-tools.component').then((m) => m.PdfToolsComponent),
+      import('./pdf-tools/pdf-tools-page.component').then(
+        (m) => m.PdfToolsPageComponent
+      ),
     title: 'Free PDF Tools: Merge, Split & Edit | Unclasp',
     data: {
       description:

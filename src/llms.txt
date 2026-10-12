@@ -11,6 +11,8 @@ uploads and processes them on its server.
 ## Main pages
 
 - [Home](https://pdf-fe-kappa.vercel.app/): Product overview, author information, and FAQs.
+- [About the developer](https://pdf-fe-kappa.vercel.app/about): Author, project scope, and how feature information is maintained.
+- [Contact](https://pdf-fe-kappa.vercel.app/contact): Support and feedback details.
 - [Remove a PDF password](https://pdf-fe-kappa.vercel.app/pdf-password-remover): Unlock a PDF when you know its current password. This is not password recovery.
 - [PDF tools](https://pdf-fe-kappa.vercel.app/pdf-tools): Available page, image, metadata, and selectable-text operations with their limitations.
 - [Developer API documentation](https://pdf-fe-kappa.vercel.app/docs): HMAC-authenticated API reference and examples. API requests upload PDFs for server-side processing.

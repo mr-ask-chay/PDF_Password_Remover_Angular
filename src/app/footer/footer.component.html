@@ -1,21 +1,60 @@
-<footer class="border-top py-4">
-  <div
-    class="container-lg d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 small text-body-secondary">
-    <p class="mb-0">
-      © {{ year }} Developed by
-      <a class="link-secondary link-underline-opacity-25" href="https://linktr.ee/mr_ask_chay">Sai Annam</a>
-      | &#64;mr_ask_chay |
-      <a class="link-secondary link-underline-opacity-25" href="https://github.com/mr-ask-chay">GitHub</a>
-    </p>
-    <nav class="d-flex flex-wrap justify-content-center gap-3" aria-label="Site">
-      <a class="link-secondary link-underline-opacity-25" routerLink="/" fragment="about">About the author</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/" fragment="contact">Contact the author</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/pdf-password-remover">PDF Password Remover</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/pdf-tools">PDF Tools Studio</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/docs">API Docs</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/privacy">Privacy</a>
-      <a class="link-secondary link-underline-opacity-25" routerLink="/terms">Terms</a>
-      <a class="link-secondary link-underline-opacity-25" href="/sitemap.xml">Sitemap</a>
-    </nav>
+<footer class="border-top py-5">
+  <div class="container-lg">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <a class="d-inline-block mb-2" routerLink="/" aria-label="Unclasp home">
+          <img
+            class="brand-logo brand-logo-light"
+            src="/assets/brand/unclasp-logo.svg"
+            alt=""
+            width="120"
+            height="32"
+          />
+          <img
+            class="brand-logo brand-logo-dark"
+            src="/assets/brand/unclasp-logo-dark.svg"
+            alt=""
+            width="120"
+            height="32"
+          />
+        </a>
+        <p class="small text-body-secondary mb-0">
+          Browser-first PDF tools for unlocking, organizing, converting, and securing documents while keeping the workflow simple and transparent.
+        </p>
+        <a class="d-inline-block small mt-2" href="https://linktr.ee/mr_ask_chay">&#64;mr_ask_chay</a>
+      </div>
+
+      <div class="col-sm-6 col-lg-2">
+        <div class="text-uppercase small fw-semibold text-body-secondary mb-2">Product</div>
+        <ul class="list-unstyled small mb-0">
+          <li class="mb-2"><a class="link-secondary" routerLink="/pdf-password-remover">Password Remover</a></li>
+          <li class="mb-2"><a class="link-secondary" routerLink="/pdf-tools">PDF Tools</a></li>
+          <li><a class="link-secondary" routerLink="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="text-uppercase small fw-semibold text-body-secondary mb-2">Resources</div>
+        <ul class="list-unstyled small mb-0">
+          <li class="mb-2"><a class="link-secondary" routerLink="/docs">Documentation</a></li>
+          <li class="mb-2"><a class="link-secondary" routerLink="/about">About</a></li>
+          <li><a class="link-secondary" href="/sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="text-uppercase small fw-semibold text-body-secondary mb-2">Legal</div>
+        <ul class="list-unstyled small mb-0">
+          <li class="mb-2"><a class="link-secondary" routerLink="/privacy">Privacy Policy</a></li>
+          <li class="mb-2"><a class="link-secondary" routerLink="/terms">Terms</a></li>
+          <li><a class="link-secondary" href="https://github.com/mr-ask-chay">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-top mt-4 pt-4 small text-body-secondary d-flex flex-column flex-md-row justify-content-between gap-2">
+      <span>© {{ year }} Unclasp.</span>
+      <span>Built by <a class="link-secondary" href="https://linktr.ee/mr_ask_chay">Sai Krishna Chaitanya</a>.</span>
+    </div>
   </div>
 </footer>

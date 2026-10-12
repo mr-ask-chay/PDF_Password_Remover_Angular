@@ -1,15 +1,17 @@
-/* Hero section decorative gradient */
 .hero-gradient {
     width: 140px;
     height: 140px;
     background: linear-gradient(135deg, var(--brand-500), #34d399);
     opacity: 0.35;
-    filter: blur(30px);
 }
 
-/* Portrait image styling */
 .portrait-img {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    max-height: 545px;
     object-fit: cover;
+    margin-inline: auto;
 }
 
 /* Tool icon styling */
@@ -17,4 +19,14 @@
     width: 64px;
     height: 64px;
     object-fit: contain;
+}
+
+.remover-placeholder {
+    min-height: 28rem;
+}
+
+@media (max-width: 767.98px) {
+    .remover-placeholder {
+        min-height: 36rem;
+    }
 }

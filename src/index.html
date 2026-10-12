@@ -10,11 +10,17 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index, follow" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
     <meta name="theme-color" content="#0F766E" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms.txt"
+      title="Information for AI assistants"
+    />
 
     <!-- Social -->
     <meta
@@ -36,21 +42,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:domain" content="pdf-fe-kappa.vercel.app" />
 
-    <!-- Preconnect for fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Load fonts non-blocking -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Sora:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Material Icons (ligatures) -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-
     <meta
       name="google-site-verification"
       content="dqWfU9QL8o90dycljPZaPjnxsnyG82R-TUMPPTSSyC4"
@@ -62,74 +53,91 @@
 
     <!-- Google AdSense -->
     <meta name="google-adsense-account" content="ca-pub-7945845389175063" />
-    <!-- Structured data: site name, logo and the PDF tool -->
+    <!-- Structured data: each entity declares its own schema type. -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://pdf-fe-kappa.vercel.app/#organization",
-          "name": "Unclasp",
-          "url": "https://pdf-fe-kappa.vercel.app/",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://pdf-fe-kappa.vercel.app/assets/brand/icon-512.png",
-            "width": 512,
-            "height": 512
-          },
-          "sameAs": [
-            "https://github.com/mr-ask-chay/PDF_Password_Remover_Angular"
-          ]
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://pdf-fe-kappa.vercel.app/#organization",
+        "name": "Unclasp",
+        "url": "https://pdf-fe-kappa.vercel.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pdf-fe-kappa.vercel.app/assets/brand/icon-512.png",
+          "width": 512,
+          "height": 512
         },
-        {
-          "@type": "WebSite",
-          "@id": "https://pdf-fe-kappa.vercel.app/#website",
-          "name": "Unclasp",
-          "url": "https://pdf-fe-kappa.vercel.app/",
-          "publisher": {
-            "@id": "https://pdf-fe-kappa.vercel.app/#organization"
-          },
-          "inLanguage": "en"
+        "sameAs": [
+          "https://github.com/mr-ask-chay/PDF_Password_Remover_Angular"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://pdf-fe-kappa.vercel.app/about#person",
+        "name": "Sai Krishna Chaitanya",
+        "url": "https://pdf-fe-kappa.vercel.app/about",
+        "sameAs": [
+          "https://github.com/mr-ask-chay"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://pdf-fe-kappa.vercel.app/#website",
+        "name": "Unclasp",
+        "url": "https://pdf-fe-kappa.vercel.app/",
+        "publisher": {
+          "@id": "https://pdf-fe-kappa.vercel.app/#organization"
         },
-        {
-          "@type": "WebApplication",
-          "@id": "https://pdf-fe-kappa.vercel.app/pdf-password-remover#app",
-          "name": "Unclasp PDF Password Remover",
-          "url": "https://pdf-fe-kappa.vercel.app/pdf-password-remover",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Any",
-          "browserRequirements": "Requires JavaScript and a modern web browser.",
-          "description": "Unlock a PDF when you know its current password. Processing runs in your browser; no password recovery or account is required.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "publisher": {
-            "@id": "https://pdf-fe-kappa.vercel.app/#organization"
-          }
+        "inLanguage": "en"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": "https://pdf-fe-kappa.vercel.app/pdf-password-remover#app",
+        "name": "Unclasp PDF Password Remover",
+        "url": "https://pdf-fe-kappa.vercel.app/pdf-password-remover",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern web browser.",
+        "description": "Unlock a PDF when you know its current password. Processing runs in your browser; no password recovery or account is required.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
         },
-        {
-          "@type": "WebApplication",
-          "@id": "https://pdf-fe-kappa.vercel.app/pdf-tools#app",
-          "name": "Unclasp PDF Tools Studio",
-          "url": "https://pdf-fe-kappa.vercel.app/pdf-tools",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Any",
-          "browserRequirements": "Requires JavaScript and a modern web browser.",
-          "description": "Merge, split, rotate, crop, protect, compress, and convert supported PDFs in your browser.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "publisher": {
-            "@id": "https://pdf-fe-kappa.vercel.app/#organization"
-          }
+        "publisher": {
+          "@id": "https://pdf-fe-kappa.vercel.app/#organization"
         }
-      ]
-    }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": "https://pdf-fe-kappa.vercel.app/pdf-tools#app",
+        "name": "Unclasp PDF Tools Studio",
+        "url": "https://pdf-fe-kappa.vercel.app/pdf-tools",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern web browser.",
+        "description": "Merge, split, rotate, crop, protect, compress, and convert supported PDFs in your browser.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "publisher": {
+          "@id": "https://pdf-fe-kappa.vercel.app/#organization"
+        }
+      }
     </script>
   </head>
   <body class="hero-bg">

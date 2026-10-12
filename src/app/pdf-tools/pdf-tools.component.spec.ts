@@ -25,6 +25,16 @@ describe('PdfToolsComponent', () => {
     expect(component.splitStatus).toBe('');
     expect(component.status).toBe('');
   });
+
+  it('shows an icon for every tool and file pickers for standalone PDF conversions', () => {
+    const fixture = TestBed.createComponent(PdfToolsComponent);
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelectorAll('.tool-card h2 .tool-icon').length).toBe(10);
+    expect(element.querySelector('#jpg-pdf')).not.toBeNull();
+    expect(element.querySelector('#markdown-pdf')).not.toBeNull();
+  });
 });
 
 describe('PdfToolsService', () => {

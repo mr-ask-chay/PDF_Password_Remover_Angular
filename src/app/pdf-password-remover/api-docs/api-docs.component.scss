@@ -1,14 +1,84 @@
 .api-page {
-    display: flex;
-    justify-content: center;
-    padding: 2rem 1rem;
+    padding: 2rem 0 4rem;
 
     --bd-muted: rgba(100, 116, 139, 0.25);
     --code-bg: #0b1020;
     --code-fg: #e5e7eb;
 
+    .docs-shell {
+        max-width: 1440px;
+    }
+
+    .docs-hero {
+        max-width: 850px;
+        padding: clamp(1.25rem, 4vw, 2.75rem);
+        border: 1px solid var(--bd-muted);
+        border-radius: 1.25rem;
+        background: linear-gradient(135deg, rgba(20, 184, 166, .1), transparent 65%), var(--bs-body-bg);
+    }
+
+    .docs-eyebrow,
+    .docs-nav-title {
+        color: var(--brand-700);
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+    }
+
+    .docs-lead {
+        max-width: 680px;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    .docs-fact {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+        padding: .45rem .7rem;
+        border: 1px solid var(--bd-muted);
+        border-radius: 999px;
+        color: var(--bs-body-color);
+        background: var(--bs-body-bg);
+        font-size: .825rem;
+    }
+
+    .docs-nav {
+        position: sticky;
+        top: 6rem;
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        padding: 1rem;
+        border: 1px solid var(--bd-muted);
+        border-radius: 1rem;
+        background: var(--bs-body-bg);
+    }
+
+    .docs-nav-title {
+        padding: .25rem .6rem .5rem;
+    }
+
+    .docs-nav a {
+        padding: .55rem .6rem;
+        border-radius: .5rem;
+        color: var(--bs-body-color);
+        text-decoration: none;
+    }
+
+    .docs-nav a:hover,
+    .docs-nav a:focus-visible {
+        color: var(--bs-link-hover-color);
+        background: var(--bs-tertiary-bg);
+    }
+
+    .panel {
+        border-color: var(--bd-muted);
+        border-radius: 1rem;
+    }
+
     .panel .card-body {
-        padding: 1.25rem;
+        padding: clamp(1rem, 2.5vw, 1.75rem);
     }
 
     .method {
@@ -41,6 +111,13 @@
 
     .quick-spec .badge {
         border: 1px solid var(--bd-muted);
+        color: var(--bs-body-color);
+        background: var(--bs-body-bg);
+    }
+
+    .docs-tag {
+        border: 1px solid var(--bd-muted);
+        color: var(--bs-body-color);
         background: var(--bs-body-bg);
     }
 
@@ -98,6 +175,11 @@
     .error-card {
         background: rgba(15, 23, 42, .5);
     }
+
+    .docs-eyebrow,
+    .docs-nav-title {
+        color: var(--brand-mint);
+    }
 }
 
 .keys-table .masked {
@@ -115,4 +197,19 @@
 
 .toast-container {
     z-index: 1080;
+}
+
+@media (max-width: 991.98px) {
+    .api-page .docs-nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .25rem;
+    }
+
+    .api-page .docs-nav-title {
+        width: 100%;
+        padding-bottom: .25rem;
+    }
 }

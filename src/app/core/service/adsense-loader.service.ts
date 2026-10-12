@@ -15,8 +15,15 @@ export class AdsenseLoaderService {
     @Inject(PLATFORM_ID) private readonly platformId: object
   ) {}
 
-  load(enabled = environment.enableAds): void {
-    if (!enabled || !isPlatformBrowser(this.platformId) || this.loaded) return;
+  load(): void {
+    if (
+      !environment.production ||
+      !environment.enableAds ||
+      !isPlatformBrowser(this.platformId) ||
+      this.loaded
+    ) {
+      return;
+    }
 
     const script = this.document.createElement('script');
     script.async = true;

@@ -1,16 +1,15 @@
 .tool-card {
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(4px);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
   padding: 1.5rem;
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
-:host-context(body.dark) .tool-card,
-:host-context(.dark) .tool-card {
-  background: rgba(17, 24, 39, 0.55);
-  border-color: rgba(255, 255, 255, 0.08);
+:host-context([data-bs-theme='dark']) .tool-card {
+  background-color: #111827;
+  border-color: #374151;
   box-shadow: 0 12px 28px rgba(2, 6, 23, 0.22);
 }
 
@@ -20,4 +19,12 @@ input[type='file'] {
 
 button {
   min-width: 180px;
+}
+
+.tool-card h2 .bi {
+  color: var(--brand-700);
+}
+
+:host-context([data-bs-theme='dark']) .tool-card h2 .bi {
+  color: var(--brand-mint);
 }

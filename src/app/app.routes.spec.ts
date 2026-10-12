@@ -9,7 +9,7 @@ describe('App Routes', () => {
     });
 
     it('should give every indexable route a title and description', () => {
-        for (const path of ['', 'pdf-password-remover', 'pdf-tools', 'docs', 'privacy', 'terms']) {
+        for (const path of ['', 'about', 'contact', 'pdf-password-remover', 'pdf-tools', 'docs', 'privacy', 'terms']) {
             const route = find(path);
             expect(route).withContext(path).toBeDefined();
             expect(route?.title).withContext(path).toBeTruthy();
@@ -42,6 +42,13 @@ describe('App Routes', () => {
         expect(homeRoute?.loadComponent).toBeDefined();
     });
 
+    it('should expose author and contact pages with focused metadata', () => {
+        expect(find('about')?.title).toContain('Sai Krishna Chaitanya');
+        expect(find('about')?.data?.['description']).toContain('tested');
+        expect(find('contact')?.title).toContain('Contact Unclasp');
+        expect(find('contact')?.data?.['description']).toContain('privacy');
+    });
+
     it('should mark the placeholder image page as noindex', () => {
         const imageRoute = find('image/select-image');
         expect(imageRoute).toBeDefined();
@@ -55,7 +62,7 @@ describe('App Routes', () => {
     });
 
     it('should load components lazily', async () => {
-        for (const path of ['docs', 'pdf-password-remover']) {
+        for (const path of ['docs', 'pdf-password-remover', 'pdf-tools']) {
             const route = find(path);
             const component = await route!.loadComponent!();
             expect(component).withContext(path).toBeDefined();

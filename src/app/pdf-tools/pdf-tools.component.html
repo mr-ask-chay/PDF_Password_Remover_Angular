@@ -1,16 +1,10 @@
 <section class="container-xxl py-5">
   <div class="row g-4">
-    <header class="col-12 text-center mb-2">
-      <p class="text-uppercase text-secondary small fw-semibold mb-2">Browser-first PDF utilities</p>
-      <h1 class="display-6 fw-bold mb-2">Unclasp PDF Tools</h1>
-      <p class="text-body-secondary mx-auto mb-0" style="max-width: 720px;">
-        Supported operations run in browser code and have no application upload fallback. Network behavior has not yet been independently verified.
-      </p>
-    </header>
-
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">Merge PDF</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-files tool-icon" aria-hidden="true"></i>Merge PDF
+        </h2>
         <label for="merge-files" class="form-label fw-semibold">Choose PDFs</label>
         <input id="merge-files" type="file" class="form-control" accept=".pdf,application/pdf" multiple
           (change)="onMergeFilesSelected($event)" />
@@ -25,7 +19,9 @@
 
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">Compress PDF</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-file-earmark-zip tool-icon" aria-hidden="true"></i>Compress PDF
+        </h2>
         <p class="small text-body-secondary">
           Applies lossless PDF stream and object compression locally. If the optimized file is not smaller, the original is kept.
           Encrypted PDFs must first be unlocked.
@@ -43,7 +39,9 @@
 
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">Split PDF</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-scissors tool-icon" aria-hidden="true"></i>Split PDF
+        </h2>
         <label for="split-file" class="form-label fw-semibold">Choose a PDF</label>
         <input id="split-file" type="file" class="form-control" accept=".pdf,application/pdf"
           (change)="onSplitPdfSelected($event)" />
@@ -65,7 +63,9 @@
 
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">JPG / PNG to PDF</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-images tool-icon" aria-hidden="true"></i>JPG / PNG to PDF
+        </h2>
         <label for="image-files" class="form-label fw-semibold">Choose images</label>
         <input id="image-files" type="file" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png" multiple
           (change)="onImagesSelected($event)" />
@@ -79,8 +79,13 @@
 
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">PDF to JPG</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-file-earmark-image tool-icon" aria-hidden="true"></i>PDF to JPG
+        </h2>
         <p class="small text-body-secondary">Renders pages to separate JPGs locally. Limited to 50 pages, 16 megapixels per page, and 25 megapixels total per operation.</p>
+        <label for="jpg-pdf" class="form-label fw-semibold">Choose a PDF</label>
+        <input id="jpg-pdf" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onPdfSelected($event)" />
         <button class="btn btn-dark" type="button" [disabled]="processing || !pdfFile" (click)="convertPdfToJpg()">
           {{ processing ? 'Rendering…' : 'Render pages as JPG' }}
         </button>
@@ -94,8 +99,13 @@
 
     <div class="col-lg-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">PDF to Markdown</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-markdown tool-icon" aria-hidden="true"></i>PDF to Markdown
+        </h2>
         <p class="small text-body-secondary">Extracts selectable text page-by-page. This does not OCR scanned pages or preserve complex layout.</p>
+        <label for="markdown-pdf" class="form-label fw-semibold">Choose a PDF</label>
+        <input id="markdown-pdf" type="file" class="form-control" accept=".pdf,application/pdf"
+          (change)="onPdfSelected($event)" />
         <button class="btn btn-dark" type="button" [disabled]="processing || !pdfFile" (click)="convertPdfToMarkdown()">
           {{ processing ? 'Extracting…' : 'Download Markdown text' }}
         </button>
@@ -104,7 +114,9 @@
 
     <div class="col-12">
       <article class="tool-card">
-        <h2 class="h4 mb-3">Compare PDF text</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-file-diff tool-icon" aria-hidden="true"></i>Compare PDF text
+        </h2>
         <p class="small text-body-secondary">Compares selectable text page-by-page and downloads a text report; this is not a visual comparison.</p>
         <div class="row g-3 align-items-end">
           <div class="col-md-5">
@@ -127,7 +139,9 @@
 
     <div class="col-12">
       <article class="tool-card">
-        <h2 class="h4 mb-3">PDF page tools</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-sliders tool-icon" aria-hidden="true"></i>PDF page tools
+        </h2>
         <div class="row g-3 align-items-end">
           <div class="col-md-6">
             <label for="edit-pdf" class="form-label fw-semibold">Choose a PDF</label>
@@ -237,7 +251,9 @@
 
     <div class="col-12">
       <article class="tool-card">
-        <h2 class="h4 mb-3">PDF Forms — edit text fields</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-ui-checks tool-icon" aria-hidden="true"></i>PDF Forms — edit text fields
+        </h2>
         <p class="small text-body-secondary">
           Reads and updates AcroForm text fields locally. Checkboxes, dropdowns, radio buttons, and XFA forms are not supported.
         </p>
@@ -262,7 +278,9 @@
 
     <div class="col-md-6">
       <article class="tool-card h-100">
-        <h2 class="h4 mb-3">Protect PDF</h2>
+        <h2 class="h4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-shield-lock tool-icon" aria-hidden="true"></i>Protect PDF
+        </h2>
         <p class="small text-body-secondary">
           Adds AES-256 open-password encryption locally. Use distinct passwords and keep the owner password safe.
         </p>
