@@ -64,6 +64,16 @@ const titles = new Set();
 const descriptions = new Set();
 for (const route of routes) {
   const html = readText(routeHtmlPath(route));
+  assert.doesNotMatch(
+    html,
+    /\son[a-z]+\s*=/i,
+    `${route}: prerendered HTML must not contain inline event handlers blocked by CSP.`
+  );
+  assert.doesNotMatch(
+    html,
+    /<link\b[^>]*\bmedia=["']print["'][^>]*>/i,
+    `${route}: production stylesheets must not be deferred to print media.`
+  );
   const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim();
   const metas = metaTags(html);
   const description = metas.find((tag) => tag.name === 'description')?.content;
