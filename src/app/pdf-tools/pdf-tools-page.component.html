@@ -1,0 +1,35 @@
+<header class="container-xxl pt-5 text-center">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Browser-first PDF utilities</p>
+    <h1 class="display-6 fw-bold mb-2">Unclasp PDF Tools</h1>
+    <p class="text-body-secondary mx-auto mb-0" style="max-width: 720px;">
+      Supported operations run in your browser with no application upload
+      fallback. Manual network checks for Protect and Compress found no PDF or
+      password uploads; other tools have not been individually traced.
+    </p>
+</header>
+
+@defer (on interaction(loadTools)) {
+  <app-pdf-tools />
+} @placeholder {
+  <section class="container-xxl pt-4 pb-5">
+    <div class="rounded-4 border bg-body bg-opacity-75 p-4 text-center">
+      <p id="pdf-tools-load-description" class="text-body-secondary mb-3">
+        Load the tools when you’re ready. PDF processing runs locally in your browser.
+      </p>
+      <button
+        #loadTools
+        type="button"
+        class="btn btn-dark"
+        aria-describedby="pdf-tools-load-description"
+      >
+        Load PDF tools
+      </button>
+    </div>
+  </section>
+} @loading {
+  <section class="container-xxl pt-4 pb-5">
+    <div class="rounded-4 border bg-body bg-opacity-75 p-4 text-center" role="status" aria-live="polite">
+      Loading PDF tools…
+    </div>
+  </section>
+}

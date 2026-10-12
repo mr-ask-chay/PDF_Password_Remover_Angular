@@ -79,7 +79,9 @@ export const routes: Routes = [
   {
     path: 'pdf-tools',
     loadComponent: () =>
-      import('./pdf-tools/pdf-tools.component').then((m) => m.PdfToolsComponent),
+      import('./pdf-tools/pdf-tools-page.component').then(
+        (m) => m.PdfToolsPageComponent
+      ),
     title: 'Free PDF Tools: Merge, Split & Edit | Unclasp',
     data: {
       description:

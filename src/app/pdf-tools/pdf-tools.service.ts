@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PDFDocument, PDFTextField, StandardFonts, degrees, rgb } from 'pdf-lib';
+import type {
+  PDFDocument as PdfDocumentType,
+  PDFTextField as PdfTextFieldType,
+} from 'pdf-lib';
 
 export const MAX_PDF_BYTES = 20 * 1024 * 1024;
 export const MAX_MERGE_BYTES = 40 * 1024 * 1024;
@@ -70,6 +73,7 @@ export class PdfToolsService {
     }
     files.forEach((file) => this.assertPdfFile(file));
 
+    const { PDFDocument } = await this.loadPdfLibrary();
     const output = await PDFDocument.create();
     let totalPages = 0;
     for (const file of files) {
@@ -88,6 +92,7 @@ export class PdfToolsService {
 
   async splitPdfIntoParts(file: File, rawParts: string): Promise<Blob[]> {
     const source = await this.loadPdf(file);
+    const { PDFDocument } = await this.loadPdfLibrary();
     const groups = rawParts.split(';').map((part) => part.trim());
     if (groups.length < 2 || groups.length > MAX_SPLIT_PARTS || groups.some((part) => !part)) {
       throw new Error(`Define 2 to ${MAX_SPLIT_PARTS} page ranges, separated by semicolons.`);
@@ -113,6 +118,7 @@ export class PdfToolsService {
 
   async selectPages(file: File, selection: string): Promise<Blob> {
     const source = await this.loadPdf(file);
+    const { PDFDocument } = await this.loadPdfLibrary();
     const indices = this.resolveSelection(selection, source.getPageCount());
     const output = await PDFDocument.create();
     const pages = await output.copyPages(source, indices);
@@ -122,6 +128,7 @@ export class PdfToolsService {
 
   async removePages(file: File, selection: string): Promise<Blob> {
     const source = await this.loadPdf(file);
+    const { PDFDocument } = await this.loadPdfLibrary();
     const remove = new Set(this.resolveSelection(selection, source.getPageCount()));
     const keep = source.getPageIndices().filter((index) => !remove.has(index));
     if (!keep.length) throw new Error('At least one page must remain in the PDF.');
@@ -133,6 +140,7 @@ export class PdfToolsService {
 
   async reorderPages(file: File, order: string): Promise<Blob> {
     const source = await this.loadPdf(file);
+    const { PDFDocument } = await this.loadPdfLibrary();
     const indices = this.resolveSelection(order, source.getPageCount());
     if (indices.length !== source.getPageCount()) {
       throw new Error(`Enter every page exactly once (1-${source.getPageCount()}).`);
@@ -146,6 +154,7 @@ export class PdfToolsService {
   async rotatePages(file: File, rotation: number): Promise<Blob> {
     if (![90, 180, 270].includes(rotation)) throw new Error('Choose a rotation of 90, 180, or 270 degrees.');
     const pdf = await this.loadPdf(file);
+    const { degrees } = await this.loadPdfLibrary();
     pdf.getPages().forEach((page) => page.setRotation(degrees((page.getRotation().angle + rotation) % 360)));
     return this.toBlob(await pdf.save());
   }
@@ -167,6 +176,7 @@ export class PdfToolsService {
 
   async addPageNumbers(file: File): Promise<Blob> {
     const pdf = await this.loadPdf(file);
+    const { StandardFonts, rgb } = await this.loadPdfLibrary();
     const font = await pdf.embedFont(StandardFonts.Helvetica);
     pdf.getPages().forEach((page, index) => {
       const { width } = page.getSize();
@@ -183,6 +193,7 @@ export class PdfToolsService {
       throw new Error('Enter watermark text of 1 to 100 characters.');
     }
     const pdf = await this.loadPdf(file);
+    const { StandardFonts, degrees, rgb } = await this.loadPdfLibrary();
     const font = await pdf.embedFont(StandardFonts.Helvetica);
     for (const page of pdf.getPages()) {
       const { width, height } = page.getSize();
@@ -215,6 +226,7 @@ export class PdfToolsService {
     }
 
     const pdf = await this.loadPdf(file);
+    const { StandardFonts, rgb } = await this.loadPdfLibrary();
     if (pageNumber > pdf.getPageCount()) {
       throw new Error(`Page number must be between 1 and ${pdf.getPageCount()}.`);
     }
@@ -249,8 +261,9 @@ export class PdfToolsService {
 
   async getTextFormFields(file: File): Promise<PdfTextFormField[]> {
     const pdf = await this.loadPdf(file);
+    const { PDFTextField } = await this.loadPdfLibrary();
     return pdf.getForm().getFields()
-      .filter((field): field is PDFTextField => field instanceof PDFTextField)
+      .filter((field): field is PdfTextFieldType => field instanceof PDFTextField)
       .map((field) => ({ name: field.getName(), value: field.getText() ?? '' }));
   }
 
@@ -260,10 +273,11 @@ export class PdfToolsService {
       throw new Error('Fill no more than 200 text fields, with at most 10,000 characters per field.');
     }
     const pdf = await this.loadPdf(file);
+    const { PDFTextField } = await this.loadPdfLibrary();
     const form = pdf.getForm();
     const textFields = new Set(
       form.getFields()
-        .filter((field): field is PDFTextField => field instanceof PDFTextField)
+        .filter((field): field is PdfTextFieldType => field instanceof PDFTextField)
         .map((field) => field.getName())
     );
     for (const [name, value] of entries) {
@@ -281,6 +295,7 @@ export class PdfToolsService {
     if (files.length > MAX_MERGE_FILES || files.reduce((total, file) => total + file.size, 0) > MAX_MERGE_BYTES) {
       throw new Error('Use no more than 20 images or 40 MB total at a time.');
     }
+    const { PDFDocument } = await this.loadPdfLibrary();
     const output = await PDFDocument.create();
     for (const file of files) {
       if (file.size === 0 || file.size > MAX_PDF_BYTES) throw new Error('Each image must be smaller than 20 MB.');
@@ -305,11 +320,18 @@ export class PdfToolsService {
     return this.toBlob(await output.save());
   }
 
-  private async loadPdf(file: File): Promise<PDFDocument> {
+  private pdfLibrary?: Promise<typeof import('pdf-lib')>;
+
+  private loadPdfLibrary(): Promise<typeof import('pdf-lib')> {
+    return (this.pdfLibrary ??= import('pdf-lib'));
+  }
+
+  private async loadPdf(file: File): Promise<PdfDocumentType> {
     this.assertPdfFile(file);
     if (file.size === 0) throw new Error('The selected file is empty.');
     if (file.size > MAX_PDF_BYTES) throw new Error('PDFs must be 20 MB or smaller.');
-    let pdf: PDFDocument;
+    const { PDFDocument } = await this.loadPdfLibrary();
+    let pdf: PdfDocumentType;
     try {
       pdf = await PDFDocument.load(await file.arrayBuffer());
     } catch {

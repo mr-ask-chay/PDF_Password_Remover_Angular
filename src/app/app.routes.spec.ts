@@ -62,7 +62,7 @@ describe('App Routes', () => {
     });
 
     it('should load components lazily', async () => {
-        for (const path of ['docs', 'pdf-password-remover']) {
+        for (const path of ['docs', 'pdf-password-remover', 'pdf-tools']) {
             const route = find(path);
             const component = await route!.loadComponent!();
             expect(component).withContext(path).toBeDefined();
