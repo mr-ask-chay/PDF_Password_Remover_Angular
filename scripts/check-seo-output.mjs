@@ -139,4 +139,25 @@ assert.ok(
   'robots.txt must point to the production sitemap.'
 );
 
+const html = readText(routeHtmlPath('/pdf-password-remover'));
+const stylesheetPaths = [
+  ...html.matchAll(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi),
+].map(([tag]) => attributes(tag).href);
+assert.ok(stylesheetPaths.length, 'Build output must link a stylesheet.');
+const stylesheets = stylesheetPaths
+  .filter((href) => href && !/^https?:\/\//i.test(href))
+  .map((href) => readText(join(browserOutput, href.replace(/^\/+/, ''))))
+  .join('\n');
+for (const selector of [
+  '.form-control',
+  '.form-select',
+  '::file-selector-button',
+  '.input-group',
+]) {
+  assert.ok(
+    stylesheets.includes(selector),
+    `Production CSS must contain form styling for ${selector}.`
+  );
+}
+
 console.log(`SEO output check passed for ${routes.length} prerendered indexable routes.`);
