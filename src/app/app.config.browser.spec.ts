@@ -9,8 +9,7 @@ import { config } from './app.config.browser';
 import { SeoTitleStrategy } from './core/seo/seo-title.strategy';
 
 describe('app.config.browser', () => {
-  // Resolve providers from the browser config alone (the global test setup
-  // provides its own animation module, which would otherwise mask ours).
+  // Inspect browser providers without inheriting TestBed's global providers.
   const browserInjector = () =>
     createEnvironmentInjector(config.providers, TestBed.inject(EnvironmentInjector));
 
@@ -18,11 +17,8 @@ describe('app.config.browser', () => {
     expect(browserInjector().get(TitleStrategy)).toBeInstanceOf(SeoTitleStrategy);
   });
 
-  it('registers the animations provider for Angular Material', () => {
-    // provideAnimations() resolves to 'NoopAnimations' only when the global
-    // ngServerMode flag is set (the Karma bundle sets it via platform-server
-    // specs); the real browser bundle gets 'BrowserAnimations'.
-    const expected = (globalThis as any).ngServerMode ? 'NoopAnimations' : 'BrowserAnimations';
-    expect(browserInjector().get(ANIMATION_MODULE_TYPE, null, { self: true })).toBe(expected);
+  it('does not register unused Angular animations providers', () => {
+    const injector = browserInjector();
+    expect(injector.get(ANIMATION_MODULE_TYPE, null, { self: true })).toBeNull();
   });
 });

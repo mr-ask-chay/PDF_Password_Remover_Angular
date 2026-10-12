@@ -50,9 +50,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -81,7 +78,7 @@
                 "scripts": true,
                 "styles": {
                   "minify": true,
-                  "inlineCritical": false
+                  "inlineCritical": true
                 },
                 "fonts": true
               },
@@ -165,8 +162,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": [],

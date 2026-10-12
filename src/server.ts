@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine, isMainModule } from '@angular/ssr/node';
+import compression from 'compression';
 import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +11,15 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
 
 const app = express(); // NOSONAR
-const commonEngine = new CommonEngine();
+const commonEngine = new CommonEngine({
+  allowedHosts: [
+    'localhost',
+    '127.0.0.1',
+    'pdf-fe-kappa.vercel.app',
+    'pdf-password-remover-angular.onrender.com',
+  ],
+});
+app.use(compression());
 
 /**
  * Example Express Rest API endpoints can be defined here.

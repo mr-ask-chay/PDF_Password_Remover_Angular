@@ -1,273 +1,157 @@
-<!-- Hero -->
-<section class="container-lg pt-4 pt-md-5 pb-4 pb-md-5">
+﻿<section class="container-lg py-4 py-md-5">
   <div class="row align-items-center g-4 g-lg-5">
-    <div class="col-md-6" revealOnScroll>
-      <p class="text-uppercase text-secondary small fw-semibold">
-        Free • No sign-up • Unlocked in your browser
+    <div class="col-lg-6">
+      <p class="text-uppercase small fw-semibold text-secondary mb-3">Browser-first PDF tools</p>
+      <h1 class="display-5 fw-bold lh-tight mb-3">Unclasp helps you unlock, edit, and organize PDFs without a complicated workflow.</h1>
+      <p class="fs-5 text-body-secondary mb-4">
+        The product is built around a simple promise: choose a PDF, use the right tool, and keep the file local to your browser whenever supported. Unclasp focuses on useful PDF operations, clear limits, and a privacy model that users can understand.
       </p>
-      <h1 class="display-5 fw-bold lh-tight">
-        Free PDF tools and password removal in your browser.
-      </h1>
-      <p class="mt-3 fs-5 text-body-secondary">
-        Unclasp lets you unlock a PDF when you know its password and use
-        supported tools to organize, convert, and edit PDFs locally. Files stay
-        in your browser for these website tools; the separate developer API
-        processes uploaded files on its server.
-      </p>
-      <div class="mt-4 d-flex flex-wrap gap-2">
+      <div class="d-flex flex-wrap gap-2 mb-4">
         <a routerLink="/pdf-password-remover" class="btn btn-dark shadow-glow">Unlock a PDF</a>
-        <a href="#tools" class="btn btn-outline-secondary">Browse PDF tools</a>
+        <a routerLink="/pdf-tools" class="btn btn-outline-secondary">Browse PDF tools</a>
+      </div>
+      <div class="d-flex flex-wrap gap-3 small text-body-secondary">
+        <span class="badge rounded-pill border text-body bg-body">No account required</span>
+        <span class="badge rounded-pill border text-body bg-body">Local browser processing</span>
+        <span class="badge rounded-pill border text-body bg-body">Privacy-first workflows</span>
       </div>
     </div>
 
-    <div class="col-md-6 position-relative" revealOnScroll>
-      <div class="position-absolute top-0 start-0 translate-middle rounded-circle hero-gradient"></div>
-      <div class="position-relative z-1 rounded-4 border glass p-4">
-        <ul class="list-unstyled small mb-0 text-body-secondary">
-          <li>✔ No login required</li>
-          <li>✔ Unlocked in your browser — your file isn’t uploaded</li>
-          <li>✔ Mobile-friendly, keyboard accessible</li>
-          <li>✔ Developer API with HMAC authentication</li>
+    <div class="col-lg-6">
+      <div class="rounded-4 border glass shadow-sm p-4 p-md-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <span class="fw-semibold">Product overview</span>
+          <span class="badge text-bg-success">Verified browser tools</span>
+        </div>
+        <ul class="list-unstyled mb-0 small text-body-secondary">
+          <li class="mb-2">• Unlock a password-protected PDF when you know the current password.</li>
+          <li class="mb-2">• Merge, split, rotate, crop, protect, compress, and compare PDF files.</li>
+          <li class="mb-2">• Extract text and images, fill supported form fields, and edit metadata.</li>
+          <li>• Read the <a routerLink="/privacy">privacy policy</a> and <a routerLink="/docs">API docs</a> before using server-side features.</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Tools -->
 <section id="tools" class="container-lg py-4 py-md-5">
-  <h2 class="display-6 fw-bold">My Projects & Tools</h2>
-  <p class="text-body-secondary mt-2">Pick something to use right now.</p>
-
-  <div class="row g-4 mt-1">
-    <!-- PDF Password Remover (integrated, ready to test) -->
-    <div class="col-sm-6 col-lg-3">
-      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/pdf_icon-128.webp" srcset="/assets/images/pdf_icon-64.webp 64w, /assets/images/pdf_icon-128.webp 128w"
-          sizes="64px" alt="PDF document icon" width="64" height="64" fetchpriority="low"
-          decoding="async" class="rounded-3 mb-3 tool-icon" />
-        <h3 class="h5 fw-semibold mb-1">PDF Password Remover</h3>
-        <p class="small text-body-secondary mb-3">
-          Remove the open password from a PDF you own or are allowed to edit.
-          You need the current password — the tool does not crack passwords.
-        </p>
-        <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a routerLink="/pdf-password-remover" class="btn btn-dark btn-sm">Open tool</a>
-          <a href="#demo-remover" class="btn btn-outline-secondary btn-sm">Try it here</a>
-          <a routerLink="/docs" class="btn btn-outline-secondary btn-sm">Developer API docs</a>
-        </div>
-      </article>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+    <div>
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Tool directory</p>
+      <h2 class="display-6 fw-bold mb-0">PDF operations and supported workflows</h2>
     </div>
+    <a routerLink="/pdf-tools" class="btn btn-outline-secondary btn-sm">Open the full PDF tools page</a>
+  </div>
 
-    <!-- PDF Tools Studio (new) -->
-    <div class="col-sm-6 col-lg-3">
-      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <div class="rounded-3 bg-dark-subtle p-3 mb-3 text-center">
-          <i class="bi bi-files-alt fs-1 text-primary"></i>
+  <div class="row g-4">
+    <div class="col-12" *ngFor="let group of toolGroups">
+      <div class="rounded-4 border bg-body bg-opacity-75 p-3 p-md-4">
+        <h3 class="h5 fw-semibold mb-3">{{ group.title }}</h3>
+        <div class="d-flex flex-wrap gap-2">
+          <span *ngFor="let tool of group.tools" class="badge rounded-pill border text-body bg-body">{{ tool }}</span>
         </div>
-        <div class="d-flex align-items-center justify-content-between">
-          <h3 class="h5 fw-semibold mb-0">PDF Tools Studio</h3>
-          <span class="badge text-bg-success">Browser</span>
-        </div>
-        <p class="small text-body-secondary mt-2 mb-3">
-          Merge, split, organize, rotate, crop and mark PDFs, update metadata, render pages, compare text, extract Markdown, or create PDFs from images locally.
-        </p>
-        <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a routerLink="/pdf-tools" class="btn btn-dark btn-sm">Open tool</a>
-        </div>
-      </article>
-    </div>
-
-    <!-- Git Commit Summary (New) -->
-    <div class="col-sm-6 col-lg-3">
-      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/git_summary-128.webp" srcset="/assets/images/git_summary-64.webp 64w, /assets/images/git_summary-128.webp 128w"
-          sizes="64px" alt="Git Commit Summary icon" width="64" height="64"
-          loading="lazy" decoding="async" class="rounded-3 mb-3 tool-icon" />
-        <div class="d-flex align-items-center justify-content-between">
-          <h3 class="h5 fw-semibold mb-0">Git Commit Summary</h3>
-          <span class="badge text-bg-primary">New CLI Tool</span>
-        </div>
-        <p class="small text-body-secondary mt-2 mb-3">
-          A powerful CLI tool to summarize git commits with rich visual feedback. Tracks files, lines, and detects new functions added.
-        </p>
-        <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a href="https://github.com/mr-ask-chay/git-commit-summary" class="btn btn-dark btn-sm">View on GitHub</a>
-          <a href="https://github.com/mr-ask-chay/git-commit-summary#usage" class="btn btn-outline-secondary btn-sm">Usage</a>
-        </div>
-      </article>
-    </div>
-
-    <!-- Angular i18n Helper (Production demo) -->
-    <div class="col-sm-6 col-lg-3">
-      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/internationalization-64.webp"
-          srcset="/assets/images/internationalization-64.webp 64w, /assets/images/internationalization.webp 100w"
-          sizes="64px" alt="Internationalization icon" width="64" height="64"
-          loading="lazy" decoding="async"
-          class="rounded-3 mb-3 tool-icon" />
-        <div class="d-flex align-items-center justify-content-between">
-          <h3 class="h5 fw-semibold mb-0">Angular i18n Helper</h3>
-          <span class="badge text-bg-info">Live</span>
-        </div>
-        <p class="small text-body-secondary mt-2 mb-3">
-          A showcasing project I built to explore Angular localization workflows
-          — extract, manage, and preview translations. It’s deployed to
-          production for you to try.
-        </p>
-        <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a href="https://internationalization-d2aa6.web.app/en/" class="btn btn-dark btn-sm">Open Live Demo</a>
-        </div>
-      </article>
-    </div>
-
-    <!-- StartMyDev (Integrated) -->
-    <div class="col-sm-6 col-lg-3">
-      <article class="h-100 d-flex flex-column rounded-4 border bg-body bg-opacity-75 p-4" revealOnScroll>
-        <img src="/assets/images/start_my_dev_logo-128.webp"
-          srcset="/assets/images/start_my_dev_logo-64.webp 64w, /assets/images/start_my_dev_logo-128.webp 128w"
-          sizes="64px" alt="StartMyDev icon" width="64" height="64"
-          loading="lazy" decoding="async" class="rounded-3 mb-3 tool-icon" />
-        <div class="d-flex align-items-center justify-content-between">
-          <h3 class="h5 fw-semibold mb-0">StartMyDev</h3>
-          <span class="badge text-bg-primary">Utility</span>
-        </div>
-        <p class="small text-body-secondary mb-3">
-          Configure and download tailored PowerShell scripts to launch frontend,
-          backend, or full‑stack apps across environments — no manual command
-          wrangling.
-        </p>
-        <div class="d-flex flex-wrap gap-2 mt-auto">
-          <a href="https://start-my-dev-dashboard.vercel.app/" class="btn btn-primary btn-sm">Open Tool</a>
-          <a href="https://start-my-dev-dashboard.vercel.app/docs" class="btn btn-outline-secondary btn-sm">Docs</a>
-        </div>
-      </article>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Inline Demo: PDF Password Remover -->
-<app-remove-password />
-
-<!-- About Me -->
-<section id="about" class="container-lg py-4 py-md-5">
-  <div class="row g-4 align-items-center">
-    <div class="col-md-4" revealOnScroll>
-      <img src="/assets/images/me-400.webp"
-        srcset="/assets/images/me-400.webp 400w, /assets/images/me.webp 801w"
-        sizes="(max-width: 767px) 100vw, 33vw"
-        alt="Portrait of Sai Krishna Chaitanya" width="801" height="1092"
-        loading="lazy" decoding="async" class="img-fluid rounded-4 border portrait-img" />
+<section class="container-lg py-4 py-md-5">
+  <h2 class="display-6 fw-bold mb-4">How Unclasp works</h2>
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="h-100 rounded-4 border p-4 bg-body bg-opacity-75">
+        <div class="display-6 fw-bold text-secondary mb-2">1</div>
+        <h3 class="h5 fw-semibold">Choose a PDF</h3>
+        <p class="small text-body-secondary mb-0">Open a PDF tool and select a file from your device. Each tool lists its supported formats and limits.</p>
+      </div>
     </div>
-    <div class="col-md-8" revealOnScroll>
-      <h2 class="display-6 fw-bold">About Me</h2>
-      <p class="text-body-secondary mt-2">
-        Hi, I’m <strong>Sai Krishna Chaitanya</strong> — a developer who enjoys
-        building privacy‑first, browser‑based utilities and workflow tools. I
-        made the <em>PDF Password Remover</em>, a production
-        <em>Angular i18n Helper</em> demo, <em>StartMyDev</em> (a scripts
-        configurator), and <em>Git Commit Summary</em>, a high-performance CLI
-        tool for analyzing repository history.
-      </p>
-      <p class="small text-body-secondary">
-        <a routerLink="/about">About the author and product notes</a>
-        <span aria-hidden="true"> · </span>
-        <a routerLink="/contact">Contact the developer</a>
-        <span aria-hidden="true"> · </span>
-        <a routerLink="/about" fragment="editorial-method">Editorial and testing approach</a>
-      </p>
-      <p class="text-body-secondary mb-0">
-        This site showcases tools I’ve built. Where possible, the tools run
-        entirely on your device.
-      </p>
-      <p class="small text-body-secondary mt-3 mb-0">
-        Product information last reviewed
-        <time datetime="2026-10-12">October 12, 2026</time>.
-      </p>
+    <div class="col-md-3">
+      <div class="h-100 rounded-4 border p-4 bg-body bg-opacity-75">
+        <div class="display-6 fw-bold text-secondary mb-2">2</div>
+        <h3 class="h5 fw-semibold">Set up the task</h3>
+        <p class="small text-body-secondary mb-0">Choose an operation and enter any required details, such as a password or page range.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="h-100 rounded-4 border p-4 bg-body bg-opacity-75">
+        <div class="display-6 fw-bold text-secondary mb-2">3</div>
+        <h3 class="h5 fw-semibold">Process the PDF</h3>
+        <p class="small text-body-secondary mb-0">The website PDF tools process supported files in your browser. The separate developer API uploads files for server-side processing.</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="h-100 rounded-4 border p-4 bg-body bg-opacity-75">
+        <div class="display-6 fw-bold text-secondary mb-2">4</div>
+        <h3 class="h5 fw-semibold">Download your result</h3>
+        <p class="small text-body-secondary mb-0">Save the processed file to your device and check any warnings or tool-specific limitations.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="container-lg py-4 py-md-5">
-  <h2 class="display-6 fw-bold">FAQ</h2>
-  <div class="row g-3 g-md-4 mt-2">
+  <h2 class="display-6 fw-bold mb-4">Helpful information</h2>
+  <div class="row g-3">
     <div class="col-md-6">
-      <div class="rounded-4 border bg-body bg-opacity-75 p-3" revealOnScroll>
-        <details>
-          <summary class="fw-semibold">Do you upload my files?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            The website’s supported PDF tools process files in your browser and
-            have no application upload fallback. The separate developer API
-            does upload PDF files for server processing.
-            <a routerLink="/privacy" aria-label="Read the privacy policy for details">
-              Read the privacy policy for details.
-            </a>
-          </p>
-        </details>
+      <div class="rounded-4 border bg-body bg-opacity-75 p-4 h-100">
+        <h3 class="h5 fw-semibold">Privacy model</h3>
+        <p class="small text-body-secondary mb-0">The supported browser tools are designed to operate locally in the page process. The separate API docs and server-side API describe file handling for developer uploads; read the privacy policy before sending sensitive files.</p>
       </div>
     </div>
-
     <div class="col-md-6">
-      <div class="rounded-4 border bg-body bg-opacity-75 p-3" revealOnScroll>
-        <details>
-          <summary class="fw-semibold">Is it free?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            Yes. The website tools are free and do not require an account.
-          </p>
-        </details>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="rounded-4 border bg-body bg-opacity-75 p-3" revealOnScroll>
-        <details>
-          <summary class="fw-semibold">Can I unlock a PDF without its password?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            No. The PDF Password Remover requires the current password and does
-            not crack or recover passwords.
-          </p>
-        </details>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="rounded-4 border bg-body bg-opacity-75 p-3" revealOnScroll>
-        <details>
-          <summary class="fw-semibold">Mobile support?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            Fully responsive and touch‑friendly.
-          </p>
-        </details>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="rounded-4 border bg-body bg-opacity-75 p-3" revealOnScroll>
-        <details>
-          <summary class="fw-semibold">Accessibility?</summary>
-          <p class="small text-body-secondary mt-2 mb-0">
-            Keyboard accessible components and focus states.
-          </p>
-        </details>
+      <div class="rounded-4 border bg-body bg-opacity-75 p-4 h-100">
+        <h3 class="h5 fw-semibold">Documentation</h3>
+        <p class="small text-body-secondary mb-0">Read the product docs for process limits, browser behavior, privacy expectations, and API usage examples. The documentation is kept aligned with actual app behavior and tested outputs.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact" class="container-lg py-5">
-  <div class="row g-4 align-items-start">
-    <div class="col-md-12" revealOnScroll>
-      <h2 class="display-6 fw-bold">Get in touch</h2>
-      <p class="text-body-secondary">
-        Have an idea or found a bug? Reach out anytime.
+<section class="container-lg py-4 py-md-5" aria-labelledby="maker-title">
+  <div class="row align-items-center g-4 g-lg-5 rounded-4 border bg-body bg-opacity-75 p-4 p-md-5">
+    <div class="col-md-4 text-center">
+      <img
+        src="/assets/images/me-400.webp"
+        srcset="/assets/images/me-336.webp 336w, /assets/images/me-400.webp 400w"
+        sizes="(max-width: 767.98px) 85vw, 336px"
+        alt="Sai Krishna Chaitanya, creator of Unclasp"
+        width="400"
+        height="545"
+        loading="lazy"
+        decoding="async"
+        class="img-fluid rounded-4 border portrait-img"
+      />
+    </div>
+    <div class="col-md-8">
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Made by an independent developer</p>
+      <h2 id="maker-title" class="display-6 fw-bold">A little about the person behind Unclasp</h2>
+      <p class="fs-5 text-body-secondary mb-3">
+        I’m Sai Krishna Chaitanya (<a href="https://linktr.ee/mr_ask_chay">&#64;mr_ask_chay</a>), an independent developer who builds practical browser tools and developer utilities. Unclasp is my PDF-focused project, with clear explanations of what each feature does and where its limits are.
       </p>
-      <div class="d-flex flex-wrap gap-2">
-        <a href="mailto:saikrishnachaitanya61&#64;gmail.com"
-          class="btn btn-outline-secondary">saikrishnachaitanya61&#64;gmail.com</a>
-        <a href="https://github.com/mr-ask-chay" class="btn btn-dark">GitHub</a>
+      <div class="d-flex flex-wrap gap-3">
+        <a routerLink="/about">More about the author and projects</a>
+        <a href="https://github.com/mr-ask-chay">GitHub profile</a>
+        <a routerLink="/contact">Contact</a>
       </div>
     </div>
+  </div>
+</section>
+
+@defer (on viewport) {
+  <app-remove-password />
+} @placeholder {
+  <section id="demo-remover" class="container-lg py-4 py-md-5">
+    <div class="rounded-4 border bg-body bg-opacity-75 p-4 text-body-secondary">
+      Loading the PDF password remover demo…
+    </div>
+  </section>
+}
+
+<section class="container-lg py-4 py-md-5">
+  <div class="d-flex flex-wrap gap-2">
+    <a routerLink="/about" class="btn btn-outline-secondary">About Unclasp</a>
+    <a routerLink="/contact" class="btn btn-outline-secondary">Contact</a>
+    <a routerLink="/docs" class="btn btn-outline-secondary">API docs</a>
+    <a routerLink="/privacy" class="btn btn-outline-secondary">Privacy</a>
   </div>
 </section>

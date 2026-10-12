@@ -1,14 +1,29 @@
 <section class="api-page">
-  <div class="container-xxl">
-    <div class="text-center mb-4">
-      <h1 class="h3 fw-bold mb-1">PDF Password Removal API Reference</h1>
-      <p class="text-body-secondary mb-0">
-        HMAC-authenticated endpoints with robust error semantics.
+  <div class="container-xxl docs-shell">
+    <header class="docs-hero mb-4 mb-lg-5">
+      <p class="docs-eyebrow mb-2">DEVELOPER DOCUMENTATION</p>
+      <h1 class="display-6 fw-bold mb-3">PDF Password Removal API</h1>
+      <p class="docs-lead text-body-secondary mb-4">
+        Integrate PDF unlocking into your application with a signed request. This API uploads the PDF for server-side processing; website tools use a separate browser-based workflow.
       </p>
-    </div>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="docs-fact"><strong>Authentication</strong> HMAC-SHA256</span>
+        <span class="docs-fact"><strong>Request</strong> Multipart form data</span>
+        <span class="docs-fact"><strong>Quota</strong> 5 calls per day</span>
+      </div>
+    </header>
 
-    <div class="row g-4 justify-content-center">
-      <div class="col-12 col-lg-10 mx-auto">
+    <div class="row g-4 g-xl-5">
+      <aside class="col-12 col-lg-3">
+        <nav class="docs-nav" aria-label="Documentation sections">
+          <span class="docs-nav-title">ON THIS PAGE</span>
+          <a href="#api-overview">Overview & limits</a>
+          <a href="#adminKeysTitle">API keys</a>
+          <a href="#remove-password">Remove password endpoint</a>
+        </nav>
+      </aside>
+
+      <div class="col-12 col-lg-9">
         <!-- Overview -->
         <article id="api-overview" class="panel card shadow-sm mb-4" tabindex="-1" aria-labelledby="apiOverviewTitle">
           <div class="card-body">
@@ -215,10 +230,10 @@
             <p class="mb-3 text-body-secondary">{{ ep.description }}</p>
 
             <div class="quick-spec d-flex flex-wrap gap-2 mb-3">
-              <span class="badge rounded-pill text-bg-light"><i class="bi bi-key"></i> HMAC headers</span>
-              <span class="badge rounded-pill text-bg-light" *ngIf="ep.form?.length"><i class="bi bi-ui-checks"></i> Form data</span>
-              <span class="badge rounded-pill text-bg-light"><i class="bi bi-filetype-json"></i> JSON errors</span>
-              <span class="badge rounded-pill text-bg-light"><i class="bi bi-speedometer2"></i> 5 calls/day</span>
+              <span class="badge rounded-pill docs-tag"><i class="bi bi-key"></i> HMAC headers</span>
+              <span class="badge rounded-pill docs-tag" *ngIf="ep.form?.length"><i class="bi bi-ui-checks"></i> Form data</span>
+              <span class="badge rounded-pill docs-tag"><i class="bi bi-filetype-json"></i> JSON errors</span>
+              <span class="badge rounded-pill docs-tag"><i class="bi bi-speedometer2"></i> 5 calls/day</span>
             </div>
 
             <!-- Tabs -->

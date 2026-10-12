@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { PLATFORM_ID } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RemoverPageComponent } from './remover-page.component';
 import { PdfUnlockService } from '../engine/pdf-unlock.service';
 
@@ -11,7 +10,7 @@ describe('RemoverPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RemoverPageComponent, NoopAnimationsModule],
+      imports: [RemoverPageComponent],
       providers: [
         provideRouter([]),
         { provide: PdfUnlockService, useValue: jasmine.createSpyObj('PdfUnlockService', ['unlock']) },

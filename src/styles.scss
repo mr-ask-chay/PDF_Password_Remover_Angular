@@ -1,3 +1,66 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-remove(
+  $utilities,
+  "float",
+  "object-fit",
+  "focus-ring",
+  "max-width",
+  "viewport-width",
+  "min-viewport-width",
+  "max-height",
+  "viewport-height",
+  "min-viewport-height",
+  "negative-margin",
+  "negative-margin-x",
+  "negative-margin-y",
+  "negative-margin-top",
+  "negative-margin-end",
+  "negative-margin-bottom",
+  "negative-margin-start",
+  "font-family",
+  "font-style",
+  "white-space",
+  "word-wrap",
+  "link-offset",
+  "link-underline",
+  "gradient",
+  "pointer-events",
+  "rounded-top",
+  "rounded-end",
+  "rounded-bottom",
+  "rounded-start"
+);
+
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/breadcrumb";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/close";
+@import "bootstrap/scss/toasts";
+@import "bootstrap/scss/spinners";
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
+
 /* =========================
    Global theme & typography
    ========================= */
@@ -16,6 +79,51 @@
   --bs-link-hover-color-rgb: 19, 78, 74;
 }
 
+@font-face {
+  font-display: swap;
+  font-family: "bootstrap-icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2")
+    format("woff2");
+}
+
+.bi,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: "bootstrap-icons" !important;
+  font-style: normal;
+  font-weight: 400 !important;
+  line-height: 1;
+  vertical-align: -0.125em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-arrow-up::before { content: "\f148"; }
+.bi-check2::before { content: "\f272"; }
+.bi-clipboard-check::before { content: "\f28b"; }
+.bi-clipboard::before { content: "\f290"; }
+.bi-exclamation-triangle::before { content: "\f33b"; }
+.bi-eye-slash::before { content: "\f340"; }
+.bi-eye::before { content: "\f341"; }
+.bi-file-diff::before { content: "\f354"; }
+.bi-file-earmark-image::before { content: "\f36d"; }
+.bi-file-earmark-zip::before { content: "\f391"; }
+.bi-files::before { content: "\f3c2"; }
+.bi-images::before { content: "\f42b"; }
+.bi-key::before { content: "\f44f"; }
+.bi-markdown::before { content: "\f481"; }
+.bi-plus-circle::before { content: "\f4fa"; }
+.bi-scissors::before { content: "\f528"; }
+.bi-shield-lock::before { content: "\f538"; }
+.bi-sliders::before { content: "\f56b"; }
+.bi-speedometer2::before { content: "\f580"; }
+.bi-trash::before { content: "\f5de"; }
+.bi-ui-checks::before { content: "\f5f9"; }
+.bi-filetype-json::before { content: "\f791"; }
+
 [data-bs-theme="dark"] {
   --bs-link-color: #5eead4;
   --bs-link-color-rgb: 94, 234, 212;
@@ -24,7 +132,7 @@
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial,
     sans-serif !important;
 }
 
@@ -32,56 +140,7 @@ h1,
 h2,
 h3,
 .display {
-  font-family: Sora, Inter, system-ui, Arial, sans-serif;
-}
-
-/* =========================
-   Decorative background
-   ========================= */
-.hero-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background: radial-gradient(700px 350px at 15% 0%,
-      rgba(20, 184, 166, 0.2),
-      transparent 60%),
-    radial-gradient(600px 300px at 85% 0%,
-      rgba(56, 189, 248, 0.18),
-      transparent 60%);
-}
-
-.hero-ribbon {
-  position: fixed;
-  inset-inline: 0;
-  top: -240px;
-  height: 420px;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(90deg, var(--brand-500), #22d3ee, #34d399);
-  background-size: 200% 200%;
-  filter: blur(50px);
-  opacity: 0.1;
-  animation: gradient 10s ease infinite;
-}
-
-[data-bs-theme="dark"] .hero-ribbon {
-  opacity: 0.2;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }
 
 /* =========================
@@ -91,7 +150,6 @@ h3,
   background: linear-gradient(to bottom right,
       rgba(255, 255, 255, 0.65),
       rgba(255, 255, 255, 0.35));
-  backdrop-filter: blur(12px);
 }
 
 [data-bs-theme="dark"] .glass {
@@ -119,7 +177,7 @@ h3,
 }
 
 .backdrop-blur {
-  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.92);
 }
 
 /* =========================
@@ -127,7 +185,6 @@ h3,
    ========================= */
 [data-bs-theme="dark"] .navbar.bg-body {
   background-color: rgba(2, 6, 23, 0.85) !important;
-  backdrop-filter: blur(10px);
   border-color: rgba(148, 163, 184, 0.25);
 }
 
@@ -247,20 +304,6 @@ h3,
   border-radius: 1rem;
 }
 
-@keyframes ribbon {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 /* Animated gradient headline */
 .gradient-text {
   background: linear-gradient(90deg, var(--brand-700), var(--brand-500), #22d3ee);
@@ -273,23 +316,6 @@ h3,
 .text-bg-primary {
   color: #fff !important;
   background-color: var(--brand-700) !important;
-}
-
-.fade-in {
-  opacity: .001;
-  transform: translateY(10px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-
-.fade-in.show {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fade-in {
-    transition: none;
-  }
 }
 
 /* =========================

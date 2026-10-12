@@ -19,15 +19,13 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navMain" [class.show]="menuOpen">
-        <ul class="navbar-nav ms-auto mb-2 mb-md-0 me-md-3 small">
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0 me-md-3 small align-items-md-center">
           <li class="nav-item">
-            <a class="nav-link" (click)="closeMenu()" routerLink="/pdf-password-remover">PDF Password Remover</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/pdf-tools">Tools</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="closeMenu()" routerLink="/docs">API Docs</a>
+            <a class="nav-link" (click)="closeMenu()" routerLink="/docs">Documentation</a>
           </li>
-          <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="tools">Tools</a></li>
-          <li class="nav-item"><a class="nav-link" (click)="closeMenu()" routerLink="/" fragment="faq">FAQ</a></li>
           <li class="nav-item">
             <a class="nav-link" (click)="closeMenu()" routerLink="/about">About</a>
           </li>
@@ -36,8 +34,7 @@
           </li>
         </ul>
 
-        <div class="d-none d-md-flex align-items-center gap-2">
-          <!-- Label updates live: Theme: System/Dark/Light -->
+        <div class="d-flex align-items-center gap-2 ms-md-2">
           <button
             class="btn btn-outline-secondary btn-sm"
             (click)="toggleTheme()"
@@ -45,13 +42,6 @@
           >
             Theme: {{ label }}
           </button>
-
-          <a
-            href="https://linktr.ee/mr_ask_chay"
-            class="btn btn-dark btn-sm shadow"
-          >
-            Linktree
-          </a>
         </div>
       </div>
     </div>

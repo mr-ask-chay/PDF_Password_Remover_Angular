@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RemovePasswordComponent, STATUS_DONE } from './remove-password.component';
 import { PdfUnlockService, UnlockOptions } from '../engine/pdf-unlock.service';
 import type { UnlockOutcome } from '../engine/unlock-protocol';
@@ -25,7 +24,7 @@ describe('RemovePasswordComponent', () => {
   beforeEach(async () => {
     unlocker = jasmine.createSpyObj('PdfUnlockService', ['unlock']);
     await TestBed.configureTestingModule({
-      imports: [RemovePasswordComponent, NoopAnimationsModule],
+      imports: [RemovePasswordComponent],
       providers: [
         { provide: PdfUnlockService, useValue: unlocker },
         { provide: PLATFORM_ID, useValue: 'browser' },
