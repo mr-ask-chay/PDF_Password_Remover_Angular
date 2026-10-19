@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "asOf": "2026-10-11",
+  "asOf": "2026-10-12",
   "catalogCount": 33,
   "strictlyVerifiedCount": 2,
   "statusDefinitions": {
@@ -15,11 +15,11 @@
     "focusedCommand": "npm.cmd test -- --watch=false --browsers=ChromeHeadless --include=src/app/pdf-password-remover/engine/qpdf-unlock.spec.ts --include=src/app/pdf-password-remover/engine/pdf-compress.service.spec.ts --include=src/app/pdf-tools/pdf-tools.component.spec.ts",
     "focusedResult": "27 tests passed: six qpdf helper tests, three compression worker-service tests, and 18 PDF tools component/service tests.",
     "fullSuiteCommand": "npm.cmd test -- --watch=false --browsers=ChromeHeadless",
-    "fullSuiteResult": "179 tests passed, 0 failed. An earlier run had a transient timeout in the PDF.js selectable-text export/comparison test; the isolated 18-test PDF tools spec and final full rerun both passed.",
+    "fullSuiteResult": "174 tests passed, 0 failed after the revenue-readiness audit changes.",
     "buildCommand": "npm.cmd run build -- --configuration production",
     "buildResult": "Passed after adding PDF compression and text overlays; prerendered 7 static routes. The non-blocking pako CommonJS optimization warning remains.",
     "privacyNetworkTests": "Manual production-browser traces for Protect PDF and Compress PDF observed only same-origin GETs for worker bundles and qpdf.wasm; no document POST. Other tools were not traced, and no repeatable browser E2E/network-interception suite is configured.",
-    "dependencyAudit": "npm.cmd audit --omit=dev --audit-level=moderate found 10 production advisories (6 high, 4 moderate). A subsequent full-tree audit reported 49 total advisories (2 critical, 30 high, 14 moderate, 3 low)."
+    "dependencyAudit": "npm.cmd audit --omit=dev --audit-level=moderate on 2026-10-12 reported 9 production vulnerabilities (6 high, 3 moderate). Previous full-tree output: 49 advisories (2 critical, 30 high, 14 moderate, 3 low); not refreshed."
   },
   "tools": [
     {
@@ -83,7 +83,7 @@
       "status": "VERIFIED",
       "implementation": "src/app/pdf-password-remover/engine/pdf-compress.service.ts, src/app/pdf-password-remover/engine/compress.worker.ts, src/app/pdf-password-remover/engine/qpdf-unlock.ts, and src/app/pdf-tools/pdf-tools.component.ts",
       "dependencies": ["@neslinesli93/qpdf-wasm 0.3.0; package/license compatibility requires separate audit"],
-      "unitTest": "Six qpdf helper tests, three worker-service tests, and the 179-test full suite pass.",
+      "unitTest": "Six qpdf helper tests, three worker-service tests, and the 174-test full suite pass.",
       "outputValidation": "Production browser compressed a valid 30,800-byte, 250-page fixture to 2,699 bytes; qpdf checks the output before delivery. If compression does not reduce size, the original is retained.",
       "privacyTest": "Manual production-browser request trace observed only same-origin GETs for the worker bundle and qpdf.wasm; no document POST or API fallback.",
       "limitations": "Lossless structural/Flate compression only; does not recompress image formats. Maximum 20 MB; encrypted PDFs must first be unlocked. Some PDFs will not become smaller."
@@ -303,7 +303,7 @@
       "status": "VERIFIED",
       "implementation": "src/app/pdf-password-remover/engine/pdf-protect.service.ts, src/app/pdf-password-remover/engine/protect.worker.ts, src/app/pdf-password-remover/engine/qpdf-unlock.ts, and src/app/pdf-tools/pdf-tools.component.ts",
       "dependencies": ["@neslinesli93/qpdf-wasm 0.3.0; package/license compatibility requires separate audit"],
-      "unitTest": "Three qpdf helper tests and four worker-service tests pass; full suite passes 179 tests.",
+      "unitTest": "Three qpdf helper tests and four worker-service tests pass; full suite passes 174 tests.",
       "outputValidation": "Production browser generated a 1,670-byte AES-256 PDF; local qpdf round-trip rejected a wrong password, accepted the correct password, decrypted the output, and reopened the resulting one-page PDF.",
       "privacyTest": "Manual production-browser request trace observed only GETs for the same-origin worker bundle and qpdf.wasm; no PDF/password POST or API fallback.",
       "limitations": "Maximum 20 MB; requires distinct 8–127 printable-ASCII open and owner passwords; already-encrypted PDFs must first be unlocked. Browser/network evidence is manual, not an automated E2E test."

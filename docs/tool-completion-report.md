@@ -1,6 +1,6 @@
 # Unclasp PDF tool completion report
 
-**Snapshot:** 2026-10-11. The requested 33-item catalog matches the current intended inventory; the prior public UI exposed one PDF Tools Studio route, not 33 individual tool pages.
+**Snapshot:** 2026-10-12. The requested 33-item catalog matches the current intended inventory; the public UI exposes one PDF Tools Studio route, not 33 individual tool pages.
 
 ## Summary
 
@@ -16,11 +16,11 @@ The full per-tool evidence, source location, dependency, limits, and test caveat
 
 | Command | Result | Scope |
 | --- | --- | --- |
-| `npm.cmd test -- --watch=false --browsers=ChromeHeadless` | **179 passed, 0 failed** | Full ChromeHeadless suite. An earlier run had one PDF.js timeout; both the isolated PDF tools spec (18/18) and the final full rerun passed. |
+| `npm.cmd test -- --watch=false --browsers=ChromeHeadless` | **174 passed, 0 failed** | Full ChromeHeadless suite after the revenue-readiness changes. |
 | `npm.cmd test -- --watch=false --browsers=ChromeHeadless --include=src/app/pdf-password-remover/engine/qpdf-unlock.spec.ts --include=src/app/pdf-password-remover/engine/pdf-compress.service.spec.ts --include=src/app/pdf-tools/pdf-tools.component.spec.ts` | 27 passed | qpdf helper, compression service, and PDF tools tests |
 | `npm.cmd test -- --watch=false --browsers=ChromeHeadless --include=src/app/pdf-tools/pdf-tools.component.spec.ts` | **18 passed, 0 failed** | Isolated PDF tools component/service spec, including PDF.js text extraction |
-| `npm.cmd run build -- --configuration production` | **Passed; 7 prerendered routes** | After compression and text-overlay changes; non-blocking `pako` CommonJS optimization warning remains |
-| `npm.cmd audit --omit=dev --audit-level=moderate` | Failed audit: 10 production advisories (6 high, 4 moderate) | Angular packages |
+| `npm.cmd run build -- --configuration production` | **Passed; 9 prerendered routes** | Latest audit build; includes current tool-page rendering; CommonJS and stylesheet deprecation warnings remain |
+| `npm.cmd audit --omit=dev --audit-level=moderate` | Failed audit: 9 production vulnerabilities (6 high, 3 moderate) | Angular packages; npm proposes a breaking Angular 21 upgrade |
 | `npm.cmd audit fix` | Did not remediate safely | npm proposed Angular 21 breaking upgrades; no force upgrade was taken |
 
 The Protect PDF production-browser run generated a 1,670-byte output. A local qpdf verification rejected an incorrect password, accepted the correct password, decrypted the file, and reopened a one-page PDF. The Compress PDF production-browser run reduced a valid 30,800-byte PDF to 2,699 bytes. Request interception for both operations saw only same-origin GETs for worker bundles and qpdf WASM, with no document/password POST. Edit PDF was exercised in the production browser and PDF.js extracted its new text overlay. These browser checks are manual, not a repeatable E2E suite.
