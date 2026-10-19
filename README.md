@@ -115,6 +115,7 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and the
 ## Contact
 
 Built by **Sai Krishna Chaitanya** —
+[Personal portfolio](https://mraskchay.vercel.app/) ·
 [GitHub](https://github.com/mr-ask-chay) ·
 [Linktree](https://linktr.ee/mr_ask_chay)
 
