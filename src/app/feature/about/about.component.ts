@@ -36,7 +36,8 @@ import { RouterLink } from '@angular/router';
           I’m Sai Krishna Chaitanya
           (<a href="https://linktr.ee/mr_ask_chay">&#64;mr_ask_chay</a>).
           You can review my public work on
-          <a href="https://github.com/mr-ask-chay">GitHub</a> or
+          <a href="https://mraskchay.vercel.app/">my personal portfolio</a>,
+          <a href="https://github.com/mr-ask-chay">GitHub</a>, or
           <a href="mailto:saikrishnachaitanya61&#64;gmail.com">contact me</a>.
         </p>
       </section>
