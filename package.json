@@ -36,7 +36,7 @@
     "@angular/cli": "~19.2.27",
     "@angular/compiler-cli": "^19.2.25",
     "@types/express": "^5.0.3",
-    "@types/jasmine": "~5.1.8",
+    "@types/jasmine": "~7.0.0",
     "@types/node": "^24.6.1",
     "chokidar": "^4.0.3",
     "jasmine-core": "~5.11.0",
